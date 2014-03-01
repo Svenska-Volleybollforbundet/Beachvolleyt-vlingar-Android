@@ -7,21 +7,21 @@ public class Player implements Serializable {
     String firstName;
     String lastName;
     String club;
-    int rankingPoints;
-    int entryPoints;
+    int ranking;
+    int entry;
 
     public Player(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public Player(Integer rank, String firstName, String lastName, String club, int rankingPoints, int entryPoints) {
+    public Player(Integer rank, String firstName, String lastName, String club, int ranking, int entry) {
         this.rank = rank;
         this.firstName = firstName;
         this.lastName = lastName;
         this.club = club;
-        this.rankingPoints = rankingPoints;
-        this.entryPoints = entryPoints;
+        this.ranking = ranking;
+        this.entry = entry;
     }
 
     public String getName() {
@@ -34,7 +34,7 @@ public class Player implements Serializable {
                 firstName + " " +
                 lastName + " " +
                 club + " " +
-                rankingPoints + " " +
-                entryPoints;
+                ranking + " " +
+                entry;
     }
 }
