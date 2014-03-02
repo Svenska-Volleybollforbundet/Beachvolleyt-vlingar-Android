@@ -28,22 +28,7 @@
     <option name="TOOL_WINDOW_LOG_LEVEL" value="ERROR" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5ff8f56-6588-4fd3-aaa9-cfd65d97cdf3" name="Default" comment="Provar lite till, del 2&#10;">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ngusta/cupassist/io/Cache.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ngusta/cupassist/net/AndroidSourceCodeRequester.java" afterPath="$PROJECT_DIR$/src/com/ngusta/cupassist/net/AndroidSourceCodeRequester.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ngusta/cupassist/activity/MyApplication.java" afterPath="$PROJECT_DIR$/src/com/ngusta/cupassist/activity/MyApplication.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ngusta/cupassist/domain/Player.java" afterPath="$PROJECT_DIR$/src/com/ngusta/cupassist/domain/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ngusta/cupassist/io/PlayerListCache.java" afterPath="$PROJECT_DIR$/src/com/ngusta/cupassist/io/PlayerListCache.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ngusta/cupassist/parser/PlayerListParser.java" afterPath="$PROJECT_DIR$/src/com/ngusta/cupassist/parser/PlayerListParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ngusta/cupassist/activity/SplashLoadActivity.java" afterPath="$PROJECT_DIR$/src/com/ngusta/cupassist/activity/SplashLoadActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ngusta/cupassist/domain/Team.java" afterPath="$PROJECT_DIR$/src/com/ngusta/cupassist/domain/Team.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ngusta/cupassist/domain/Tournament.java" afterPath="$PROJECT_DIR$/src/com/ngusta/cupassist/domain/Tournament.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ngusta/cupassist/activity/TournamentActivity.java" afterPath="$PROJECT_DIR$/src/com/ngusta/cupassist/activity/TournamentActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ngusta/cupassist/activity/TournamentListActivity.java" afterPath="$PROJECT_DIR$/src/com/ngusta/cupassist/activity/TournamentListActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ngusta/cupassist/io/TournamentListCache.java" afterPath="$PROJECT_DIR$/src/com/ngusta/cupassist/io/TournamentListCache.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ngusta/cupassist/parser/TournamentParser.java" afterPath="$PROJECT_DIR$/src/com/ngusta/cupassist/parser/TournamentParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/tournament_view.xml" afterPath="$PROJECT_DIR$/res/layout/tournament_view.xml" />
+    <list default="true" id="a5ff8f56-6588-4fd3-aaa9-cfd65d97cdf3" name="Default" comment="Fixade lite gui">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Beachvolley.iws" />
@@ -111,7 +96,7 @@
       <file leaf-file-name="MyApplication.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/ngusta/cupassist/activity/MyApplication.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="59" selection-start="1159" selection-end="1159" vertical-scroll-proportion="1.1422925" vertical-offset="102" max-vertical-offset="884">
+            <state line="31" column="59" selection-start="1013" selection-end="1013" vertical-scroll-proportion="1.1422925" vertical-offset="102" max-vertical-offset="884">
               <folding />
             </state>
           </provider>
@@ -120,8 +105,10 @@
       <file leaf-file-name="PlayerListCache.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/ngusta/cupassist/io/PlayerListCache.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="0" selection-start="1502" selection-end="1502" vertical-scroll-proportion="0.0" vertical-offset="403" max-vertical-offset="816">
-              <folding />
+            <state line="38" column="0" selection-start="1414" selection-end="1414" vertical-scroll-proportion="0.0" vertical-offset="403" max-vertical-offset="816">
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -129,8 +116,10 @@
       <file leaf-file-name="Cache.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/ngusta/cupassist/io/Cache.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="19" selection-start="1536" selection-end="1583" vertical-scroll-proportion="0.0" vertical-offset="318" max-vertical-offset="731">
-              <folding />
+            <state line="32" column="19" selection-start="1315" selection-end="1362" vertical-scroll-proportion="0.0" vertical-offset="318" max-vertical-offset="731">
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -138,7 +127,7 @@
       <file leaf-file-name="tournament_view.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/layout/tournament_view.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="51" selection-start="651" selection-end="651" vertical-scroll-proportion="-9.52" vertical-offset="0" max-vertical-offset="1190">
+            <state line="14" column="43" selection-start="643" selection-end="643" vertical-scroll-proportion="-9.52" vertical-offset="0" max-vertical-offset="1190">
               <folding />
             </state>
           </provider>
@@ -731,7 +720,11 @@
       <created>1393692360392</created>
       <updated>1393692360392</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Fixade lite gui">
+      <created>1393799784183</created>
+      <updated>1393799784183</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -782,7 +775,8 @@
     </option>
     <MESSAGE value="Provar lite till" />
     <MESSAGE value="Provar lite till, del 2&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Provar lite till, del 2&#10;" />
+    <MESSAGE value="Fixade lite gui" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixade lite gui" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -1081,7 +1075,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/tournament_view.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="51" selection-start="651" selection-end="651" vertical-scroll-proportion="-9.52" vertical-offset="0" max-vertical-offset="1190">
+        <state line="14" column="43" selection-start="643" selection-end="643" vertical-scroll-proportion="-9.52" vertical-offset="0" max-vertical-offset="1190">
           <folding />
         </state>
       </provider>
@@ -1107,8 +1101,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ngusta/cupassist/io/Cache.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="19" selection-start="1536" selection-end="1583" vertical-scroll-proportion="0.0" vertical-offset="318" max-vertical-offset="731">
-          <folding />
+        <state line="32" column="19" selection-start="1315" selection-end="1362" vertical-scroll-proportion="0.0" vertical-offset="318" max-vertical-offset="731">
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1128,8 +1124,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ngusta/cupassist/io/PlayerListCache.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="0" selection-start="1502" selection-end="1502" vertical-scroll-proportion="0.0" vertical-offset="356" max-vertical-offset="816">
-          <folding />
+        <state line="38" column="0" selection-start="1414" selection-end="1414" vertical-scroll-proportion="0.0" vertical-offset="403" max-vertical-offset="816">
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1156,7 +1154,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ngusta/cupassist/activity/MyApplication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="59" selection-start="1159" selection-end="1159" vertical-scroll-proportion="1.1422925" vertical-offset="102" max-vertical-offset="884">
+        <state line="31" column="59" selection-start="1013" selection-end="1013" vertical-scroll-proportion="1.1422925" vertical-offset="102" max-vertical-offset="884">
           <folding />
         </state>
       </provider>
