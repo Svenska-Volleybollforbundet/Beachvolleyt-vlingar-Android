@@ -24,7 +24,7 @@ public class TournamentListActivity extends Activity {
 
         final ListView listview = (ListView) findViewById(R.id.listview);
 
-        final ArrayList<String> list = new ArrayList<String>();
+        final ArrayList<String> list = new ArrayList<>();
         for (Tournament tournament : ((MyApplication) getApplication()).getTournamentListCache().getTournaments()) {
             list.add(tournament.getName());
         }

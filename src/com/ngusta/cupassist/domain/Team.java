@@ -15,7 +15,27 @@ public class Team implements Serializable {
         return playerA;
     }
 
+    public void setPlayerA(Player playerA) {
+        this.playerA = playerA;
+    }
+
     public Player getPlayerB() {
         return playerB;
+    }
+
+    public void setPlayerB(Player playerB) {
+        this.playerB = playerB;
+    }
+
+    public String getNames() {
+        return playerA.getName() + "/" + playerB.getName();
+    }
+
+    public String getClubs() {
+        return playerA.getClub() + "/" + playerB.getClub();
+    }
+
+    public int getEntry() {
+        return playerA.getEntry() + playerB.getEntry();
     }
 }

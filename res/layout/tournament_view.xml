@@ -12,8 +12,8 @@
             android:layout_gravity="center_horizontal"/>
     <GridLayout android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:columnCount="2"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
                 android:columnOrderPreserved="false"
                 android:alignmentMode="alignMargins">
         <TextView
@@ -57,4 +57,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/classes" />
     </GridLayout>
+
+    <ListView
+        android:id="@+id/teamList"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"></ListView>
 </LinearLayout>

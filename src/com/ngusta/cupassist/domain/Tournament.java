@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Tournament implements Serializable {
     private Date startDate;
@@ -14,7 +15,7 @@ public class Tournament implements Serializable {
     private String level;
     private String classes;
     private String redirectUrl;
-    private ArrayList<Team> teams;
+    private List<Team> teams;
 
     public Tournament(Date startDate, String period, String club, String name, String url, String level, String classes) {
         this.startDate = startDate;
@@ -63,17 +64,17 @@ public class Tournament implements Serializable {
         this.redirectUrl = redirectUrl;
     }
 
-    public ArrayList<Team> getTeams() {
+    public List<Team> getTeams() {
         return teams;
     }
 
-    public void setTeams(ArrayList<Team> teams) {
+    public void setTeams(List<Team> teams) {
         this.teams = teams;
     }
 
     public void addTeam(Team team) {
         if (teams == null) {
-            teams = new ArrayList<Team>();
+            teams = new ArrayList<>();
         }
         teams.add(team);
     }
