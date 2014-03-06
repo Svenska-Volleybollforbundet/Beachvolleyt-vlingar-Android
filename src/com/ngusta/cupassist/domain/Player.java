@@ -7,8 +7,8 @@ public class Player implements Serializable {
     private String firstName;
     private String lastName;
     private String club;
-    private int ranking;
-    private int entry;
+    private int rankingPoints;
+    private int entryPoints;
 
     public Player(String firstName, String lastName, String playerClub) {
         this.firstName = firstName;
@@ -16,13 +16,13 @@ public class Player implements Serializable {
         this.club = playerClub;
     }
 
-    public Player(Integer rank, String firstName, String lastName, String club, int ranking, int entry) {
+    public Player(Integer rank, String firstName, String lastName, String club, int rankingPoints, int entryPoints) {
         this.rank = rank;
         this.firstName = firstName;
         this.lastName = lastName;
         this.club = club;
-        this.ranking = ranking;
-        this.entry = entry;
+        this.rankingPoints = rankingPoints;
+        this.entryPoints = entryPoints;
     }
 
     public String getName() {
@@ -33,8 +33,8 @@ public class Player implements Serializable {
         return firstName + " " + lastName + " " + club;
     }
 
-    public int getEntry() {
-        return entry;
+    public int getEntryPoints() {
+        return entryPoints;
     }
 
     public String getFirstName() {
@@ -51,11 +51,15 @@ public class Player implements Serializable {
                 firstName + " " +
                 lastName + " " +
                 club + " " +
-                ranking + " " +
-                entry;
+                rankingPoints + " " +
+                entryPoints;
     }
 
     public String getClub() {
         return club;
+    }
+
+    public int getRankingPoints() {
+        return rankingPoints;
     }
 }

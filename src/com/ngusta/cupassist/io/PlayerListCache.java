@@ -36,7 +36,7 @@ public class PlayerListCache extends Cache<Player> {
         if (players != null) {
             return players;
         }
-        players = MyApplication.USE_CACHE_DATA ? (Set<Player>) load(FILE_NAME, context) : null;
+        players = MyApplication.CACHE_PLAYERS ? (Set<Player>) load(FILE_NAME, context) : null;
         if (players == null) {
             try {
                 sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_BASE_URL);

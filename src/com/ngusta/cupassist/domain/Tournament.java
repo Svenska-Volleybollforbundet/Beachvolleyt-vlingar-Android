@@ -2,9 +2,7 @@ package com.ngusta.cupassist.domain;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Tournament implements Serializable {
     private Date startDate;
@@ -15,6 +13,7 @@ public class Tournament implements Serializable {
     private String level;
     private String classes;
     private String redirectUrl;
+    private int maxNumberOfTeams;
     private List<Team> teams;
 
     public Tournament(Date startDate, String period, String club, String name, String url, String level, String classes) {
@@ -25,11 +24,30 @@ public class Tournament implements Serializable {
         this.url = url;
         this.level = level;
         this.classes = classes;
+        maxNumberOfTeams = 16;//TODO Parse this info
     }
 
     public String getFormattedStartDate() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return simpleDateFormat.format(startDate);
+    }
+
+    public List<Team> getSeededTeams() {
+        List<Team> seeded = new ArrayList<>(teams);
+        Collections.sort(seeded, new Comparator<Team>() {
+            @Override
+            public int compare(Team lhs, Team rhs) {
+                if (lhs.getRegistrationDate() == null) {
+                    return rhs.getRegistrationDate() == null ? 0 : -1;
+                }
+                return lhs.getRegistrationDate().compareTo(rhs.getRegistrationDate());
+            }
+        });
+        if (seeded.size() > maxNumberOfTeams) {
+            seeded = seeded.subList(0, maxNumberOfTeams);
+        }
+        Collections.sort(seeded);
+        return seeded;
     }
 
     public String getPeriod() {

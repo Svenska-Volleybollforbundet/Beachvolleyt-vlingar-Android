@@ -13,6 +13,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.*;
 import java.io.IOException;
 import java.io.StringReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TournamentParser {
@@ -39,6 +41,8 @@ public class TournamentParser {
                 String[] names = nodeList.item(i).getTextContent().split("[,/]");
                 if (names.length == 4) {
                     String club = nodeList.item(i + 1).getTextContent().trim();
+                    String clazz = nodeList.item(i + 2).getTextContent().trim();
+                    Date registrationDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(nodeList.item(i + 3).getTextContent().trim());
                     String playerAClub = club;
                     String playerBClub = club;
                     if (club.contains("/")) {
@@ -52,10 +56,10 @@ public class TournamentParser {
                     String playerBLastName = names[2].trim();
                     Player playerA = findPlayer(allPlayersMap, playerAFirstName, playerALastName, playerAClub);
                     Player playerB = findPlayer(allPlayersMap, playerBFirstName, playerBLastName, playerBClub);
-                    teams.add(new Team(playerA, playerB));
+                    teams.add(new Team(playerA, playerB, registrationDate, clazz));
                 }
             }
-        } catch (ParserConfigurationException | SAXException | XPathExpressionException | IOException e) {
+        } catch (ParserConfigurationException | SAXException | XPathExpressionException | IOException | ParseException e) {
             e.printStackTrace();
         }
         return teams;

@@ -37,10 +37,18 @@ public class TournamentActivity extends Activity {
         ListView teamListView = (ListView) findViewById(R.id.teamList);
         ArrayList<String> teams = new ArrayList<>();
         if (tournament.getTeams() != null) {
-            for (Team team : tournament.getTeams()) {
-                teams.add(team.getNames() + " " +
-                        team.getClubs() + " " +
-                        team.getEntry());
+            int group = 0;
+            int operator = 1;
+            for (Team team : tournament.getSeededTeams()) {
+                group += operator;
+                if (group == 5) {
+                    group = 4;
+                    operator = -1;
+                } else if (group == 0) {
+                    group = 1;
+                    operator = 1;
+                }
+                teams.add(group + " " + team.getNames() + " " + team.getEntryPoints());
             }
         }
 

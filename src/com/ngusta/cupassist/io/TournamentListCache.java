@@ -46,7 +46,7 @@ public class TournamentListCache extends Cache<Tournament> {
         if (tournaments != null) {
             return tournaments;
         }
-        tournaments = MyApplication.USE_CACHE_DATA ? (List<Tournament>) load(FILE_NAME, context) : null;
+        tournaments = MyApplication.CACHE_TOURNAMENTS ? (List<Tournament>) load(FILE_NAME, context) : null;
         if (tournaments == null) {
             try {
                 tournaments = tournamentListParser.parseTournamentList(sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL));
@@ -63,7 +63,7 @@ public class TournamentListCache extends Cache<Tournament> {
     }
 
     public void getTeams(Tournament tournament, Set<Player> allPlayers) {
-        if (tournament.getRedirectUrl() == null || MyApplication.USE_CACHE_DATA) {
+        if (tournament.getRedirectUrl() == null || MyApplication.CACHE_TOURNAMENTS) {
             return;
         }
         try {
