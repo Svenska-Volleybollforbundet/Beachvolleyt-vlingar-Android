@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.ngusta.cupassist.R;
+import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.Team;
 import com.ngusta.cupassist.domain.Tournament;
 
@@ -28,7 +29,7 @@ public class TournamentActivity extends Activity {
 
     private void initLayout() {
         ((TextView) findViewById(R.id.name)).setText(tournament.getName());
-        ((TextView) findViewById(R.id.level)).setText(tournament.getLevel());
+        ((TextView) findViewById(R.id.level)).setText(tournament.getLevelString());
         ((TextView) findViewById(R.id.classes)).setText(tournament.getClasses());
         ((TextView) findViewById(R.id.club)).setText(tournament.getClub());
         ((TextView) findViewById(R.id.period)).setText(tournament.getPeriod());
@@ -37,18 +38,22 @@ public class TournamentActivity extends Activity {
         ListView teamListView = (ListView) findViewById(R.id.teamList);
         ArrayList<String> teams = new ArrayList<>();
         if (tournament.getTeams() != null) {
-            int group = 0;
-            int operator = 1;
-            for (Team team : tournament.getSeededTeams()) {
-                group += operator;
-                if (group == 5) {
-                    group = 4;
-                    operator = -1;
-                } else if (group == 0) {
-                    group = 1;
-                    operator = 1;
+            for (Clazz clazz : tournament.getSeededTeams().keySet()) {
+                int group = 0;
+                int operator = 1;
+                int numberOfGroups = tournament.getNumberOfGroups();
+
+                for (Team team : tournament.getSeededTeams().get(clazz)) {
+                    group += operator;
+                    if (group == (numberOfGroups + 1)) {
+                        group = numberOfGroups;
+                        operator = -1;
+                    } else if (group == 0) {
+                        group = 1;
+                        operator = 1;
+                    }
+                    teams.add(group + " " + team.getNames() + " " + team.getEntryPoints());
                 }
-                teams.add(group + " " + team.getNames() + " " + team.getEntryPoints());
             }
         }
 

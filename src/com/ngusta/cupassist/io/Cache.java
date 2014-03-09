@@ -31,9 +31,9 @@ public abstract class Cache<T> {
             }
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             return (Collection<T>) objectInputStream.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InvalidClassException e) {
+            System.out.println("Couldn't use cache.");
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;

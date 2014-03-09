@@ -63,7 +63,7 @@ public class TournamentListCache extends Cache<Tournament> {
     }
 
     public void getTeams(Tournament tournament, Set<Player> allPlayers) {
-        if (tournament.getRedirectUrl() == null || MyApplication.CACHE_TOURNAMENTS) {
+        if (tournament.getRedirectUrl() == null || (tournament.getTeams() != null && MyApplication.CACHE_TOURNAMENTS)) {
             return;
         }
         try {

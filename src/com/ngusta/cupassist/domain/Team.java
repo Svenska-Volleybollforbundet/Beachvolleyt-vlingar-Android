@@ -9,14 +9,13 @@ public class Team implements Serializable, Comparable<Team> {
     private Player playerA;
     private Player playerB;
     private Date registrationTime;
-    private String clazz;
-    private Date registrationDate;
+    private Clazz clazz;
 
     public Team(Player playerA, Player playerB, Date registrationTime, String clazz) {
         this.playerA = playerA;
         this.playerB = playerB;
         this.registrationTime = registrationTime;
-        this.clazz = clazz;
+        this.clazz = Clazz.parse(clazz);
     }
 
     public Player getPlayerA() {
@@ -77,7 +76,11 @@ public class Team implements Serializable, Comparable<Team> {
         return Math.max(playerA.getRankingPoints(), playerB.getRankingPoints());
     }
 
-    public Date getRegistrationDate() {
-        return registrationDate;
+    public Date getRegistrationTime() {
+        return registrationTime;
+    }
+
+    public Clazz getClazz() {
+        return clazz;
     }
 }

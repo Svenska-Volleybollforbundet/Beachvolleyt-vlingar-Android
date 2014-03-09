@@ -54,6 +54,8 @@ public class TournamentParser {
                     String playerALastName = names[0].trim();
                     String playerBFirstName = names[3].trim();
                     String playerBLastName = names[2].trim();
+                    playerAFirstName = excludeParenthesisFromName(playerAFirstName);
+                    playerBFirstName = excludeParenthesisFromName(playerBFirstName);
                     Player playerA = findPlayer(allPlayersMap, playerAFirstName, playerALastName, playerAClub);
                     Player playerB = findPlayer(allPlayersMap, playerBFirstName, playerBLastName, playerBClub);
                     teams.add(new Team(playerA, playerB, registrationDate, clazz));
@@ -63,6 +65,13 @@ public class TournamentParser {
             e.printStackTrace();
         }
         return teams;
+    }
+
+    private String excludeParenthesisFromName(String playerName) {
+        if (playerName.contains("(")) {
+            return playerName.substring(0, playerName.indexOf("(")).trim();
+        }
+        return playerName;
     }
 
     private Player findPlayer(Map<String, Player> allPlayers, String playerFirstName, String playerLastName, String playerClub) {
