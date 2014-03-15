@@ -52,7 +52,7 @@ public class TournamentListCache extends Cache<Tournament> {
                 tournaments = tournamentListParser.parseTournamentList(sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL));
                 for (Tournament tournament : tournaments) {
                     String source = sourceCodeRequester.getSourceCode(CUP_ASSIST_BASE_URL + "pa/" + tournament.getUrl());
-                    tournament.setRedirectUrl(tournamentListParser.parseRedirectUrl(source));
+                    tournament.setRegistrationUrl(tournamentListParser.parseRegistrationUrl(source));
                 }
                 save(tournaments, FILE_NAME, context);
             } catch (IOException e) {
@@ -63,11 +63,11 @@ public class TournamentListCache extends Cache<Tournament> {
     }
 
     public void getTeams(Tournament tournament, Set<Player> allPlayers) {
-        if (tournament.getRedirectUrl() == null || (tournament.getTeams() != null && MyApplication.CACHE_TOURNAMENTS)) {
+        if (tournament.getRegistrationUrl() == null || (tournament.getTeams() != null && MyApplication.CACHE_TOURNAMENTS)) {
             return;
         }
         try {
-            sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_URL + tournament.getRedirectUrl());
+            sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_URL + tournament.getRegistrationUrl());
             String source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL)
                     .replace("style='cursor:pointer'>", "style='cursor:pointer' />")
                     .replace("</b></a></td>", "</a></b></td>")

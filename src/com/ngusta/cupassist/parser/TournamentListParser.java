@@ -1,10 +1,6 @@
 package com.ngusta.cupassist.parser;
 
-import com.ngusta.cupassist.activity.MyApplication;
 import com.ngusta.cupassist.domain.Tournament;
-import com.ngusta.cupassist.net.AndroidSourceCodeRequester;
-import com.ngusta.cupassist.net.DesktopSourceCodeRequester;
-import com.ngusta.cupassist.net.SourceCodeRequester;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -16,7 +12,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,7 +24,7 @@ import java.util.regex.Pattern;
 
 public class TournamentListParser {
 
-    private String REGEXP_PATTERN_FOR_REDIRECT_URL = "pamelding/redirect.php\\?tknavn=(.*?)\", \"_blank\"";
+    private String REGEXP_PATTERN_FOR_REGISTRATION_URL = "pamelding/redirect.php\\?tknavn=(.*?)\", \"_blank\"";
 
     public ArrayList<Tournament> parseTournamentList(String source) {
         try {
@@ -82,8 +79,8 @@ public class TournamentListParser {
         return anchor instanceof Element ? ((Element) anchor).getAttribute("href") : "";
     }
 
-    public String parseRedirectUrl(String source) {
-        Pattern pattern = Pattern.compile(REGEXP_PATTERN_FOR_REDIRECT_URL);
+    public String parseRegistrationUrl(String source) {
+        Pattern pattern = Pattern.compile(REGEXP_PATTERN_FOR_REGISTRATION_URL);
         Matcher matcher = pattern.matcher(source);
         if (matcher.find()) {
             return matcher.group(1);

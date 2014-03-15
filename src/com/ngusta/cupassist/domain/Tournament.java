@@ -13,7 +13,7 @@ public class Tournament implements Serializable {
     private Level level;
     private String levelString;
     private List<Clazz> clazzes;
-    private String redirectUrl;
+    private String registrationUrl;
     private int maxNumberOfTeams;
     private Map<Clazz, List<Team>> teams;
 
@@ -31,9 +31,11 @@ public class Tournament implements Serializable {
 
     private List<Clazz> parseClazzes(String clazzes) {
         ArrayList<Clazz> parsedClazzes = new ArrayList<>();
-        String[] clazzArray = clazzes.split(", ");
-        for (String clazzString : clazzArray) {
-            parsedClazzes.add(Clazz.parse(clazzString));
+        if (clazzes != null) {
+            String[] clazzArray = clazzes.split(", ");
+            for (String clazzString : clazzArray) {
+                parsedClazzes.add(Clazz.parse(clazzString));
+            }
         }
         return parsedClazzes;
     }
@@ -92,12 +94,12 @@ public class Tournament implements Serializable {
         return "TODO";//TODO
     }
 
-    public String getRedirectUrl() {
-        return redirectUrl;
+    public String getRegistrationUrl() {
+        return registrationUrl;
     }
 
-    public void setRedirectUrl(String redirectUrl) {
-        this.redirectUrl = redirectUrl;
+    public void setRegistrationUrl(String registrationUrl) {
+        this.registrationUrl = registrationUrl;
     }
 
     public Map<Clazz, List<Team>> getTeams() {
@@ -124,7 +126,7 @@ public class Tournament implements Serializable {
                 ", url='" + url + '\'' +
                 ", level='" + level + '\'' +
                 ", classes='" + clazzes + '\'' +
-                ", redirectUrl='" + redirectUrl + '\'' +
+                ", redirectUrl='" + registrationUrl + '\'' +
                 '}';
     }
 
@@ -149,6 +151,9 @@ public class Tournament implements Serializable {
         };
 
         public static Level parse(String levelString) {
+            if (levelString == null) {
+                return UNKNOWN;
+            }
             if (levelString.contains("Open (Svart)")) {
                 return OPEN;
             } else if (levelString.contains("Open (Grön)")) {
