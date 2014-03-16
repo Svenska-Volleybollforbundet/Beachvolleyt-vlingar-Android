@@ -94,10 +94,6 @@ public class Tournament implements Serializable {
         return levelString;
     }
 
-    public String getClasses() {
-        return "TODO";//TODO
-    }
-
     public String getRegistrationUrl() {
         return registrationUrl;
     }
@@ -110,6 +106,17 @@ public class Tournament implements Serializable {
             Log.i(TAG, String.format("Guessing number of teams in '%s' for clazz %s: %d", name, clazz, guess));
             return guess;
         }
+    }
+
+    public String getClassesWithMaxNumberOfTeamsString() {
+        if (clazzes.isEmpty()) {
+            return "[]";
+        }
+        StringBuilder sb = new StringBuilder("[");
+        for (Clazz clazz : clazzes) {
+            sb.append(clazz.toString()).append("(").append(getMaxNumberOfTeamsForClazz(clazz)).append(")").append(", ");
+        }
+        return sb.delete(sb.length() - 2, sb.length()).append("]").toString();
     }
 
     public void setRegistrationUrl(String registrationUrl) {

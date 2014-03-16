@@ -30,7 +30,7 @@ public class TournamentActivity extends Activity {
     private void initLayout() {
         ((TextView) findViewById(R.id.name)).setText(tournament.getName());
         ((TextView) findViewById(R.id.level)).setText(tournament.getLevelString());
-        ((TextView) findViewById(R.id.classes)).setText(tournament.getClasses());
+        ((TextView) findViewById(R.id.classes)).setText(tournament.getClassesWithMaxNumberOfTeamsString());
         ((TextView) findViewById(R.id.club)).setText(tournament.getClub());
         ((TextView) findViewById(R.id.period)).setText(tournament.getPeriod());
         ((TextView) findViewById(R.id.start_date)).setText(tournament.getFormattedStartDate());
