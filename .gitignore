@@ -41,6 +41,7 @@ proguard/
 .idea/dynamic.xml
 # unnecessary locally changing files:
 .idea/copyright/
+.idea/libraries/
 .idea/misc.xml
 
 ## File-based project format
