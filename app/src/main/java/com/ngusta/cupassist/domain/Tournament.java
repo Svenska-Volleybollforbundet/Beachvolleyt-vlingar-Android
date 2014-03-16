@@ -1,10 +1,13 @@
 package com.ngusta.cupassist.domain;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Tournament implements Serializable {
+    public static final String TAG = Tournament.class.getSimpleName();
     private Date startDate;
     private String period;
     private String club;
@@ -14,7 +17,7 @@ public class Tournament implements Serializable {
     private String levelString;
     private List<Clazz> clazzes;
     private String registrationUrl;
-    private int maxNumberOfTeams;
+    private Map<Clazz, Integer> maxNumberOfTeams;
     private Map<Clazz, List<Team>> teams;
 
     public Tournament(Date startDate, String period, String club, String name, String url, String level, String clazzes) {
@@ -26,7 +29,6 @@ public class Tournament implements Serializable {
         this.levelString = level;
         this.level = Level.parse(level);
         this.clazzes = parseClazzes(clazzes);
-        maxNumberOfTeams = this.level == Level.OPEN ? 16 : 12;//TODO Parse this info
     }
 
     private List<Clazz> parseClazzes(String clazzes) {
@@ -53,6 +55,7 @@ public class Tournament implements Serializable {
         for (Clazz clazz : seededTeams.keySet()) {
             List<Team> seeded = seededTeams.get(clazz);
             Collections.sort(seeded, level.getComparator());
+            int maxNumberOfTeams = getMaxNumberOfTeamsForClazz(clazz);
             if (seeded.size() > maxNumberOfTeams) {
                 seeded = seeded.subList(0, maxNumberOfTeams);
             }
@@ -62,7 +65,8 @@ public class Tournament implements Serializable {
         return seededTeams;
     }
 
-    public int getNumberOfGroups() {
+    public int getNumberOfGroupsForClazz(Clazz clazz) {
+        int maxNumberOfTeams = getMaxNumberOfTeamsForClazz(clazz);
         if (maxNumberOfTeams == 12) {
             return 4;
         } else {
@@ -98,12 +102,26 @@ public class Tournament implements Serializable {
         return registrationUrl;
     }
 
+    public int getMaxNumberOfTeamsForClazz(Clazz clazz) {
+        if (maxNumberOfTeams.containsKey(clazz)) {
+            return maxNumberOfTeams.get(clazz);
+        } else {
+            int guess = this.level == Level.OPEN ? 16 : 12;
+            Log.i(TAG, String.format("Guessing number of teams in '%s' for clazz %s: %d", name, clazz, guess));
+            return guess;
+        }
+    }
+
     public void setRegistrationUrl(String registrationUrl) {
         this.registrationUrl = registrationUrl;
     }
 
     public Map<Clazz, List<Team>> getTeams() {
         return teams;
+    }
+
+    public void setMaxNumberOfTeams(Map<Clazz, Integer> maxNumberOfTeams) {
+        this.maxNumberOfTeams = new HashMap<>(maxNumberOfTeams);
     }
 
     public void setTeams(List<Team> teamList) {

@@ -53,6 +53,7 @@ public class TournamentListCache extends Cache<Tournament> {
                 for (Tournament tournament : tournaments) {
                     String source = sourceCodeRequester.getSourceCode(CUP_ASSIST_BASE_URL + "pa/" + tournament.getUrl());
                     tournament.setRegistrationUrl(tournamentListParser.parseRegistrationUrl(source));
+                    tournament.setMaxNumberOfTeams(tournamentListParser.parseMaxNumberOfTeams(source));
                 }
                 save(tournaments, FILE_NAME, context);
             } catch (IOException e) {
