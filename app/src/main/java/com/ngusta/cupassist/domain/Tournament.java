@@ -1,7 +1,6 @@
 package com.ngusta.cupassist.domain;
 
 import android.util.Log;
-import android.util.Pair;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -48,23 +47,18 @@ public class Tournament implements Serializable {
         return simpleDateFormat.format(startDate);
     }
 
-    public Map<Clazz, List<Team>> getSeededTeams() {
-        Map<Clazz, List<Team>> teams = getTeams();
-        Map<Clazz, List<Team>> seededTeams = new HashMap<>();
-        for (Clazz clazz : teams.keySet()) {
-            seededTeams.put(clazz, new ArrayList<>(teams.get(clazz)));
+    public List<Team> getSeededTeamsForClazz(Clazz clazz) {
+        if (getTeams().get(clazz) == null) {
+            return Collections.emptyList();
         }
-        for (Clazz clazz : seededTeams.keySet()) {
-            List<Team> seeded = seededTeams.get(clazz);
-            Collections.sort(seeded, level.getComparator());
-            int maxNumberOfTeams = getMaxNumberOfTeamsForClazz(clazz);
-            if (seeded.size() > maxNumberOfTeams) {
-                seeded = seeded.subList(0, maxNumberOfTeams);
-            }
-            Collections.sort(seeded);
-            seededTeams.put(clazz, seeded);
+        List<Team> seeded = getTeams().get(clazz);
+        Collections.sort(seeded, level.getComparator());
+        int maxNumberOfTeams = getMaxNumberOfTeamsForClazz(clazz);
+        if (seeded.size() > maxNumberOfTeams) {
+            seeded = seeded.subList(0, maxNumberOfTeams);
         }
-        return seededTeams;
+        Collections.sort(seeded);
+        return seeded;
     }
 
     public int getNumberOfGroupsForClazz(Clazz clazz) {
@@ -115,11 +109,11 @@ public class Tournament implements Serializable {
     }
 
     public String getClassesWithMaxNumberOfTeamsString() {
-        if (clazzes.isEmpty()) {
+        if (getClazzes().isEmpty()) {
             return "[]";
         }
         StringBuilder sb = new StringBuilder("[");
-        for (Clazz clazz : clazzes) {
+        for (Clazz clazz : getClazzes()) {
             sb.append(clazz.toString()).append("(").append(getMaxNumberOfTeamsForClazz(clazz)).append(")").append(", ");
         }
         return sb.delete(sb.length() - 2, sb.length()).append("]").toString();
@@ -133,13 +127,13 @@ public class Tournament implements Serializable {
         return teams != null ? teams : Collections.<Clazz, List<Team>>emptyMap();
     }
 
-    public List<Pair<Integer, Team>> getGroupedTeamsForClazz(Clazz clazz) {
+    public List<TeamGroupPosition> getTeamGroupPositionsForClazz(Clazz clazz) {
         int group = 0;
         int operator = 1;
         int numberOfGroups = getNumberOfGroupsForClazz(clazz);
-        List<Pair<Integer, Team>> groupedTeams = new ArrayList<>(getMaxNumberOfTeamsForClazz(clazz));
+        List<TeamGroupPosition> teamGroupPositions = new ArrayList<>(getMaxNumberOfTeamsForClazz(clazz));
 
-        for (Team team : getSeededTeams().get(clazz)) {
+        for (Team team : getSeededTeamsForClazz(clazz)) {
             group += operator;
             if (group == (numberOfGroups + 1)) {
                 group = numberOfGroups;
@@ -148,10 +142,10 @@ public class Tournament implements Serializable {
                 group = 1;
                 operator = 1;
             }
-            groupedTeams.add(Pair.create(group, team));
+            teamGroupPositions.add(new TeamGroupPosition(group, team));
         }
 
-        return groupedTeams;
+        return teamGroupPositions;
     }
 
     public void setMaxNumberOfTeams(Map<Clazz, Integer> maxNumberOfTeams) {
@@ -230,6 +224,16 @@ public class Tournament implements Serializable {
                 default:
                     return ENTRY_POINTS_COMPARATOR;
             }
+        }
+    }
+
+    public static class TeamGroupPosition {
+        public final int group;
+        public final Team team;
+
+        public TeamGroupPosition(int group, Team team) {
+            this.group = group;
+            this.team = team;
         }
     }
 }

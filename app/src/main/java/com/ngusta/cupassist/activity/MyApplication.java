@@ -1,6 +1,7 @@
 package com.ngusta.cupassist.activity;
 
 import android.app.Application;
+import android.util.Pair;
 import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Team;
@@ -44,20 +45,10 @@ public class MyApplication extends Application {
                 System.out.println("\n" + tournament);
                 tournamentListCache.getTeams(tournament, players);
 
-                for (Clazz clazz : tournament.getSeededTeams().keySet()) {
-                    int group = 0;
-                    int operator = 1;
-                    int numberOfGroups = tournament.getNumberOfGroupsForClazz(clazz);
-
-                    for (Team team : tournament.getSeededTeams().get(clazz)) {
-                        group += operator;
-                        if (group == (numberOfGroups + 1)) {
-                            group = numberOfGroups;
-                            operator = -1;
-                        } else if (group == 0) {
-                            group = 1;
-                            operator = 1;
-                        }
+                for (Clazz clazz : tournament.getClazzes()) {
+                    for (Tournament.TeamGroupPosition groupTeamPair : tournament.getTeamGroupPositionsForClazz(clazz)) {
+                        int group = groupTeamPair.group;
+                        Team team = groupTeamPair.team;
                         System.out.println(group + " " + team.getPlayerA().getName() + " och " + team.getPlayerB().getName()
                                 + " entry: " + (team.getPlayerA().getEntryPoints() + team.getPlayerB().getEntryPoints()));
                     }

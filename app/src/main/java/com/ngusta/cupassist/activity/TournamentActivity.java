@@ -41,9 +41,9 @@ public class TournamentActivity extends Activity {
         adapter.setNotifyOnChange(false);
 
         for (Clazz clazz : tournament.getClazzes()) {
-            for (Pair<Integer, Team> groupedTeam : tournament.getGroupedTeamsForClazz(clazz)) {
-                Team team = groupedTeam.second;
-                adapter.add(String.format("%s. %s (%d)", groupedTeam.first, team.getNames(), team.getEntryPoints()));
+            for (Tournament.TeamGroupPosition position : tournament.getTeamGroupPositionsForClazz(clazz)) {
+                Team team = position.team;
+                adapter.add(String.format("%s. %s (%d)", position.group, team.getNames(), team.getEntryPoints()));
             }
         }
 
