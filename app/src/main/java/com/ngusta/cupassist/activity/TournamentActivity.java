@@ -27,7 +27,7 @@ public class TournamentActivity extends Activity {
     }
 
     private void initLayout() {
-        ((TextView) findViewById(R.id.name)).setText(tournament.getName());
+        getActionBar().setTitle(tournament.getName());
         ((TextView) findViewById(R.id.level)).setText(tournament.getLevelString());
         ((TextView) findViewById(R.id.classes)).setText(tournament.getClassesWithMaxNumberOfTeamsString());
         ((TextView) findViewById(R.id.club)).setText(tournament.getClub());

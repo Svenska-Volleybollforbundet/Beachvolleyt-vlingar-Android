@@ -21,6 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.TournamentListActivity"/>
-        <activity android:name=".activity.TournamentActivity"/>
+        <activity
+            android:name=".activity.TournamentActivity"
+            android:parentActivityName=".activity.TournamentListActivity"/>
     </application>
 </manifest>
