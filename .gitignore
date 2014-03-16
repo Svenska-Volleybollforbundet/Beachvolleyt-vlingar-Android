@@ -39,6 +39,9 @@ proguard/
 .idea/dataSources.xml
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
+# unnecessary locally changing files:
+.idea/copyright/
+.idea/misc.xml
 
 ## File-based project format
 *.ipr
