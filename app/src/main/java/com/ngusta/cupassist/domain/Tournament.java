@@ -1,6 +1,7 @@
 package com.ngusta.cupassist.domain;
 
 import android.util.Log;
+import android.util.Pair;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -48,9 +49,10 @@ public class Tournament implements Serializable {
     }
 
     public Map<Clazz, List<Team>> getSeededTeams() {
+        Map<Clazz, List<Team>> teams = getTeams();
         Map<Clazz, List<Team>> seededTeams = new HashMap<>();
         for (Clazz clazz : teams.keySet()) {
-            seededTeams.put(clazz, new ArrayList<Team>(teams.get(clazz)));
+            seededTeams.put(clazz, new ArrayList<>(teams.get(clazz)));
         }
         for (Clazz clazz : seededTeams.keySet()) {
             List<Team> seeded = seededTeams.get(clazz);
@@ -94,6 +96,10 @@ public class Tournament implements Serializable {
         return levelString;
     }
 
+    public List<Clazz> getClazzes() {
+        return clazzes != null ? clazzes : Collections.<Clazz>emptyList();
+    }
+
     public String getRegistrationUrl() {
         return registrationUrl;
     }
@@ -124,7 +130,28 @@ public class Tournament implements Serializable {
     }
 
     public Map<Clazz, List<Team>> getTeams() {
-        return teams;
+        return teams != null ? teams : Collections.<Clazz, List<Team>>emptyMap();
+    }
+
+    public List<Pair<Integer, Team>> getGroupedTeamsForClazz(Clazz clazz) {
+        int group = 0;
+        int operator = 1;
+        int numberOfGroups = getNumberOfGroupsForClazz(clazz);
+        List<Pair<Integer, Team>> groupedTeams = new ArrayList<>(getMaxNumberOfTeamsForClazz(clazz));
+
+        for (Team team : getSeededTeams().get(clazz)) {
+            group += operator;
+            if (group == (numberOfGroups + 1)) {
+                group = numberOfGroups;
+                operator = -1;
+            } else if (group == 0) {
+                group = 1;
+                operator = 1;
+            }
+            groupedTeams.add(Pair.create(group, team));
+        }
+
+        return groupedTeams;
     }
 
     public void setMaxNumberOfTeams(Map<Clazz, Integer> maxNumberOfTeams) {
