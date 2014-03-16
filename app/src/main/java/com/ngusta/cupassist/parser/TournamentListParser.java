@@ -1,6 +1,9 @@
 package com.ngusta.cupassist.parser;
 
+import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.Tournament;
+import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -16,9 +19,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,7 +47,7 @@ public class TournamentListParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new ArrayList<Tournament>();
+        return new ArrayList<>();
     }
 
     private ArrayList<Tournament> buildTournamentList(Document document) throws XPathExpressionException, ParseException {
@@ -58,7 +59,7 @@ public class TournamentListParser {
         ArrayList<Tournament> tournaments = new ArrayList<Tournament>();
         int numberOfRows = nodeList.getLength() / 7;
         for (int row = 0; row < numberOfRows; row++) {
-            tournaments.add(createTournament(nodeList, 7*row));
+            tournaments.add(createTournament(nodeList, 7 * row));
         }
         return tournaments;
     }
@@ -86,5 +87,26 @@ public class TournamentListParser {
             return matcher.group(1);
         }
         return null;
+    }
+
+    public Map<Clazz, Integer> parseMaxNumberOfTeams(String source) {
+        org.jsoup.nodes.Document doc = Jsoup.parse(source);
+        Elements elements = doc.select("tr:has(td:contains(Klassdetaljer)) > td:nth-child(2) tr:gt(0) td:lt(2)");
+
+        Map<Clazz, Integer> maxNumberOfTeamsMap = new HashMap<>(2);
+        Iterator<org.jsoup.nodes.Element> iterator = elements.iterator();
+
+        while (iterator.hasNext()) {
+            org.jsoup.nodes.Element clazzElem = iterator.next();
+            org.jsoup.nodes.Element maxNumberOfTeamsElem = iterator.hasNext() ? iterator.next() : null;
+
+            if (maxNumberOfTeamsElem != null) {
+                Clazz clazz = Clazz.parse(clazzElem.text().trim());
+                int maxNumberOfTeams = Integer.parseInt(maxNumberOfTeamsElem.text().trim());
+                maxNumberOfTeamsMap.put(clazz, maxNumberOfTeams);
+            }
+        }
+
+        return maxNumberOfTeamsMap;
     }
 }

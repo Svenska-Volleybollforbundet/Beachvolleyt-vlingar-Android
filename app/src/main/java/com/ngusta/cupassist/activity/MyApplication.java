@@ -47,7 +47,7 @@ public class MyApplication extends Application {
                 for (Clazz clazz : tournament.getSeededTeams().keySet()) {
                     int group = 0;
                     int operator = 1;
-                    int numberOfGroups = tournament.getNumberOfGroups();
+                    int numberOfGroups = tournament.getNumberOfGroupsForClazz(clazz);
 
                     for (Team team : tournament.getSeededTeams().get(clazz)) {
                         group += operator;
