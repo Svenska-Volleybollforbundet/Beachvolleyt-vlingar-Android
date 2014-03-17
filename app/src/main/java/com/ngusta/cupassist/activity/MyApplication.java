@@ -1,7 +1,6 @@
 package com.ngusta.cupassist.activity;
 
 import android.app.Application;
-import android.util.Pair;
 import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Team;
@@ -18,19 +17,14 @@ public class MyApplication extends Application {
     public static final boolean CACHE_PLAYERS = true;
     public static final boolean CACHE_TOURNAMENTS = false;
 
-    private TournamentListCache tournamentListCache;
-    private static PlayerListCache playerListCache;
-
     @Override
     public void onCreate() {
         super.onCreate();
-        tournamentListCache = new TournamentListCache(this);
-        playerListCache = new PlayerListCache(this);
     }
 
     private static void desktopRun() {
         long start = System.currentTimeMillis();
-        playerListCache = new PlayerListCache();
+        PlayerListCache playerListCache = new PlayerListCache();
         Set<Player> players = playerListCache.getPlayers();
         System.out.println("Players loaded, took " + (System.currentTimeMillis() - start) + " ms");
 
@@ -56,14 +50,6 @@ public class MyApplication extends Application {
                 }
             }
         }
-    }
-
-    public TournamentListCache getTournamentListCache() {
-        return tournamentListCache;
-    }
-
-    public PlayerListCache getPlayerListCache() {
-        return playerListCache;
     }
 
     public static void main(String[] args) {
