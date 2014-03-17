@@ -2,7 +2,6 @@ package com.ngusta.cupassist.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Pair;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,7 +30,7 @@ public class TournamentActivity extends Activity {
         ((TextView) findViewById(R.id.level)).setText(tournament.getLevelString());
         ((TextView) findViewById(R.id.classes)).setText(tournament.getClassesWithMaxNumberOfTeamsString());
         ((TextView) findViewById(R.id.club)).setText(tournament.getClub());
-        ((TextView) findViewById(R.id.period)).setText(tournament.getPeriod());
+        ((TextView) findViewById(R.id.period)).setText(tournament.getCompetitionPeriod().getName());
         ((TextView) findViewById(R.id.start_date)).setText(tournament.getFormattedStartDate());
 
         ListView teamListView = (ListView) findViewById(R.id.teamList);

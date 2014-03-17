@@ -9,7 +9,7 @@ import java.util.*;
 public class Tournament implements Serializable {
     public static final String TAG = Tournament.class.getSimpleName();
     private Date startDate;
-    private String period;
+    private CompetitionPeriod competitionPeriod;
     private String club;
     private String name;
     private String url;
@@ -22,7 +22,7 @@ public class Tournament implements Serializable {
 
     public Tournament(Date startDate, String period, String club, String name, String url, String level, String clazzes) {
         this.startDate = startDate;
-        this.period = period;
+        this.competitionPeriod = CompetitionPeriod.findByName(period);
         this.club = club;
         this.name = name;
         this.url = url;
@@ -70,8 +70,8 @@ public class Tournament implements Serializable {
         }
     }
 
-    public String getPeriod() {
-        return period;
+    public CompetitionPeriod getCompetitionPeriod() {
+        return competitionPeriod;
     }
 
     public String getClub() {
@@ -166,7 +166,7 @@ public class Tournament implements Serializable {
     public String toString() {
         return "Tournament{" +
                 "startDate=" + getFormattedStartDate() +
-                ", period='" + period + '\'' +
+                ", period='" + competitionPeriod.getName() + '\'' +
                 ", club='" + club + '\'' +
                 ", name='" + name + '\'' +
                 ", url='" + url + '\'' +
