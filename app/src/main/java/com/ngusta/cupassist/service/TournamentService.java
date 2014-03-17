@@ -1,33 +1,41 @@
 package com.ngusta.cupassist.service;
 
 import android.content.Context;
+import com.ngusta.cupassist.domain.CompetitionPeriod;
 import com.ngusta.cupassist.domain.Tournament;
-import com.ngusta.cupassist.io.PlayerListCache;
 import com.ngusta.cupassist.io.TournamentListCache;
 
+import java.util.Date;
 import java.util.List;
 
 public class TournamentService {
 
     private TournamentListCache tournamentListCache;
-    private PlayerListCache playerListCache;
+    private PlayerService playerService;
 
     public TournamentService() {
         tournamentListCache = new TournamentListCache();
-        playerListCache = new PlayerListCache();
+        playerService = new PlayerService();
     }
 
     public TournamentService(Context context) {
         tournamentListCache = new TournamentListCache(context);
-        playerListCache = new PlayerListCache(context);
+        playerService = new PlayerService(context);
     }
 
 
-    public List<Tournament> getTournamentsFromCurrentCompetitionPeriod() {
-        return tournamentListCache.getTournaments();
+    public List<Tournament> getTournamentsFromCurrentCompetitionPeriodAndLater() {
+        CompetitionPeriod currentCompetitionPeriod = CompetitionPeriod.findPeriodByDate(new Date());
+        List<Tournament> allTournaments = tournamentListCache.getTournaments();
+        for (int i = 0; i < allTournaments.size(); i++) {
+            if (allTournaments.get(i).getCompetitionPeriod().equals(currentCompetitionPeriod)) {
+                return allTournaments.subList(i, allTournaments.size());
+            }
+        }
+        return allTournaments;
     }
 
     public void loadTournamentTeams(Tournament tournament) {
-        tournamentListCache.getTeams(tournament, playerListCache.getPlayers());
+        tournamentListCache.getTeams(tournament, playerService.getPlayers());
     }
 }

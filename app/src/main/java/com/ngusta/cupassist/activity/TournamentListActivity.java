@@ -34,7 +34,7 @@ public class TournamentListActivity extends Activity {
     private class RequestTournamentsTask extends AsyncTask<Void, String, List<Tournament>> {
         @Override
         protected List<Tournament> doInBackground(Void... voids) {
-            return new TournamentService(TournamentListActivity.this).getTournamentsFromCurrentCompetitionPeriod();
+            return new TournamentService(TournamentListActivity.this).getTournamentsFromCurrentCompetitionPeriodAndLater();
         }
 
         @Override
