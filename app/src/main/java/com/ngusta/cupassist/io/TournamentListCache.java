@@ -4,8 +4,7 @@ import android.content.Context;
 import com.ngusta.cupassist.activity.MyApplication;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Tournament;
-import com.ngusta.cupassist.net.AndroidSourceCodeRequester;
-import com.ngusta.cupassist.net.DesktopSourceCodeRequester;
+import com.ngusta.cupassist.net.JsoupSourceCodeRequester;
 import com.ngusta.cupassist.net.SourceCodeRequester;
 import com.ngusta.cupassist.parser.TournamentListParser;
 import com.ngusta.cupassist.parser.TournamentParser;
@@ -32,14 +31,14 @@ public class TournamentListCache extends Cache<Tournament> {
     public TournamentListCache() {
         tournamentListParser = new TournamentListParser();
         tournamentParser = new TournamentParser();
-        sourceCodeRequester = new DesktopSourceCodeRequester();
+        sourceCodeRequester = new JsoupSourceCodeRequester();
     }
 
     public TournamentListCache(Context context) {
         this.context = context;
         tournamentListParser = new TournamentListParser();
         tournamentParser = new TournamentParser();
-        sourceCodeRequester = new AndroidSourceCodeRequester();
+        sourceCodeRequester = new JsoupSourceCodeRequester();
     }
 
     public List<Tournament> getTournaments() {
@@ -64,20 +63,15 @@ public class TournamentListCache extends Cache<Tournament> {
     }
 
     public void getTeams(Tournament tournament, Set<Player> allPlayers) {
-        if (tournament.getRegistrationUrl() == null || (tournament.getTeams() != null && MyApplication.CACHE_TOURNAMENTS)) {
+        if (tournament.getRegistrationUrl() == null) {
+            throw new IllegalArgumentException("Missing registration URL for tournament: " + tournament);
+        }
+        if (tournament.getTeams() != null && MyApplication.CACHE_TOURNAMENTS) {
             return;
         }
         try {
             sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_URL + tournament.getRegistrationUrl());
-            String source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL)
-                    .replace("style='cursor:pointer'>", "style='cursor:pointer' />")
-                    .replace("</b></a></td>", "</a></b></td>")
-                    .replace("&nbsp;", "")
-                    .replace("onMouseOut='resetItalic(this.id)'>", "onMouseOut='resetItalic(this.id)' />")
-                    .replace("<b>Klubb", "<b>Klubb</b>")
-                    .replace("<b>Totalt", "<b>Totalt</b>")
-                    .replace("<b>Klass", "<b>Klass</b>")
-                    .replace("KFUM Gymnastik & IA Karskrona", "KFUM Gymnastik &amp; IA Karskrona");
+            String source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL);
             tournament.setTeams(tournamentParser.parseTeams(source, allPlayers));
             save(tournaments, FILE_NAME, context);
         } catch (IOException e) {

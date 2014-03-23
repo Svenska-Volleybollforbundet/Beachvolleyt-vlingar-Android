@@ -3,8 +3,7 @@ package com.ngusta.cupassist.io;
 import android.content.Context;
 import com.ngusta.cupassist.activity.MyApplication;
 import com.ngusta.cupassist.domain.Player;
-import com.ngusta.cupassist.net.AndroidSourceCodeRequester;
-import com.ngusta.cupassist.net.DesktopSourceCodeRequester;
+import com.ngusta.cupassist.net.JsoupSourceCodeRequester;
 import com.ngusta.cupassist.net.SourceCodeRequester;
 import com.ngusta.cupassist.parser.PlayerListParser;
 
@@ -26,12 +25,12 @@ public class PlayerListCache extends Cache<Player> {
     public PlayerListCache(Context context) {
         this.context = context;
         playerListParser = new PlayerListParser();
-        sourceCodeRequester = new AndroidSourceCodeRequester();
+        sourceCodeRequester = new JsoupSourceCodeRequester();
     }
 
     public PlayerListCache() {
         playerListParser = new PlayerListParser();
-        sourceCodeRequester = new DesktopSourceCodeRequester();
+        sourceCodeRequester = new JsoupSourceCodeRequester();
     }
 
     public Set<Player> getPlayers() {
