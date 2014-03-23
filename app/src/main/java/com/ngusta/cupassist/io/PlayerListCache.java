@@ -15,6 +15,8 @@ public class PlayerListCache extends Cache<Player> {
     private static final String FILE_NAME = "players";
     private static String CUP_ASSIST_PLAYERS_RANKING_BASE_URL = "http://www.cupassist.com/pa/ranking_beach/index.php";
     private static String CUP_ASSIST_PLAYERS_RANKING_MEN_URL = "http://www.cupassist.com/pa/ranking_beach/visrank.php?k=H";
+    private static String CUP_ASSIST_PLAYERS_RANKING_WOMEN_URL = "http://www.cupassist.com/pa/ranking_beach/visrank.php?k=D";
+    private static String CUP_ASSIST_PLAYERS_RANKING_MIXED_URL = "http://www.cupassist.com/pa/ranking_beach/visrank.php?k=M";
 
     private PlayerListParser playerListParser;
     private SourceCodeRequester sourceCodeRequester;
@@ -41,6 +43,7 @@ public class PlayerListCache extends Cache<Player> {
             try {
                 sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_BASE_URL);
                 players = playerListParser.parsePlayerList(sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_MEN_URL));
+                players.addAll(playerListParser.parsePlayerList(sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_WOMEN_URL)));
                 save(players, FILE_NAME, context);
             } catch (IOException e) {
                 e.printStackTrace();
