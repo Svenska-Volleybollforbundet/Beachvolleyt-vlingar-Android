@@ -1,11 +1,11 @@
 package com.ngusta.cupassist.io;
 
-import android.content.Context;
 import com.ngusta.cupassist.activity.MyApplication;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.net.JsoupSourceCodeRequester;
-import com.ngusta.cupassist.net.SourceCodeRequester;
 import com.ngusta.cupassist.parser.PlayerListParser;
+
+import android.content.Context;
 
 import java.io.IOException;
 import java.util.Set;
@@ -18,7 +18,9 @@ public class PlayerListCache extends Cache<Player> {
     private static String CUP_ASSIST_PLAYERS_RANKING_MIXED_URL = "http://www.cupassist.com/pa/ranking_beach/visrank.php?k=M";
 
     private PlayerListParser playerListParser;
-    private SourceCodeRequester sourceCodeRequester;
+
+    private JsoupSourceCodeRequester sourceCodeRequester;
+
     private Set<Player> players;
     private Context context;
 

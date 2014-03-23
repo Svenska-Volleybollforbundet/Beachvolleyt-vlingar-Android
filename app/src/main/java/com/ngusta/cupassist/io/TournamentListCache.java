@@ -1,13 +1,13 @@
 package com.ngusta.cupassist.io;
 
-import android.content.Context;
 import com.ngusta.cupassist.activity.MyApplication;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Tournament;
 import com.ngusta.cupassist.net.JsoupSourceCodeRequester;
-import com.ngusta.cupassist.net.SourceCodeRequester;
 import com.ngusta.cupassist.parser.TournamentListParser;
 import com.ngusta.cupassist.parser.TournamentParser;
+
+import android.content.Context;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,7 +26,8 @@ public class TournamentListCache extends Cache<Tournament> {
     private Context context;
     private TournamentListParser tournamentListParser;
     private TournamentParser tournamentParser;
-    private SourceCodeRequester sourceCodeRequester;
+
+    private JsoupSourceCodeRequester sourceCodeRequester;
 
     public TournamentListCache() {
         tournamentListParser = new TournamentListParser();
