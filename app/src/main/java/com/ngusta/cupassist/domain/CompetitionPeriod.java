@@ -29,8 +29,11 @@ public class CompetitionPeriod implements Serializable {
     };
 
     private int periodNumber;
+
     private String name;
+
     private Date startDate;
+
     private Date endDate;
 
     public CompetitionPeriod(int periodNumber, String name, String startDate, String endDate) {
@@ -61,15 +64,13 @@ public class CompetitionPeriod implements Serializable {
 
     public static CompetitionPeriod findPeriodByDate(Date date) {
         for (CompetitionPeriod competitionPeriod : COMPETITION_PERIODS) {
-            if (competitionPeriod.startDate.compareTo(date) <= 0 && competitionPeriod.endDate.compareTo(date) >= 0) {
+            if (competitionPeriod.startDate.compareTo(date) <= 0
+                    && competitionPeriod.endDate.compareTo(date) >= 0) {
                 return competitionPeriod;
             }
         }
-        throw new IllegalArgumentException("There is no competition period for the given date " + date.toString());
-    }
-
-    public int getPeriodNumber() {
-        return periodNumber;
+        throw new IllegalArgumentException(
+                "There is no competition period for the given date " + date.toString());
     }
 
     public String getName() {
@@ -78,7 +79,9 @@ public class CompetitionPeriod implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null) return false;
+        if (o == null) {
+            return false;
+        }
         return periodNumber == ((CompetitionPeriod) o).periodNumber;
     }
 
