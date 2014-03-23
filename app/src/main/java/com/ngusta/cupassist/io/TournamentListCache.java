@@ -3,7 +3,6 @@ package com.ngusta.cupassist.io;
 import com.ngusta.cupassist.activity.MyApplication;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Tournament;
-import com.ngusta.cupassist.net.JsoupSourceCodeRequester;
 import com.ngusta.cupassist.parser.TournamentListParser;
 import com.ngusta.cupassist.parser.TournamentParser;
 
@@ -27,19 +26,17 @@ public class TournamentListCache extends Cache<Tournament> {
     private TournamentListParser tournamentListParser;
     private TournamentParser tournamentParser;
 
-    private JsoupSourceCodeRequester sourceCodeRequester;
+    private SourceCodeRequester sourceCodeRequester;
+
+    public TournamentListCache(Context context) {
+        this();
+        this.context = context;
+    }
 
     public TournamentListCache() {
         tournamentListParser = new TournamentListParser();
         tournamentParser = new TournamentParser();
-        sourceCodeRequester = new JsoupSourceCodeRequester();
-    }
-
-    public TournamentListCache(Context context) {
-        this.context = context;
-        tournamentListParser = new TournamentListParser();
-        tournamentParser = new TournamentParser();
-        sourceCodeRequester = new JsoupSourceCodeRequester();
+        sourceCodeRequester = new SourceCodeRequester();
     }
 
     public List<Tournament> getTournaments() {

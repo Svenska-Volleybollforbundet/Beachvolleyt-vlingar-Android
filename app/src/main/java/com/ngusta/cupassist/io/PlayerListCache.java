@@ -2,7 +2,6 @@ package com.ngusta.cupassist.io;
 
 import com.ngusta.cupassist.activity.MyApplication;
 import com.ngusta.cupassist.domain.Player;
-import com.ngusta.cupassist.net.JsoupSourceCodeRequester;
 import com.ngusta.cupassist.parser.PlayerListParser;
 
 import android.content.Context;
@@ -19,20 +18,19 @@ public class PlayerListCache extends Cache<Player> {
 
     private PlayerListParser playerListParser;
 
-    private JsoupSourceCodeRequester sourceCodeRequester;
+    private SourceCodeRequester sourceCodeRequester;
 
     private Set<Player> players;
     private Context context;
 
     public PlayerListCache(Context context) {
+        this();
         this.context = context;
-        playerListParser = new PlayerListParser();
-        sourceCodeRequester = new JsoupSourceCodeRequester();
     }
 
     public PlayerListCache() {
         playerListParser = new PlayerListParser();
-        sourceCodeRequester = new JsoupSourceCodeRequester();
+        sourceCodeRequester = new SourceCodeRequester();
     }
 
     public Set<Player> getPlayers() {
