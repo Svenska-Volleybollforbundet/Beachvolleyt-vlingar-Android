@@ -1,72 +1,50 @@
 package com.ngusta.cupassist.parser;
 
 import com.ngusta.cupassist.domain.Player;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.*;
-import java.io.IOException;
-import java.io.StringReader;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class PlayerListParser {
+
     public Set<Player> parsePlayerList(String source) {
-        try {
-            source = source
-                    .replace("&", "&amp;")
-                    .replace("<br>", "<br/>")
-                    .replace("class='curpoint'", "")
-                    .replace("colspan=5", "colspan=\"5\"")
-                    .replace("</body>", "</p></body>");
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document htmlDocument = builder.parse(new InputSource(new StringReader(source)));
-            return buildPlayerList(htmlDocument);
-        } catch (ParserConfigurationException | IOException | XPathExpressionException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            System.out.println(source);
-            e.printStackTrace();
-        }
-        return new HashSet<>();
-    }
-
-    private Set<Player> buildPlayerList(Document document) throws XPathExpressionException {
-        XPathFactory xPathfactory = XPathFactory.newInstance();
-        XPath xpath = xPathfactory.newXPath();
-        XPathExpression expr = xpath.compile("//tr/td");
-        NodeList nodeList = (NodeList) expr.evaluate(document, XPathConstants.NODESET);
-
         Set<Player> players = new HashSet<>();
-        int startIndex = 6;
-        int numberOfRows = (nodeList.getLength() - startIndex - 1) / 5;
-        for (int row = 0; row < numberOfRows; row++) {
-            int i = startIndex + 5 * row;
-            if (nodeList.item(i).getTextContent().equals("Spelare utan licens")) {
-                startIndex++;
-                row--;
-                i = startIndex + 5 * row;
-                continue;
-            }
-            players.add(createPlayer(nodeList, i));
+        Document document = Jsoup.parse(source);
+        Elements tableRows = document.select("table:nth-of-type(1) tr:gt(0)");
+
+        if (tableRows.isEmpty()) {
+            return players;
         }
+
+        for (Element tableRow : tableRows) {
+            Player player = createPlayer(tableRow);
+            if (player != null) {
+                players.add(player);
+            }
+        }
+
         return players;
     }
 
-    private Player createPlayer(NodeList nodeList, int i) {
-        String rankString = nodeList.item(i).getTextContent();
+    private Player createPlayer(Element tableRow) {
+        if (tableRow.childNodeSize() < 5) {
+            System.err.println(String.format("Too few children (%d) in Player table row: %s",
+                    tableRow.childNodeSize(), tableRow.toString()));
+            return null;
+        }
+        String rankString = tableRow.child(0).text();
         Integer rank = !rankString.equals("&nbsp;") ? Integer.parseInt(rankString) : null;
-        String[] name = nodeList.item(i + 1).getTextContent().split(",");
+        String[] name = tableRow.child(1).text().split(",");
         String firstName = name[1].trim();
         String lastName = name[0].trim();
-        String club = nodeList.item(i + 2).getTextContent().trim();
-        int rankPoints = Integer.parseInt(nodeList.item(i + 3).getTextContent());
-        int entryPoints = Integer.parseInt(nodeList.item(i + 4).getTextContent());
+        String club = tableRow.child(2).text();
+        int rankPoints = Integer.parseInt(tableRow.child(3).text());
+        int entryPoints = Integer.parseInt(tableRow.child(4).text());
         return new Player(rank, firstName, lastName, club, rankPoints, entryPoints);
     }
 }

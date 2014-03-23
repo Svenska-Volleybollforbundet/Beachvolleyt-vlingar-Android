@@ -2,82 +2,54 @@ package com.ngusta.cupassist.parser;
 
 import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.Tournament;
-import org.jsoup.Jsoup;
-import org.jsoup.select.Elements;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.*;
-import java.io.IOException;
-import java.io.StringReader;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TournamentListParser {
 
-    private String REGEXP_PATTERN_FOR_REGISTRATION_URL = "pamelding/redirect.php\\?tknavn=(.*?)\", \"_blank\"";
+    private static final String REGEXP_PATTERN_FOR_REGISTRATION_URL = "pamelding/redirect.php\\?tknavn=(.*?)\", \"_blank\"";
 
-    public ArrayList<Tournament> parseTournamentList(String source) {
-        try {
-            source = source
-                    .replace("KFUM Gymnastik & IA Karskrona", "KFUM Gymnastik &amp; IA Karskrona")
-                    .replace("<br>", "<br/>");
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document htmlDocument = builder.parse(new InputSource(new StringReader(source)));
-            return buildTournamentList(htmlDocument);
-        } catch (XPathExpressionException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            System.out.println(source);
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public List<Tournament> parseTournamentList(String source) {
+        Document document = Jsoup.parse(source);
+        Elements tableRows = document.select("table tr[class]");
+        List<Tournament> tournaments = new ArrayList<>(tableRows.size());
+
+        for (Element tableRow : tableRows) {
+            try {
+                tournaments.add(createTournament(tableRow));
+            } catch (ParseException e) {
+                System.err.print("Failed to extract tournament from document: " + source);
+                e.printStackTrace();
+            }
         }
-        return new ArrayList<>();
-    }
 
-    private ArrayList<Tournament> buildTournamentList(Document document) throws XPathExpressionException, ParseException {
-        XPathFactory xPathfactory = XPathFactory.newInstance();
-        XPath xpath = xPathfactory.newXPath();
-        XPathExpression expr = xpath.compile("//tr[@class]/td");
-        NodeList nodeList = (NodeList) expr.evaluate(document, XPathConstants.NODESET);
-
-        ArrayList<Tournament> tournaments = new ArrayList<Tournament>();
-        int numberOfRows = nodeList.getLength() / 7;
-        for (int row = 0; row < numberOfRows; row++) {
-            tournaments.add(createTournament(nodeList, 7 * row));
-        }
         return tournaments;
     }
 
-    private Tournament createTournament(NodeList nodeList, int startIndex) throws ParseException {
-        Date startDate = new SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).parse(nodeList.item(startIndex).getTextContent());
-        String period = nodeList.item(startIndex + 2).getTextContent();
-        String club = nodeList.item(startIndex + 3).getTextContent();
-        String name = nodeList.item(startIndex + 4).getTextContent();
-        String url = getUrl(nodeList, startIndex + 4);
-        String level = nodeList.item(startIndex + 5).getTextContent();
-        String classes = nodeList.item(startIndex + 6).getTextContent();
+    private Tournament createTournament(Element tableRow) throws ParseException {
+        Date startDate = new SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).parse(tableRow.child(0).text());
+        String period = tableRow.child(2).text();
+        String club = tableRow.child(3).text();
+        String name = tableRow.child(4).text();
+        String url = tableRow.child(4).select("a[href]").attr("href");
+        String level = tableRow.child(5).text();
+        String classes = tableRow.child(6).text();
         return new Tournament(startDate, period, club, name, url, level, classes);
-    }
-
-    private String getUrl(NodeList nodeList, int urlIndex) {
-        Node anchor = nodeList.item(urlIndex).getChildNodes().item(0);
-        return anchor instanceof Element ? ((Element) anchor).getAttribute("href") : "";
     }
 
     public String parseRegistrationUrl(String source) {
@@ -90,19 +62,19 @@ public class TournamentListParser {
     }
 
     public Map<Clazz, Integer> parseMaxNumberOfTeams(String source) {
-        org.jsoup.nodes.Document doc = Jsoup.parse(source);
-        Elements elements = doc.select("tr:has(td:contains(Klassdetaljer)) > td:nth-child(2) tr:gt(0) td:lt(2)");
+        Document document = Jsoup.parse(source);
+        Elements elements = document.select("tr:has(td:contains(Klassdetaljer)) > td:nth-child(2) tr:gt(0) td:lt(2)");
 
         Map<Clazz, Integer> maxNumberOfTeamsMap = new HashMap<>(2);
-        Iterator<org.jsoup.nodes.Element> iterator = elements.iterator();
+        Iterator<Element> iterator = elements.iterator();
 
         while (iterator.hasNext()) {
-            org.jsoup.nodes.Element clazzElem = iterator.next();
-            org.jsoup.nodes.Element maxNumberOfTeamsElem = iterator.hasNext() ? iterator.next() : null;
+            Element clazzElem = iterator.next();
+            Element maxNumberOfTeamsElem = iterator.hasNext() ? iterator.next() : null;
 
             if (maxNumberOfTeamsElem != null) {
-                Clazz clazz = Clazz.parse(clazzElem.text().trim());
-                int maxNumberOfTeams = Integer.parseInt(maxNumberOfTeamsElem.text().trim());
+                Clazz clazz = Clazz.parse(clazzElem.text());
+                int maxNumberOfTeams = Integer.parseInt(maxNumberOfTeamsElem.text());
                 maxNumberOfTeamsMap.put(clazz, maxNumberOfTeams);
             }
         }
