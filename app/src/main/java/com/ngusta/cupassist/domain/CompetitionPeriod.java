@@ -44,7 +44,7 @@ public class CompetitionPeriod implements Serializable {
             calendar.set(Calendar.HOUR, 23);
             calendar.set(Calendar.MINUTE, 59);
             calendar.set(Calendar.SECOND, 59);
-            this.endDate = formatter.parse(endDate);
+            this.endDate = calendar.getTime();
 
         } catch (ParseException e) {
         }
