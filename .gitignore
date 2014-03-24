@@ -43,6 +43,7 @@ proguard/
 .idea/copyright/
 .idea/libraries/
 .idea/misc.xml
+.idea/.name
 
 ## File-based project format
 *.ipr
