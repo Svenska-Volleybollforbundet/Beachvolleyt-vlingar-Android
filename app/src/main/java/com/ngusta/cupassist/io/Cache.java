@@ -1,9 +1,16 @@
 package com.ngusta.cupassist.io;
 
-import android.content.Context;
 import com.ngusta.cupassist.activity.MyApplication;
 
-import java.io.*;
+import android.content.Context;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Collection;
 
 public abstract class Cache<T> {

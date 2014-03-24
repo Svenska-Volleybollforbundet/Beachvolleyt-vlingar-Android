@@ -1,17 +1,19 @@
 package com.ngusta.cupassist.activity;
 
+import com.google.gson.Gson;
+
+import com.ngusta.cupassist.R;
+import com.ngusta.cupassist.domain.Clazz;
+import com.ngusta.cupassist.domain.Team;
+import com.ngusta.cupassist.domain.Tournament;
+import com.ngusta.cupassist.service.TournamentService;
+
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.google.gson.Gson;
-import com.ngusta.cupassist.R;
-import com.ngusta.cupassist.domain.Clazz;
-import com.ngusta.cupassist.domain.Team;
-import com.ngusta.cupassist.domain.Tournament;
-import com.ngusta.cupassist.service.TournamentService;
 
 public class TournamentActivity extends Activity {
 
@@ -23,28 +25,30 @@ public class TournamentActivity extends Activity {
         setContentView(R.layout.tournament_view);
         Gson gson = new Gson();
         tournament = gson.fromJson(getIntent().getStringExtra("tournament"), Tournament.class);
-        initDetails();
-        new RequestTournamentTeamsTask().execute();
+        initInfo();
+        new RequestTournamentDetailsTask().execute();
     }
 
-    private void initDetails() {
+    private void initInfo() {
         getActionBar().setTitle(tournament.getName());
         ((TextView) findViewById(R.id.level)).setText(tournament.getLevelString());
-        ((TextView) findViewById(R.id.classes)).setText(tournament.getClassesWithMaxNumberOfTeamsString());
         ((TextView) findViewById(R.id.club)).setText(tournament.getClub());
         ((TextView) findViewById(R.id.period)).setText(tournament.getCompetitionPeriod().getName());
         ((TextView) findViewById(R.id.start_date)).setText(tournament.getFormattedStartDate());
     }
 
-    private class RequestTournamentTeamsTask extends AsyncTask<Void, String, Void> {
+    private class RequestTournamentDetailsTask extends AsyncTask<Void, String, Void> {
+
         @Override
         protected Void doInBackground(Void... voids) {
-            new TournamentService(TournamentActivity.this).loadTournamentTeams(tournament);
+            new TournamentService(TournamentActivity.this).loadTournamentDetails(tournament);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void voids) {
+            ((TextView) findViewById(R.id.classes))
+                    .setText(tournament.getClassesWithMaxNumberOfTeamsString());
             initTeams();
         }
     }

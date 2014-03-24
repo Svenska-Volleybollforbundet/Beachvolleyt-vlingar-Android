@@ -47,11 +47,6 @@ public class TournamentListCache extends Cache<Tournament> {
         if (tournaments == null) {
             try {
                 tournaments = tournamentListParser.parseTournamentList(sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL));
-                for (Tournament tournament : tournaments) {
-                    String source = sourceCodeRequester.getSourceCode(CUP_ASSIST_BASE_URL + "pa/" + tournament.getUrl());
-                    tournament.setRegistrationUrl(tournamentListParser.parseRegistrationUrl(source));
-                    tournament.setMaxNumberOfTeams(tournamentListParser.parseMaxNumberOfTeams(source));
-                }
                 save(tournaments, FILE_NAME, context);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -60,16 +55,22 @@ public class TournamentListCache extends Cache<Tournament> {
         return tournaments;
     }
 
-    public void getTeams(Tournament tournament, Set<Player> allPlayers) {
-        if (tournament.getRegistrationUrl() == null) {
-            throw new IllegalArgumentException("Missing registration URL for tournament: " + tournament);
-        }
+    public void getTournamentDetails(Tournament tournament, Set<Player> allPlayers) {
         if (tournament.getTeams() != null && MyApplication.CACHE_TOURNAMENTS) {
             return;
         }
         try {
+            String source = sourceCodeRequester
+                    .getSourceCode(CUP_ASSIST_BASE_URL + "pa/" + tournament.getUrl());
+            tournament.setRegistrationUrl(tournamentParser.parseRegistrationUrl(source));
+            tournament.setMaxNumberOfTeams(tournamentParser.parseMaxNumberOfTeams(source));
+
+            if (tournament.getRegistrationUrl() == null) {
+                throw new IllegalArgumentException(
+                        "Missing registration URL for tournament: " + tournament);
+            }
             sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_URL + tournament.getRegistrationUrl());
-            String source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL);
+            source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL);
             tournament.setTeams(tournamentParser.parseTeams(source, allPlayers));
             save(tournaments, FILE_NAME, context);
         } catch (IOException e) {
