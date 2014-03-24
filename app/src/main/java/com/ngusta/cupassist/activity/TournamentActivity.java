@@ -3,7 +3,6 @@ package com.ngusta.cupassist.activity;
 import com.google.gson.Gson;
 
 import com.ngusta.cupassist.R;
-import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.Team;
 import com.ngusta.cupassist.domain.Tournament;
 import com.ngusta.cupassist.service.TournamentService;
@@ -58,7 +57,7 @@ public class TournamentActivity extends Activity {
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         teamListView.setAdapter(adapter);
         adapter.setNotifyOnChange(false);
-        for (Clazz clazz : tournament.getClazzes()) {
+        for (Tournament.TournamentClazz clazz : tournament.getClazzes()) {
             for (Tournament.TeamGroupPosition position : tournament.getTeamGroupPositionsForClazz(clazz)) {
                 Team team = position.team;
                 adapter.add(String.format("%s. %s (%d)", position.group, team.getNames(), team.getEntryPoints()));

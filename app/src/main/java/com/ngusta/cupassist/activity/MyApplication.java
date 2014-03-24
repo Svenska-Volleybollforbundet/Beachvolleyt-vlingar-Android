@@ -1,6 +1,5 @@
 package com.ngusta.cupassist.activity;
 
-import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Team;
 import com.ngusta.cupassist.domain.Tournament;
@@ -43,7 +42,7 @@ public class MyApplication extends Application {
                 System.out.println("\n" + tournament);
                 tournamentListCache.getTournamentDetails(tournament, players);
 
-                for (Clazz clazz : tournament.getClazzes()) {
+                for (Tournament.TournamentClazz clazz : tournament.getClazzes()) {
                     for (Tournament.TeamGroupPosition groupTeamPair : tournament
                             .getTeamGroupPositionsForClazz(clazz)) {
                         int group = groupTeamPair.group;

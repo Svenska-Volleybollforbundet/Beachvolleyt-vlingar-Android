@@ -93,7 +93,8 @@ public class TournamentParser {
         return playerName;
     }
 
-    private Player findPlayer(Map<String, Player> allPlayers, String playerFirstName, String playerLastName, String playerClub) {
+    private Player findPlayer(Map<String, Player> allPlayers, String playerFirstName,
+            String playerLastName, String playerClub) {
         Player newPlayer = new Player(playerFirstName, playerLastName, playerClub);
         if (allPlayers.containsKey(newPlayer.getNameAndClub())) {
             return allPlayers.get(newPlayer.getNameAndClub());
@@ -128,7 +129,6 @@ public class TournamentParser {
                 maxNumberOfTeamsMap.put(clazz, maxNumberOfTeams);
             }
         }
-
         return maxNumberOfTeamsMap;
     }
 }

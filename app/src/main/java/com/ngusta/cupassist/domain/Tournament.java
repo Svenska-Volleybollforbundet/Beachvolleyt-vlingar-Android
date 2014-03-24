@@ -4,7 +4,13 @@ import android.util.Log;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Tournament implements Serializable {
     public static final String TAG = Tournament.class.getSimpleName();
@@ -15,9 +21,10 @@ public class Tournament implements Serializable {
     private String url;
     private Level level;
     private String levelString;
-    private List<Clazz> clazzes;
+
+    private List<TournamentClazz> clazzes;
+
     private String registrationUrl;
-    private Map<Clazz, Integer> maxNumberOfTeams;
     private Map<Clazz, List<Team>> teams;
 
     public Tournament(Date startDate, String period, String club, String name, String url, String level, String clazzes) {
@@ -31,12 +38,12 @@ public class Tournament implements Serializable {
         this.clazzes = parseClazzes(clazzes);
     }
 
-    private List<Clazz> parseClazzes(String clazzes) {
-        ArrayList<Clazz> parsedClazzes = new ArrayList<>();
+    private List<TournamentClazz> parseClazzes(String clazzes) {
+        ArrayList<TournamentClazz> parsedClazzes = new ArrayList<>();
         if (clazzes != null) {
             String[] clazzArray = clazzes.split(", ");
             for (String clazzString : clazzArray) {
-                parsedClazzes.add(Clazz.parse(clazzString));
+                parsedClazzes.add(new TournamentClazz(Clazz.parse(clazzString)));
             }
         }
         return parsedClazzes;
@@ -47,26 +54,24 @@ public class Tournament implements Serializable {
         return simpleDateFormat.format(startDate);
     }
 
-    public List<Team> getSeededTeamsForClazz(Clazz clazz) {
-        if (getTeams().get(clazz) == null) {
+    public List<Team> getSeededTeamsForClazz(TournamentClazz clazz) {
+        if (getTeams().get(clazz.getClazz()) == null) {
             return Collections.emptyList();
         }
-        List<Team> seeded = getTeams().get(clazz);
+        List<Team> seeded = getTeams().get(clazz.getClazz());
         Collections.sort(seeded, level.getComparator());
-        int maxNumberOfTeams = getMaxNumberOfTeamsForClazz(clazz);
-        if (seeded.size() > maxNumberOfTeams) {
-            seeded = seeded.subList(0, maxNumberOfTeams);
+        if (seeded.size() > clazz.getMaxNumberOfTeams()) {
+            seeded = seeded.subList(0, clazz.getMaxNumberOfTeams());
         }
         Collections.sort(seeded);
         return seeded;
     }
 
-    public int getNumberOfGroupsForClazz(Clazz clazz) {
-        int maxNumberOfTeams = getMaxNumberOfTeamsForClazz(clazz);
-        if (maxNumberOfTeams == 12) {
+    private int getNumberOfGroupsForClazz(TournamentClazz clazz) {
+        if (clazz.getMaxNumberOfTeams() == 12) {
             return 4;
         } else {
-            return maxNumberOfTeams / 4;
+            return clazz.getMaxNumberOfTeams() / 4;
         }
     }
 
@@ -90,33 +95,23 @@ public class Tournament implements Serializable {
         return levelString;
     }
 
-    public List<Clazz> getClazzes() {
-        return clazzes != null ? clazzes : Collections.<Clazz>emptyList();
+    public List<TournamentClazz> getClazzes() {
+        return clazzes != null ? clazzes : Collections.<TournamentClazz>emptyList();
     }
 
     public String getRegistrationUrl() {
         return registrationUrl;
     }
 
-    public int getMaxNumberOfTeamsForClazz(Clazz clazz) {
-        if (maxNumberOfTeams.containsKey(clazz)) {
-            return maxNumberOfTeams.get(clazz);
-        } else {
-            int guess = this.level == Level.OPEN ? 16 : 12;
-            Log.i(TAG, String.format("Guessing number of teams in '%s' for clazz %s: %d", name, clazz, guess));
-            return guess;
-        }
-    }
-
     public String getClassesWithMaxNumberOfTeamsString() {
         if (getClazzes().isEmpty()) {
             return "[]";
         }
-        StringBuilder sb = new StringBuilder("[");
-        for (Clazz clazz : getClazzes()) {
-            sb.append(clazz.toString()).append("(").append(getMaxNumberOfTeamsForClazz(clazz)).append(")").append(", ");
+        String str = "[";
+        for (TournamentClazz clazz : getClazzes()) {
+            str = str + clazz.getClazz() + "(" + clazz.getMaxNumberOfTeams() + "), ";
         }
-        return sb.delete(sb.length() - 2, sb.length()).append("]").toString();
+        return str.substring(0, str.length() - 2) + "]";
     }
 
     public void setRegistrationUrl(String registrationUrl) {
@@ -127,12 +122,11 @@ public class Tournament implements Serializable {
         return teams != null ? teams : Collections.<Clazz, List<Team>>emptyMap();
     }
 
-    public List<TeamGroupPosition> getTeamGroupPositionsForClazz(Clazz clazz) {
+    public List<TeamGroupPosition> getTeamGroupPositionsForClazz(TournamentClazz clazz) {
         int group = 0;
         int operator = 1;
         int numberOfGroups = getNumberOfGroupsForClazz(clazz);
-        List<TeamGroupPosition> teamGroupPositions = new ArrayList<>(getMaxNumberOfTeamsForClazz(clazz));
-
+        List<TeamGroupPosition> teamGroupPositions = new ArrayList<>(clazz.getMaxNumberOfTeams());
         for (Team team : getSeededTeamsForClazz(clazz)) {
             group += operator;
             if (group == (numberOfGroups + 1)) {
@@ -149,7 +143,10 @@ public class Tournament implements Serializable {
     }
 
     public void setMaxNumberOfTeams(Map<Clazz, Integer> maxNumberOfTeams) {
-        this.maxNumberOfTeams = new HashMap<>(maxNumberOfTeams);
+        clazzes.clear();
+        for (Clazz clazz : maxNumberOfTeams.keySet()) {
+            clazzes.add(new TournamentClazz(clazz, maxNumberOfTeams.get(clazz)));
+        }
     }
 
     public void setTeams(List<Team> teamList) {
@@ -234,6 +231,41 @@ public class Tournament implements Serializable {
         public TeamGroupPosition(int group, Team team) {
             this.group = group;
             this.team = team;
+        }
+    }
+
+    public class TournamentClazz {
+
+        private Clazz clazz;
+
+        private Integer maxNumberOfTeams;
+
+        TournamentClazz(Clazz clazz) {
+            this.clazz = clazz;
+        }
+
+        public TournamentClazz(Clazz clazz, Integer maxNumberOfTeams) {
+            this.clazz = clazz;
+            this.maxNumberOfTeams = maxNumberOfTeams;
+        }
+
+        public Clazz getClazz() {
+            return clazz;
+        }
+
+        public Integer getMaxNumberOfTeams() {
+            if (maxNumberOfTeams != null) {
+                return maxNumberOfTeams;
+            } else {
+                int guess = level == Level.OPEN ? 16 : 12;
+                Log.i(TAG, String.format("Guessing number of teams in '%s' for clazz %s: %d", name,
+                        clazz, guess));
+                return guess;
+            }
+        }
+
+        public void setMaxNumberOfTeams(Integer maxNumberOfTeams) {
+            this.maxNumberOfTeams = maxNumberOfTeams;
         }
     }
 }

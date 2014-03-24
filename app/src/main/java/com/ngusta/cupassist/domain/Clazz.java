@@ -1,7 +1,21 @@
 package com.ngusta.cupassist.domain;
 
 public enum Clazz {
-    MEN, WOMEN, MIXED, U13F, U13P, U15F, U15P, U17F, U17P, U19F, U19P, U21F, U21P, V35D, V35H, V40D, V40H, V45D, V45H, V55D, V55H, UNKNOWN;
+    MEN("H"), WOMEN("D"), MIXED("M"), U13F("U13 F"), U13P("U13 P"), U15F("U15 F"), U15P("U15 P"),
+    U17F("U17 F"), U17P("U17 P"), U19F("U19 F"), U19P("U19 P"), U21F("U21 F"), U21P("U21 P"),
+    V35D("V35+ D"), V35H("V35+ H"), V40D("V40+ D"), V40H("V40+ H"), V45D("V45+ D"), V45H("V45+ H"),
+    V55D("V55+ D"), V55H("V55+ H"), UNKNOWN("Unknown");
+
+    private final String clazzString;
+
+    private Clazz(String clazzString) {
+        this.clazzString = clazzString;
+    }
+
+    @Override
+    public String toString() {
+        return clazzString;
+    }
 
     public static Clazz parse(String clazzString) {
         switch (clazzString) {
