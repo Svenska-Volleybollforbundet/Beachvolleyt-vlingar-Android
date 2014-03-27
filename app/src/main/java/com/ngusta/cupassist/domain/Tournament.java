@@ -13,21 +13,31 @@ import java.util.List;
 import java.util.Map;
 
 public class Tournament implements Serializable {
+
     public static final String TAG = Tournament.class.getSimpleName();
+
     private Date startDate;
+
     private CompetitionPeriod competitionPeriod;
+
     private String club;
+
     private String name;
+
     private String url;
+
     private Level level;
+
     private String levelString;
 
     private List<TournamentClazz> clazzes;
 
     private String registrationUrl;
+
     private Map<Clazz, List<Team>> teams;
 
-    public Tournament(Date startDate, String period, String club, String name, String url, String level, String clazzes) {
+    public Tournament(Date startDate, String period, String club, String name, String url,
+            String level, String clazzes) {
         this.startDate = startDate;
         this.competitionPeriod = CompetitionPeriod.findByName(period);
         this.club = club;
@@ -176,7 +186,8 @@ public class Tournament implements Serializable {
     public enum Level {
         OPEN, OPEN_GREEN, CHALLENGER, SWEDISH_BEACH_TOUR, YOUTH, VETERAN, UNKNOWN;
 
-        private static final Comparator<Team> REGISTRATION_TIME_COMPARATOR = new Comparator<Team>() {
+        private static final Comparator<Team> REGISTRATION_TIME_COMPARATOR
+                = new Comparator<Team>() {
             @Override
             public int compare(Team lhs, Team rhs) {
                 if (lhs.getRegistrationTime() == null) {
@@ -207,7 +218,8 @@ public class Tournament implements Serializable {
                 return SWEDISH_BEACH_TOUR;
             } else if (levelString.contains("Veteran")) {
                 return VETERAN;
-            } else if (levelString.contains("Ungdom") || levelString.contains("3-beach") || levelString.contains("Kidsvolley")) {
+            } else if (levelString.contains("Ungdom") || levelString.contains("3-beach")
+                    || levelString.contains("Kidsvolley")) {
                 return YOUTH;
             }
             return UNKNOWN;
@@ -225,7 +237,9 @@ public class Tournament implements Serializable {
     }
 
     public static class TeamGroupPosition {
+
         public final int group;
+
         public final Team team;
 
         public TeamGroupPosition(int group, Team team) {
@@ -262,10 +276,6 @@ public class Tournament implements Serializable {
                         clazz, guess));
                 return guess;
             }
-        }
-
-        public void setMaxNumberOfTeams(Integer maxNumberOfTeams) {
-            this.maxNumberOfTeams = maxNumberOfTeams;
         }
     }
 }
