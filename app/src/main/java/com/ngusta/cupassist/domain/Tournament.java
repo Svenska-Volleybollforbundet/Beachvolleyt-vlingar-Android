@@ -95,6 +95,10 @@ public class Tournament implements Serializable {
         return url;
     }
 
+    public Level getLevel() {
+        return level;
+    }
+
     public String getLevelString() {
         return levelString;
     }
