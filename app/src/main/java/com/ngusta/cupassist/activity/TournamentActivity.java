@@ -8,6 +8,8 @@ import com.ngusta.cupassist.domain.Tournament;
 import com.ngusta.cupassist.service.TournamentService;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -17,6 +19,13 @@ import android.widget.TextView;
 public class TournamentActivity extends Activity {
 
     private Tournament tournament;
+
+    public static void startActivity(Context context, Tournament tournament) {
+        Intent intent = new Intent(context, TournamentActivity.class);
+        String json = new Gson().toJson(tournament);
+        intent.putExtra("tournament", json);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
