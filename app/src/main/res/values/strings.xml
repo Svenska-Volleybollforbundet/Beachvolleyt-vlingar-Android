@@ -6,4 +6,5 @@
     <string name="title_period">Period:</string>
     <string name="title_start_date">Startdatum:</string>
     <string name="title_classes">Klasser:</string>
+    <string name="level_content_description">Nivå</string>
 </resources>

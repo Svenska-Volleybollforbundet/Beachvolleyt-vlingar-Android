@@ -59,6 +59,10 @@ public class Tournament implements Serializable {
         return parsedClazzes;
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
+
     public String getFormattedStartDate() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return simpleDateFormat.format(startDate);
@@ -99,6 +103,10 @@ public class Tournament implements Serializable {
 
     public String getUrl() {
         return url;
+    }
+
+    public Level getLevel() {
+        return level;
     }
 
     public String getLevelString() {
@@ -248,7 +256,7 @@ public class Tournament implements Serializable {
         }
     }
 
-    public class TournamentClazz {
+    public class TournamentClazz implements Serializable {
 
         private Clazz clazz;
 
