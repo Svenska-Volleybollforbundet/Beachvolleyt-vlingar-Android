@@ -234,7 +234,7 @@ public class Tournament implements Serializable {
         }
     }
 
-    public class TournamentClazz {
+    public class TournamentClazz implements Serializable {
 
         private Clazz clazz;
 
