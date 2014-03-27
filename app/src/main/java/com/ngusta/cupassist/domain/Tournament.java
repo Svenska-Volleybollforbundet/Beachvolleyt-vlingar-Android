@@ -49,6 +49,10 @@ public class Tournament implements Serializable {
         return parsedClazzes;
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
+
     public String getFormattedStartDate() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return simpleDateFormat.format(startDate);
