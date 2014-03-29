@@ -143,9 +143,10 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
 
     @Override
     public Object[] getSections() {
-        CompetitionPeriod[] sections = new CompetitionPeriod[mSections.length];
+        int sectionsLength = mSections.length;
+        CompetitionPeriod[] sections = new CompetitionPeriod[sectionsLength];
 
-        for (int i = 0; i < mSections.length; i++) {
+        for (int i = 0; i < sectionsLength; i++) {
             int periodNumber = getSectionForPosition(mSections[i]) + 1;
             sections[i] = CompetitionPeriod.findPeriodByNumber(periodNumber);
         }
@@ -160,17 +161,22 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
 
     @Override
     public int getSectionForPosition(int position) {
-        // TODO binary search
-        for (int i = mSections.length - 1; i >= 0; i--) {
-            Integer sectionIndex = mSections[i];
-            if (sectionIndex != null && sectionIndex <= position) {
-                return i;
+        int start = 0;
+        int end = mSections.length;
+        int diff = end - start;
+        while (diff > 1) {
+            int mid = start + (diff / 2);
+            if (mSections[mid] > position) {
+                end = mid;
+            } else {
+                start = mid;
             }
+            diff = end - start;
         }
-        throw new RuntimeException("Could not find section for position " + position);
+        return start;
     }
 
-    private Integer[] calculateSections(List<Tournament> tournaments) {
+    private static Integer[] calculateSections(List<Tournament> tournaments) {
         // Assuming tournaments are sorted by competition period in ascending order.
         Integer[] sections = new Integer[CompetitionPeriod.COMPETITION_PERIODS.length];
         int listIndex;
