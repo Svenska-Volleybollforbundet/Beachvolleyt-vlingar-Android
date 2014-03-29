@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
+/*
+ * Changes:
+ * - Import BuildConfig from this project instead.
+ */
+
 package com.hb.views;
+
+import com.ngusta.cupassist.BuildConfig;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -36,8 +43,6 @@ import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SectionIndexer;
-
-import com.hb.views.pinnedsection.BuildConfig;
 
 /**
  * ListView, which is capable to pin section views at its top while the rest is still scrolled.

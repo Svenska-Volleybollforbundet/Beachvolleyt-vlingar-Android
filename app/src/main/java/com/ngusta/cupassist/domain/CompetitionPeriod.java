@@ -73,8 +73,29 @@ public class CompetitionPeriod implements Serializable {
                 "There is no competition period for the given date " + date.toString());
     }
 
+    public static CompetitionPeriod findPeriodByNumber(int periodNumber) {
+        return COMPETITION_PERIODS[periodNumber - 1];
+    }
+
+    public int getPeriodNumber() {
+        return periodNumber;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public boolean isCurrent() {
+        Date now = new Date();
+        return startDate.before(now) && endDate.after(now);
     }
 
     @Override
@@ -88,5 +109,10 @@ public class CompetitionPeriod implements Serializable {
     @Override
     public int hashCode() {
         return periodNumber;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }
