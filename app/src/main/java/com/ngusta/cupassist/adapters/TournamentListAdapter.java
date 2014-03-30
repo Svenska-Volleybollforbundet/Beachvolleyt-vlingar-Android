@@ -80,10 +80,7 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
         holder.levelClazzIndicator.setBackgroundResource(
                 getLevelIndicatorResource(tournament.getLevel()));
 
-        LinearLayout topRow = (LinearLayout) holder.levelClazzIndicator.getChildAt(0);
-        LinearLayout bottomRow = (LinearLayout) holder.levelClazzIndicator.getChildAt(1);
-
-        boolean women = false, men = false, young = false, mixed = false, veteran = false;
+        boolean women = false, men = false, youth = false, mixed = false, veteran = false;
 
         for (Tournament.TournamentClazz tournamentClazz : tournament.getClazzes()) {
             String initialLetter = tournamentClazz.getClazz().getInitialLetter();
@@ -92,7 +89,7 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
             } else if (Clazz.MEN.getInitialLetter().equals(initialLetter)) {
                 men = true;
             } else if (Clazz.U13F.getInitialLetter().equals(initialLetter)) {
-                young = true;
+                youth = true;
             } else if (Clazz.MIXED.getInitialLetter().equals(initialLetter)) {
                 mixed = true;
             } else if (Clazz.V35D.getInitialLetter().equals(initialLetter)) {
@@ -100,11 +97,11 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
             }
         }
 
-        topRow.getChildAt(0).setVisibility(women ? View.VISIBLE : View.INVISIBLE);
-        topRow.getChildAt(1).setVisibility(men ? View.VISIBLE : View.INVISIBLE);
-        bottomRow.getChildAt(0).setVisibility(young ? View.VISIBLE : View.INVISIBLE);
-        bottomRow.getChildAt(1).setVisibility(mixed ? View.VISIBLE : View.INVISIBLE);
-        bottomRow.getChildAt(2).setVisibility(veteran ? View.VISIBLE : View.INVISIBLE);
+        holder.clazzIndicatorWomen.setVisibility(women ? View.VISIBLE : View.INVISIBLE);
+        holder.clazzIndicatorMen.setVisibility(men ? View.VISIBLE : View.INVISIBLE);
+        holder.clazzIndicatorYouth.setVisibility(youth ? View.VISIBLE : View.INVISIBLE);
+        holder.clazzIndicatorMixed.setVisibility(mixed ? View.VISIBLE : View.INVISIBLE);
+        holder.clazzIndicatorVeteran.setVisibility(veteran ? View.VISIBLE : View.INVISIBLE);
 
         return view;
     }
@@ -268,6 +265,16 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
 
         final LinearLayout levelClazzIndicator;
 
+        final TextView clazzIndicatorWomen;
+
+        final TextView clazzIndicatorMen;
+
+        final TextView clazzIndicatorYouth;
+
+        final TextView clazzIndicatorMixed;
+
+        final TextView clazzIndicatorVeteran;
+
         final TextView name;
 
         final TextView club;
@@ -279,6 +286,21 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
             club = (TextView) view.findViewById(R.id.club);
             startDate = (TextView) view.findViewById(R.id.start_date);
             levelClazzIndicator = (LinearLayout) view.findViewById(R.id.level_clazz_indicator);
+            clazzIndicatorWomen = (TextView) levelClazzIndicator
+                    .findViewById(R.id.clazz_indicator_women);
+            clazzIndicatorMen = (TextView) levelClazzIndicator
+                    .findViewById(R.id.clazz_indicator_men);
+            clazzIndicatorYouth = (TextView) levelClazzIndicator
+                    .findViewById(R.id.clazz_indicator_youth);
+            clazzIndicatorMixed = (TextView) levelClazzIndicator
+                    .findViewById(R.id.clazz_indicator_mixed);
+            clazzIndicatorVeteran = (TextView) levelClazzIndicator
+                    .findViewById(R.id.clazz_indicator_veteran);
+            clazzIndicatorWomen.setText(Clazz.WOMEN.getInitialLetter());
+            clazzIndicatorMen.setText(Clazz.MEN.getInitialLetter());
+            clazzIndicatorYouth.setText(Clazz.U13F.getInitialLetter());
+            clazzIndicatorMixed.setText(Clazz.MIXED.getInitialLetter());
+            clazzIndicatorVeteran.setText(Clazz.V35D.getInitialLetter());
         }
     }
 
