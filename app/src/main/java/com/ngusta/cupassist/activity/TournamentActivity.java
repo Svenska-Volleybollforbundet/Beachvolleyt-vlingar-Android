@@ -18,12 +18,14 @@ import android.widget.TextView;
 
 public class TournamentActivity extends Activity {
 
+    public static final String TOURNAMENT_INTENT = "tournament";
+
     private Tournament tournament;
 
     public static void startActivity(Context context, Tournament tournament) {
         Intent intent = new Intent(context, TournamentActivity.class);
         String json = new Gson().toJson(tournament);
-        intent.putExtra("tournament", json);
+        intent.putExtra(TOURNAMENT_INTENT, json);
         context.startActivity(intent);
     }
 
