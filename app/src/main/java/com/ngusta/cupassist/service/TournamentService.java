@@ -25,15 +25,8 @@ public class TournamentService {
     }
 
 
-    public List<Tournament> getTournamentsFromCurrentCompetitionPeriodAndLater() {
-        CompetitionPeriod currentCompetitionPeriod = CompetitionPeriod.findPeriodByDate(new Date());
-        List<Tournament> allTournaments = tournamentListCache.getTournaments();
-        for (int i = 0; i < allTournaments.size(); i++) {
-            if (allTournaments.get(i).getCompetitionPeriod().equals(currentCompetitionPeriod)) {
-                return allTournaments.subList(i, allTournaments.size());
-            }
-        }
-        return allTournaments;
+    public List<Tournament> getAllTournaments() {
+        return tournamentListCache.getTournaments();
     }
 
     public void loadTournamentDetails(Tournament tournament) {
