@@ -3,18 +3,18 @@ package com.ngusta.cupassist.adapters;
 import com.hb.views.PinnedSectionListView;
 import com.ngusta.cupassist.BuildConfig;
 import com.ngusta.cupassist.R;
+import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.CompetitionPeriod;
 import com.ngusta.cupassist.domain.Tournament;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
@@ -77,9 +77,34 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
         holder.club.setText(tournament.getClub());
         holder.startDate.setText(
                 DateUtils.formatDateTime(getContext(), tournament.getStartDate().getTime(), 0));
-        ViewGroup.LayoutParams layoutParams = holder.levelIcon.getLayoutParams();
-        layoutParams.width = layoutParams.height = holder.name.getLineHeight();
-        holder.levelIcon.setImageDrawable(getLevelIconDrawableRes(tournament.getLevel()));
+        holder.levelClazzIndicator.setBackgroundResource(
+                getLevelIndicatorResource(tournament.getLevel()));
+
+        LinearLayout topRow = (LinearLayout) holder.levelClazzIndicator.getChildAt(0);
+        LinearLayout bottomRow = (LinearLayout) holder.levelClazzIndicator.getChildAt(1);
+
+        boolean women = false, men = false, young = false, mixed = false, veteran = false;
+
+        for (Tournament.TournamentClazz tournamentClazz : tournament.getClazzes()) {
+            String initialLetter = tournamentClazz.getClazz().getInitialLetter();
+            if (Clazz.WOMEN.getInitialLetter().equals(initialLetter)) {
+                women = true;
+            } else if (Clazz.MEN.getInitialLetter().equals(initialLetter)) {
+                men = true;
+            } else if (Clazz.U13F.getInitialLetter().equals(initialLetter)) {
+                young = true;
+            } else if (Clazz.MIXED.getInitialLetter().equals(initialLetter)) {
+                mixed = true;
+            } else if (Clazz.V35D.getInitialLetter().equals(initialLetter)) {
+                veteran = true;
+            }
+        }
+
+        topRow.getChildAt(0).setVisibility(women ? View.VISIBLE : View.INVISIBLE);
+        topRow.getChildAt(1).setVisibility(men ? View.VISIBLE : View.INVISIBLE);
+        bottomRow.getChildAt(0).setVisibility(young ? View.VISIBLE : View.INVISIBLE);
+        bottomRow.getChildAt(1).setVisibility(mixed ? View.VISIBLE : View.INVISIBLE);
+        bottomRow.getChildAt(2).setVisibility(veteran ? View.VISIBLE : View.INVISIBLE);
 
         return view;
     }
@@ -219,36 +244,29 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
         return sections;
     }
 
-    private Drawable getLevelIconDrawableRes(Tournament.Level level) {
-        int id;
+    private int getLevelIndicatorResource(Tournament.Level level) {
         switch (level) {
             case OPEN:
-                id = R.drawable.level_open;
-                break;
+                return R.drawable.level_open;
             case OPEN_GREEN:
-                id = R.drawable.level_open_green;
-                break;
+                return R.drawable.level_open_green;
             case CHALLENGER:
-                id = R.drawable.level_challenger;
-                break;
+                return R.drawable.level_challenger;
             case YOUTH:
-                id = R.drawable.level_youth;
-                break;
+                return R.drawable.level_youth;
             case VETERAN:
-                id = R.drawable.level_veteran;
-                break;
+                return R.drawable.level_veteran;
             case SWEDISH_BEACH_TOUR:
-                id = R.drawable.level_sbt;
-                break;
+                return R.drawable.level_sbt;
             case UNKNOWN:
             default:
-                id = R.drawable.level_unknown;
-                break;
+                return R.drawable.level_unknown;
         }
-        return getContext().getResources().getDrawable(id);
     }
 
     private static final class TournamentViewHolder {
+
+        final LinearLayout levelClazzIndicator;
 
         final TextView name;
 
@@ -256,13 +274,11 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
 
         final TextView startDate;
 
-        final ImageView levelIcon;
-
         private TournamentViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.name);
             club = (TextView) view.findViewById(R.id.club);
             startDate = (TextView) view.findViewById(R.id.start_date);
-            levelIcon = (ImageView) view.findViewById(R.id.level_icon);
+            levelClazzIndicator = (LinearLayout) view.findViewById(R.id.level_clazz_indicator);
         }
     }
 

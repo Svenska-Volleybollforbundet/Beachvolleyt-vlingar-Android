@@ -12,6 +12,10 @@ public enum Clazz {
         this.clazzString = clazzString;
     }
 
+    public String getInitialLetter() {
+        return clazzString.substring(0, 1);
+    }
+
     @Override
     public String toString() {
         return clazzString;

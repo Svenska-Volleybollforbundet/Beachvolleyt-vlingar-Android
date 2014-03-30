@@ -8,26 +8,94 @@
     android:paddingEnd="?android:listPreferredItemPaddingRight"
     android:paddingStart="?android:listPreferredItemPaddingLeft">
 
+    <LinearLayout
+        android:id="@+id/level_clazz_indicator"
+        android:layout_width="?android:attr/listPreferredItemHeightSmall"
+        android:layout_height="?android:attr/listPreferredItemHeightSmall"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dip"
+        android:divider="@android:drawable/divider_horizontal_bright"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:drawable/divider_horizontal_bright"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:showDividers="middle">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="D"
+                android:textColor="@android:color/background_light" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="H"
+                android:textColor="@android:color/background_light" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:drawable/divider_horizontal_bright"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:showDividers="middle">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="U"
+                android:textColor="@android:color/background_light" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="M"
+                android:textColor="@android:color/background_light" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="V"
+                android:textColor="@android:color/background_light" />
+        </LinearLayout>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dip"
-        android:layout_toStartOf="@+id/level_icon"
-        android:textAppearance="?android:attr/textAppearanceListItem" />
-
-    <ImageView
-        android:id="@id/level_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/name"
-        android:contentDescription="@string/level_content_description" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="4dip"
+        android:layout_toEndOf="@id/level_clazz_indicator"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/club"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/start_date"
         android:layout_alignStart="@id/name"
