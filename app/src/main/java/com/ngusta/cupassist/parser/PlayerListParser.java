@@ -15,7 +15,7 @@ public class PlayerListParser {
     public Set<Player> parsePlayerList(String source) {
         Set<Player> players = new HashSet<>();
         Document document = Jsoup.parse(source);
-        Elements tableRows = document.select("table:nth-of-type(1) tr:gt(0)");
+        Elements tableRows = document.select("table:nth-of-type(2) tr:gt(0)");
 
         if (tableRows.isEmpty()) {
             return players;
@@ -32,13 +32,11 @@ public class PlayerListParser {
     }
 
     private Player createPlayer(Element tableRow) {
-        if (tableRow.childNodeSize() < 5) {
-            System.err.println(String.format("Too few children (%d) in Player table row: %s",
-                    tableRow.childNodeSize(), tableRow.toString()));
+        if (isHeaderForPlayersWithoutLicense(tableRow)) {
             return null;
         }
         String rankString = tableRow.child(0).text();
-        Integer rank = !rankString.equals("&nbsp;") ? Integer.parseInt(rankString) : null;
+        Integer rank = !hasRanking(rankString) ? Integer.parseInt(rankString) : null;
         String[] name = tableRow.child(1).text().split(",");
         String firstName = name[1].trim();
         String lastName = name[0].trim();
@@ -46,5 +44,13 @@ public class PlayerListParser {
         int rankPoints = Integer.parseInt(tableRow.child(3).text());
         int entryPoints = Integer.parseInt(tableRow.child(4).text());
         return new Player(rank, firstName, lastName, club, rankPoints, entryPoints);
+    }
+
+    private boolean isHeaderForPlayersWithoutLicense(Element tableRow) {
+        return tableRow.childNodeSize() < 5;
+    }
+
+    private boolean hasRanking(String rankString) {
+        return rankString.length() == 1 && rankString.charAt(0) == 160;
     }
 }
