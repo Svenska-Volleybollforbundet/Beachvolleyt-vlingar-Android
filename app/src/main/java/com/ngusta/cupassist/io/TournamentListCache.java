@@ -49,7 +49,7 @@ public class TournamentListCache extends Cache<Tournament> {
         if (tournaments == null) {
             try {
                 tournaments = tournamentListParser.parseTournamentList(
-                        sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_2013_URL));
+                        sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL));
                 save(tournaments, FILE_NAME, context);
             } catch (IOException e) {
                 e.printStackTrace();
