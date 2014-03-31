@@ -11,27 +11,19 @@ public class Team implements Serializable, Comparable<Team> {
     private Date registrationTime;
     private Clazz clazz;
 
-    public Team(Player playerA, Player playerB, Date registrationTime, String clazz) {
+    public Team(Player playerA, Player playerB, Date registrationTime, Clazz clazz) {
         this.playerA = playerA;
         this.playerB = playerB;
         this.registrationTime = registrationTime;
-        this.clazz = Clazz.parse(clazz);
+        this.clazz = clazz;
     }
 
     public Player getPlayerA() {
         return playerA;
     }
 
-    public void setPlayerA(Player playerA) {
-        this.playerA = playerA;
-    }
-
     public Player getPlayerB() {
         return playerB;
-    }
-
-    public void setPlayerB(Player playerB) {
-        this.playerB = playerB;
     }
 
     public String getNames() {

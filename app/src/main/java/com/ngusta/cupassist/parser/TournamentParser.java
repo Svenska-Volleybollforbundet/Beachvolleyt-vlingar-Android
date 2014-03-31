@@ -26,7 +26,7 @@ public class TournamentParser {
     private static final String REGEXP_PATTERN_FOR_REGISTRATION_URL
             = "pamelding/redirect.php\\?tknavn=(.*?)\", \"_blank\"";
 
-    public List<Team> parseTeams(String source, Set<Player> allPlayers) {
+    public List<Team> parseTeams(String source, Map<Clazz, Set<Player>> allPlayers) {
         ArrayList<Team> teams = new ArrayList<Team>();
         Document document = Jsoup.parse(source);
         Elements tableRows = document.select("table:first-of-type tr:gt(0)");
@@ -35,13 +35,16 @@ public class TournamentParser {
             return teams;
         }
 
-        Map<String, Player> allPlayersMap = new HashMap<>();
-        for (Player player : allPlayers) {
-            allPlayersMap.put(player.getNameAndClub(), player);
+        Map<Clazz, Map<String, Player>> allPlayersMap = new HashMap<>();
+        for (Clazz clazz : allPlayers.keySet()) {
+            allPlayersMap.put(clazz, new HashMap<String, Player>());
+            for (Player player : allPlayers.get(clazz)) {
+                allPlayersMap.get(clazz).put(player.getNameAndClub(), player);
+            }
         }
 
         for (Element tableRow : tableRows) {
-            Team team = readTeamFromTableRow(allPlayersMap, tableRow);
+            Team team = readTeamFromTableRow(tableRow, allPlayersMap);
             if (team != null) {
                 teams.add(team);
             }
@@ -49,7 +52,8 @@ public class TournamentParser {
         return teams;
     }
 
-    private Team readTeamFromTableRow(Map<String, Player> allPlayersMap, Element tableRow) {
+    private Team readTeamFromTableRow(Element tableRow,
+            Map<Clazz, Map<String, Player>> allPlayersMap) {
         String[] names = tableRow.child(0).text().split("[,/]");
 
         if (names.length != 4) {
@@ -58,7 +62,7 @@ public class TournamentParser {
         }
 
         String club = tableRow.child(1).text();
-        String clazz = tableRow.child(2).text();
+        Clazz clazz = Clazz.parse(tableRow.child(2).text());
 
         Date registrationDate = null;
         try {
@@ -81,8 +85,10 @@ public class TournamentParser {
         String playerBLastName = names[2].trim();
         playerAFirstName = excludeParenthesisFromName(playerAFirstName);
         playerBFirstName = excludeParenthesisFromName(playerBFirstName);
-        Player playerA = findPlayer(allPlayersMap, playerAFirstName, playerALastName, playerAClub);
-        Player playerB = findPlayer(allPlayersMap, playerBFirstName, playerBLastName, playerBClub);
+        Player playerA = findPlayer(allPlayersMap, playerAFirstName, playerALastName, playerAClub,
+                clazz);
+        Player playerB = findPlayer(allPlayersMap, playerBFirstName, playerBLastName, playerBClub,
+                clazz);
         return new Team(playerA, playerB, registrationDate, clazz);
     }
 
@@ -93,11 +99,11 @@ public class TournamentParser {
         return playerName;
     }
 
-    private Player findPlayer(Map<String, Player> allPlayers, String playerFirstName,
-            String playerLastName, String playerClub) {
+    private Player findPlayer(Map<Clazz, Map<String, Player>> allPlayers, String playerFirstName,
+            String playerLastName, String playerClub, Clazz playerClazz) {
         Player newPlayer = new Player(playerFirstName, playerLastName, playerClub);
-        if (allPlayers.containsKey(newPlayer.getNameAndClub())) {
-            return allPlayers.get(newPlayer.getNameAndClub());
+        if (allPlayers.get(playerClazz).containsKey(newPlayer.getNameAndClub())) {
+            return allPlayers.get(playerClazz).get(newPlayer.getNameAndClub());
         }
         return newPlayer;
     }

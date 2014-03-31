@@ -11,11 +11,10 @@ import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Collection;
 
 public abstract class Cache<T> {
 
-    protected void save(Collection<T> object, String fileName, Context context) throws IOException {
+    protected void save(Object object, String fileName, Context context) throws IOException {
         FileOutputStream fileOutputStream;
         if (MyApplication.RUN_AS_ANDROID_APP) {
             File file = new File(context.getFilesDir(), fileName + ".data");
@@ -27,7 +26,7 @@ public abstract class Cache<T> {
         objectOutputStream.writeObject(object);
     }
 
-    protected Collection<T> load(String fileName, Context context) {
+    protected Object load(String fileName, Context context) {
         try {
             FileInputStream fileInputStream;
             if (MyApplication.RUN_AS_ANDROID_APP) {
@@ -37,7 +36,7 @@ public abstract class Cache<T> {
                 fileInputStream = new FileInputStream(fileName + ".data");
             }
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            return (Collection<T>) objectInputStream.readObject();
+            return objectInputStream.readObject();
         } catch (InvalidClassException e) {
             System.out.println("Couldn't use cache.");
         } catch (IOException | ClassNotFoundException e) {

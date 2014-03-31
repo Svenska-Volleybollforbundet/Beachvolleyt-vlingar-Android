@@ -1,9 +1,12 @@
 package com.ngusta.cupassist.service;
 
-import android.content.Context;
+import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.io.PlayerListCache;
 
+import android.content.Context;
+
+import java.util.Map;
 import java.util.Set;
 
 public class PlayerService {
@@ -18,7 +21,7 @@ public class PlayerService {
         playerListCache = new PlayerListCache(context);
     }
 
-    public Set<Player> getPlayers() {
+    public Map<Clazz, Set<Player>> getPlayers() {
         return playerListCache.getPlayers();
     }
 }

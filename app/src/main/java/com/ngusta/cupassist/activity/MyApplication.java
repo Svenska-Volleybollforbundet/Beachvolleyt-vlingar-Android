@@ -1,5 +1,6 @@
 package com.ngusta.cupassist.activity;
 
+import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Team;
 import com.ngusta.cupassist.domain.Tournament;
@@ -9,6 +10,7 @@ import com.ngusta.cupassist.io.TournamentListCache;
 import android.app.Application;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class MyApplication extends Application {
@@ -27,7 +29,7 @@ public class MyApplication extends Application {
     private static void desktopRun() {
         long start = System.currentTimeMillis();
         PlayerListCache playerListCache = new PlayerListCache();
-        Set<Player> players = playerListCache.getPlayers();
+        Map<Clazz, Set<Player>> players = playerListCache.getPlayers();
         System.out.println("Players loaded, took " + (System.currentTimeMillis() - start) + " ms");
 
         start = System.currentTimeMillis();
@@ -36,8 +38,7 @@ public class MyApplication extends Application {
         System.out.println(
                 "Tournaments loaded, took " + (System.currentTimeMillis() - start) + " ms");
         for (Tournament tournament : tournaments) {
-            if (tournament.getName().equals("Beachhallen Open I 2014") ||
-                    tournament.getName().equals("IKSU Beach Herrchallenger, v10")) {
+            if (tournament.getName().equals("Beachhallen Challenger II 2014")) {
 
                 System.out.println("\n" + tournament);
                 tournamentListCache.getTournamentDetails(tournament, players);

@@ -1,6 +1,7 @@
 package com.ngusta.cupassist.io;
 
 import com.ngusta.cupassist.activity.MyApplication;
+import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Tournament;
 import com.ngusta.cupassist.parser.TournamentListParser;
@@ -10,6 +11,7 @@ import android.content.Context;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class TournamentListCache extends Cache<Tournament> {
@@ -46,7 +48,8 @@ public class TournamentListCache extends Cache<Tournament> {
         tournaments = MyApplication.CACHE_TOURNAMENTS ? (List<Tournament>) load(FILE_NAME, context) : null;
         if (tournaments == null) {
             try {
-                tournaments = tournamentListParser.parseTournamentList(sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL));
+                tournaments = tournamentListParser.parseTournamentList(
+                        sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_2013_URL));
                 save(tournaments, FILE_NAME, context);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -55,7 +58,7 @@ public class TournamentListCache extends Cache<Tournament> {
         return tournaments;
     }
 
-    public void getTournamentDetails(Tournament tournament, Set<Player> allPlayers) {
+    public void getTournamentDetails(Tournament tournament, Map<Clazz, Set<Player>> allPlayers) {
         if (tournament.getTeams() != null && MyApplication.CACHE_TOURNAMENTS) {
             return;
         }
