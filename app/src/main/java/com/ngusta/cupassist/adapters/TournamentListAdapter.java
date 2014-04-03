@@ -75,10 +75,12 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
 
         holder.name.setText(tournament.getName());
         holder.club.setText(tournament.getClub());
-        holder.startDate.setText(
-                DateUtils.formatDateTime(getContext(), tournament.getStartDate().getTime(), 0));
-        holder.levelClazzIndicator.setBackgroundResource(
-                getLevelIndicatorResource(tournament.getLevel()));
+        holder.startDate.setText(DateUtils
+                .formatDateTime(getContext(), tournament.getStartDate().getTime(),
+                        DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY
+                                | DateUtils.FORMAT_SHOW_DATE));
+        holder.levelClazzIndicator
+                .setBackgroundResource(getLevelIndicatorResource(tournament.getLevel()));
 
         boolean women = false, men = false, youth = false, mixed = false, veteran = false;
 
