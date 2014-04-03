@@ -244,20 +244,20 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
     private int getLevelIndicatorResource(Tournament.Level level) {
         switch (level) {
             case OPEN:
-                return R.drawable.level_open;
+                return R.color.level_open;
             case OPEN_GREEN:
-                return R.drawable.level_open_green;
+                return R.color.level_open_green;
             case CHALLENGER:
-                return R.drawable.level_challenger;
+                return R.color.level_challenger;
             case YOUTH:
-                return R.drawable.level_youth;
+                return R.color.level_youth;
             case VETERAN:
-                return R.drawable.level_veteran;
+                return R.color.level_veteran;
             case SWEDISH_BEACH_TOUR:
-                return R.drawable.level_sbt;
+                return R.color.level_sbt;
             case UNKNOWN:
             default:
-                return R.drawable.level_unknown;
+                return R.color.level_unknown;
         }
     }
 

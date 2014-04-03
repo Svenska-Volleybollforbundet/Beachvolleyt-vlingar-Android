@@ -17,7 +17,7 @@
         android:layout_marginRight="8dip"
         android:divider="@android:drawable/divider_horizontal_bright"
         android:orientation="vertical"
-        android:showDividers="middle">
+        android:showDividers="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             android:layout_weight="1"
             android:divider="@android:drawable/divider_horizontal_bright"
             android:orientation="horizontal"
-            android:showDividers="middle">
+            android:showDividers="none">
 
             <TextView
                 android:id="@+id/clazz_indicator_women"
@@ -52,7 +52,7 @@
             android:layout_weight="1"
             android:divider="@android:drawable/divider_horizontal_bright"
             android:orientation="horizontal"
-            android:showDividers="middle">
+            android:showDividers="none">
 
             <TextView
                 android:id="@+id/clazz_indicator_youth"
