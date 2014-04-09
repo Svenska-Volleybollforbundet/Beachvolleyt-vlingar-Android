@@ -49,7 +49,29 @@ public class Tournament implements Serializable {
         this.url = url;
         this.levelString = level;
         this.level = Level.parse(level);
+        if (this.level == Level.UNKNOWN) {
+            this.level = guessLevel(name);
+        }
         this.clazzes = parseClazzes(clazzes);
+    }
+
+    private Level guessLevel(String name) {
+        Level guessedLevel = Level.UNKNOWN;
+        name = name.toLowerCase();
+        if (name.contains("open") || name.contains("mix") || name.contains("svart") || name
+                .contains("midnight")) {
+            guessedLevel = Level.OPEN;
+        }
+        if (name.contains("grön")) {
+            guessedLevel = Level.OPEN_GREEN;
+        }
+        if (name.contains("chall")) {
+            guessedLevel = Level.CHALLENGER;
+        }
+        if (name.contains("ungdom") || name.contains("junior")) {
+            guessedLevel = Level.YOUTH;
+        }
+        return guessedLevel;
     }
 
     private List<TournamentClazz> parseClazzes(String clazzes) {
