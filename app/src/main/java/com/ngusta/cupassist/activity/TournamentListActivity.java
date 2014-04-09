@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SectionIndexer;
@@ -21,11 +22,20 @@ import java.util.List;
 
 public class TournamentListActivity extends ListActivity {
 
+    private View mProgressContainer;
+
+    private View mListContainer;
+
+    private boolean mListShown;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new RequestTournamentsTask().execute();
         setContentView(R.layout.activity_tournament_list);
+        mProgressContainer = findViewById(R.id.progressContainer);
+        mListContainer = findViewById(R.id.listContainer);
+        setListShown(false, false);
     }
 
     @Override
@@ -63,6 +73,38 @@ public class TournamentListActivity extends ListActivity {
         selectCurrentCompetitionPeriod();
     }
 
+    private void setListShown(boolean shown, boolean animate) {
+        if (mListShown == shown) {
+            return;
+        }
+        mListShown = shown;
+        if (shown) {
+            if (animate) {
+                mProgressContainer.startAnimation(
+                        AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
+                mListContainer
+                        .startAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+            } else {
+                mProgressContainer.clearAnimation();
+                mListContainer.clearAnimation();
+            }
+            mProgressContainer.setVisibility(View.GONE);
+            mListContainer.setVisibility(View.VISIBLE);
+        } else {
+            if (animate) {
+                mProgressContainer
+                        .startAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+                mListContainer.startAnimation(
+                        AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
+            } else {
+                mProgressContainer.clearAnimation();
+                mListContainer.clearAnimation();
+            }
+            mProgressContainer.setVisibility(View.VISIBLE);
+            mListContainer.setVisibility(View.GONE);
+        }
+    }
+
     private void selectCurrentCompetitionPeriod() {
         SectionIndexer listAdapter = (SectionIndexer) getListAdapter();
         CompetitionPeriod period = CompetitionPeriod.findPeriodByDate(new Date());
@@ -80,6 +122,7 @@ public class TournamentListActivity extends ListActivity {
         @Override
         protected void onPostExecute(List<Tournament> tournaments) {
             setListAdapter(new TournamentListAdapter(TournamentListActivity.this, tournaments));
+            setListShown(true, true);
         }
     }
 }
