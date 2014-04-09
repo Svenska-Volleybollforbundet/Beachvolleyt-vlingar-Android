@@ -18,6 +18,8 @@ public class Tournament implements Serializable {
 
     private Date startDate;
 
+    private Date endDate;
+
     private CompetitionPeriod competitionPeriod;
 
     private String club;
@@ -36,9 +38,11 @@ public class Tournament implements Serializable {
 
     private Map<Clazz, List<Team>> teams;
 
-    public Tournament(Date startDate, String period, String club, String name, String url,
+    public Tournament(Date startDate, Date endDate, String period, String club, String name,
+            String url,
             String level, String clazzes) {
         this.startDate = startDate;
+        this.endDate = endDate;
         this.competitionPeriod = CompetitionPeriod.findByName(period);
         this.club = club;
         this.name = name;
@@ -57,15 +61,6 @@ public class Tournament implements Serializable {
             }
         }
         return parsedClazzes;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public String getFormattedStartDate() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return simpleDateFormat.format(startDate);
     }
 
     public List<Team> getSeededTeamsForClazz(TournamentClazz clazz) {
@@ -175,6 +170,23 @@ public class Tournament implements Serializable {
             }
             teams.get(team.getClazz()).add(team);
         }
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public String getFormattedStartDate() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return simpleDateFormat.format(startDate);
+    }
+
+    public boolean spansOverSeveralDays() {
+        return startDate.before(endDate);
     }
 
     @Override

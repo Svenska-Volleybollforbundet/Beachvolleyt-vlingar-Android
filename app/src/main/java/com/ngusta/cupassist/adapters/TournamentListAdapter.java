@@ -20,6 +20,7 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
@@ -75,10 +76,7 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
 
         holder.name.setText(tournament.getName());
         holder.club.setText(tournament.getClub());
-        holder.startDate.setText(DateUtils
-                .formatDateTime(getContext(), tournament.getStartDate().getTime(),
-                        DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY
-                                | DateUtils.FORMAT_SHOW_DATE));
+        holder.dates.setText(getDates(tournament));
         holder.levelClazzIndicator
                 .setBackgroundResource(getLevelIndicatorResource(tournament.getLevel()));
 
@@ -106,6 +104,20 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
         holder.clazzIndicatorVeteran.setVisibility(veteran ? View.VISIBLE : View.INVISIBLE);
 
         return view;
+    }
+
+    private String getDates(Tournament tournament) {
+        if (tournament.spansOverSeveralDays()) {
+            return formatDate(tournament.getStartDate()) + " - " + formatDate(
+                    tournament.getEndDate());
+        }
+        return formatDate(tournament.getStartDate());
+    }
+
+    private String formatDate(Date date) {
+        return DateUtils.formatDateTime(getContext(), date.getTime(),
+                DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY
+                        | DateUtils.FORMAT_SHOW_DATE);
     }
 
     private View getSectionHeaderView(int position, View convertView, ViewGroup parent) {
@@ -281,12 +293,12 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
 
         final TextView club;
 
-        final TextView startDate;
+        final TextView dates;
 
         private TournamentViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.name);
             club = (TextView) view.findViewById(R.id.club);
-            startDate = (TextView) view.findViewById(R.id.start_date);
+            dates = (TextView) view.findViewById(R.id.dates);
             levelClazzIndicator = (LinearLayout) view.findViewById(R.id.level_clazz_indicator);
             clazzIndicatorWomen = (TextView) levelClazzIndicator
                     .findViewById(R.id.clazz_indicator_women);
