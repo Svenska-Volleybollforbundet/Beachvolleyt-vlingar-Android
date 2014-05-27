@@ -2,13 +2,15 @@ package com.ngusta.cupassist.io;
 
 import com.ngusta.cupassist.activity.MyApplication;
 import com.ngusta.cupassist.domain.Clazz;
+import com.ngusta.cupassist.domain.CompetitionPeriod;
 import com.ngusta.cupassist.domain.Player;
+import com.ngusta.cupassist.domain.PlayerList;
 import com.ngusta.cupassist.parser.PlayerListParser;
 
 import android.content.Context;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,7 +25,7 @@ public class PlayerListCache extends Cache<Player> {
 
     private SourceCodeRequester sourceCodeRequester;
 
-    private Map<Clazz, Set<Player>> players;
+    private PlayerList playerList;
 
     private Context context;
 
@@ -38,30 +40,35 @@ public class PlayerListCache extends Cache<Player> {
     }
 
     public Map<Clazz, Set<Player>> getPlayers() {
-        if (players != null) {
-            return players;
+        if (playerList != null) {
+            return playerList.getPlayers();
         }
         try {
-            players = MyApplication.CACHE_PLAYERS ? (Map<Clazz, Set<Player>>) load(FILE_NAME,
-                    context) : null;
-        } catch (Exception e) {
+            playerList = (PlayerList) load(FILE_NAME, context);
+        } catch (RuntimeException e) {
+            playerList = null;
         }
 
-        if (players == null) {
+        if (downloadPlayers()) {
             try {
                 sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_BASE_URL);
-                players = new HashMap<>();
-                players.put(Clazz.MEN, playerListParser.parsePlayerList(
+                playerList = new PlayerList(CompetitionPeriod.findPeriodByDate(new Date()));
+                playerList.getPlayers().put(Clazz.MEN, playerListParser.parsePlayerList(
                         sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_MEN_URL)));
-                players.put(Clazz.WOMEN, playerListParser.parsePlayerList(
+                playerList.getPlayers().put(Clazz.WOMEN, playerListParser.parsePlayerList(
                         sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_WOMEN_URL)));
-                players.put(Clazz.MIXED, playerListParser.parsePlayerList(
+                playerList.getPlayers().put(Clazz.MIXED, playerListParser.parsePlayerList(
                         sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_MIXED_URL)));
-                save(players, FILE_NAME, context);
+                save(playerList, FILE_NAME, context);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return players;
+        return playerList.getPlayers();
+    }
+
+    private boolean downloadPlayers() {
+        return !MyApplication.CACHE_PLAYERS || playerList == null || !playerList
+                .isFromCurrentCompetitionPeriod();
     }
 }
