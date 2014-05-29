@@ -8,4 +8,5 @@
     <string name="title_classes">Klasser:</string>
     <string name="competition_period_current_marker">(nuvarande)</string>
     <string name="current_competition_period">Nuvarande TP</string>
+    <string name="open_cupassist">Open cupassist</string>
 </resources>

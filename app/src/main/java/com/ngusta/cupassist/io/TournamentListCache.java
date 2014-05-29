@@ -15,17 +15,29 @@ import java.util.Map;
 import java.util.Set;
 
 public class TournamentListCache extends Cache<Tournament> {
-    private static final String CUP_ASSIST_TOURNAMENT_LIST_URL = "http://www.cupassist.com/pa/terminliste.php?org=SVBF.SE.SVB";
-    private static final String CUP_ASSIST_TOURNAMENT_LIST_2013_URL = "http://www.cupassist.com/pa/terminliste.php?org=SVBF.SE.SVB&p=25";
+
+    private static final String CUP_ASSIST_TOURNAMENT_LIST_URL
+            = "http://www.cupassist.com/pa/terminliste.php?org=SVBF.SE.SVB";
+
+    private static final String CUP_ASSIST_TOURNAMENT_LIST_2013_URL
+            = "http://www.cupassist.com/pa/terminliste.php?org=SVBF.SE.SVB&p=25";
+
     private static final String CUP_ASSIST_BASE_URL = "http://www.cupassist.com/";
-    private static final String CUP_ASSIST_TOURNAMENT_URL = "http://www.cupassist.com/pamelding/redirect.php?tknavn=";
-    private static final String CUP_ASSIST_TOURNAMENT_PLAYERS_URL = "http://www.cupassist.com/pamelding/vis_paamelding.php?order=rp";
+
+    public static final String CUP_ASSIST_TOURNAMENT_URL
+            = "http://www.cupassist.com/pamelding/redirect.php?tknavn=";
+
+    private static final String CUP_ASSIST_TOURNAMENT_PLAYERS_URL
+            = "http://www.cupassist.com/pamelding/vis_paamelding.php?order=rp";
 
     public List<Tournament> tournaments;
 
     private static final String FILE_NAME = "tournaments";
+
     private Context context;
+
     private TournamentListParser tournamentListParser;
+
     private TournamentParser tournamentParser;
 
     private SourceCodeRequester sourceCodeRequester;
@@ -45,7 +57,8 @@ public class TournamentListCache extends Cache<Tournament> {
         if (tournaments != null) {
             return tournaments;
         }
-        tournaments = MyApplication.CACHE_TOURNAMENTS ? (List<Tournament>) load(FILE_NAME, context) : null;
+        tournaments = MyApplication.CACHE_TOURNAMENTS ? (List<Tournament>) load(FILE_NAME, context)
+                : null;
         if (tournaments == null) {
             try {
                 tournaments = tournamentListParser.parseTournamentList(
@@ -72,7 +85,8 @@ public class TournamentListCache extends Cache<Tournament> {
                 throw new IllegalArgumentException(
                         "Missing registration URL for tournament: " + tournament);
             }
-            sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_URL + tournament.getRegistrationUrl());
+            sourceCodeRequester
+                    .getSourceCode(CUP_ASSIST_TOURNAMENT_URL + tournament.getRegistrationUrl());
             source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL);
             tournament.setTeams(tournamentParser.parseTeams(source, allPlayers));
             save(tournaments, FILE_NAME, context);

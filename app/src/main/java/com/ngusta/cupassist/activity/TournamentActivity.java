@@ -5,14 +5,18 @@ import com.google.gson.Gson;
 import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.domain.Team;
 import com.ngusta.cupassist.domain.Tournament;
+import com.ngusta.cupassist.io.TournamentListCache;
 import com.ngusta.cupassist.service.TournamentService;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -59,6 +63,16 @@ public class TournamentActivity extends Activity {
         protected void onPostExecute(Void voids) {
             ((TextView) findViewById(R.id.classes))
                     .setText(tournament.getClassesWithMaxNumberOfTeamsString());
+            final Button button = (Button) findViewById(R.id.open_cupassist);
+            button.setEnabled(true);
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(
+                            TournamentListCache.CUP_ASSIST_TOURNAMENT_URL + tournament
+                                    .getRegistrationUrl()));
+                    startActivity(browserIntent);
+                }
+            });
             initTeams();
         }
     }
