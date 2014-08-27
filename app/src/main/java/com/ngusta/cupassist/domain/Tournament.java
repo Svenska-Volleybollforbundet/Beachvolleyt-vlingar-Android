@@ -92,7 +92,7 @@ public class Tournament implements Serializable {
         List<Team> seeded = getTeams().get(clazz.getClazz());
         Collections.sort(seeded, level.getComparator());
         if (seeded.size() > clazz.getMaxNumberOfTeams()) {
-            seeded = seeded.subList(0, clazz.getMaxNumberOfTeams());
+            //seeded = seeded.subList(0, clazz.getMaxNumberOfTeams());
         }
         Collections.sort(seeded);
         return seeded;
@@ -102,7 +102,7 @@ public class Tournament implements Serializable {
         if (clazz.getMaxNumberOfTeams() == 12) {
             return 4;
         } else {
-            return clazz.getMaxNumberOfTeams() / 4;
+            return (int) Math.round((clazz.getMaxNumberOfTeams() + 1.0) / 4);
         }
     }
 
