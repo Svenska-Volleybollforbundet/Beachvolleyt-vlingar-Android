@@ -17,7 +17,7 @@ import java.util.Set;
 public class TournamentListCache extends Cache<Tournament> {
 
     private static final String CUP_ASSIST_TOURNAMENT_LIST_URL
-            = "http://www.cupassist.com/pa/terminliste.php?org=SVBF.SE.SVB";
+            = "http://www.cupassist.com/pa/terminliste.php?org=SVBF.SE.SVB&p=32";
 
     private static final String CUP_ASSIST_TOURNAMENT_LIST_2013_URL
             = "http://www.cupassist.com/pa/terminliste.php?org=SVBF.SE.SVB&p=25";
