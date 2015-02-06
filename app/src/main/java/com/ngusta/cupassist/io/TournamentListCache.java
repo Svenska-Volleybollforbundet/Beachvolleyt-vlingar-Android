@@ -83,12 +83,10 @@ public class TournamentListCache extends Cache<Tournament> {
             tournament.setRegistrationUrl(tournamentParser.parseRegistrationUrl(source));
             tournament.setMaxNumberOfTeams(tournamentParser.parseMaxNumberOfTeams(source));
 
-            if (tournament.getRegistrationUrl() != null) {
-                sourceCodeRequester.getSourceCode(
-                        CUP_ASSIST_TOURNAMENT_URL + tournament.getRegistrationUrl());
-                source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL);
-                tournament.setTeams(tournamentParser.parseTeams(source, allPlayers));
-            }
+            sourceCodeRequester.getSourceCode(
+                    CUP_ASSIST_TOURNAMENT_URL + tournament.getRegistrationUrl());
+            source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL);
+            tournament.setTeams(tournamentParser.parseTeams(source, allPlayers));
             save(tournaments, FILE_NAME, context);
         } catch (IOException e) {
             e.printStackTrace();
