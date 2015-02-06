@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Tournament implements Serializable {
+public class Tournament implements Serializable, Comparable<Tournament> {
 
     public static final String TAG = Tournament.class.getSimpleName();
 
@@ -223,6 +223,11 @@ public class Tournament implements Serializable {
                 ", classes='" + clazzes + '\'' +
                 ", redirectUrl='" + registrationUrl + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Tournament tournament) {
+        return this.getStartDate().compareTo(tournament.getStartDate());
     }
 
     public enum Level {
