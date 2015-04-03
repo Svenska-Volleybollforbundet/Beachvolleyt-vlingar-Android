@@ -89,6 +89,18 @@ public class TournamentParser {
                 clazz);
         Player playerB = findPlayer(allPlayersMap, playerBFirstName, playerBLastName, playerBClub,
                 clazz);
+        if (clazz == Clazz.MIXED) {
+            int menEntryPlayerA = findPlayer(allPlayersMap, playerAFirstName, playerALastName, playerAClub,
+                    Clazz.MEN).getEntryPoints();
+            int womanEntryPlayerA = findPlayer(allPlayersMap, playerAFirstName, playerALastName, playerAClub,
+                    Clazz.WOMEN).getEntryPoints();
+            int menEntryPlayerB = findPlayer(allPlayersMap, playerBFirstName, playerBLastName, playerBClub,
+                    Clazz.MEN).getEntryPoints();
+            int womenEntryPlayerB = findPlayer(allPlayersMap, playerBFirstName, playerBLastName, playerBClub,
+                    Clazz.WOMEN).getEntryPoints();
+            return new Team(playerA, playerB, registrationDate, Math.max(menEntryPlayerA, womanEntryPlayerA),
+                    Math.max(menEntryPlayerB, womenEntryPlayerB));
+        }
         return new Team(playerA, playerB, registrationDate, clazz);
     }
 

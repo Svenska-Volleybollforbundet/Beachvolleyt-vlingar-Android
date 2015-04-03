@@ -11,11 +11,23 @@ public class Team implements Serializable, Comparable<Team> {
     private Date registrationTime;
     private Clazz clazz;
 
+    private int entryPoints;
+
     public Team(Player playerA, Player playerB, Date registrationTime, Clazz clazz) {
         this.playerA = playerA;
         this.playerB = playerB;
         this.registrationTime = registrationTime;
         this.clazz = clazz;
+        entryPoints = playerA.getEntryPoints() + playerB.getEntryPoints();
+    }
+
+    public Team(Player playerA, Player playerB, Date registrationTime, int individualEntryPointsPlayerA, int individualEntryPointsPlayerB) {
+        this.playerA = playerA;
+        this.playerB = playerB;
+        this.registrationTime = registrationTime;
+        this.clazz = Clazz.MIXED;
+        entryPoints = playerA.getEntryPoints() + playerB.getEntryPoints() + (int) Math.round(0.15 * individualEntryPointsPlayerA) + (int) Math
+                .round(0.15 * individualEntryPointsPlayerB);
     }
 
     public Player getPlayerA() {
@@ -35,7 +47,7 @@ public class Team implements Serializable, Comparable<Team> {
     }
 
     public int getEntryPoints() {
-        return playerA.getEntryPoints() + playerB.getEntryPoints();
+        return entryPoints;
     }
 
     public int getRankingPoints() {
