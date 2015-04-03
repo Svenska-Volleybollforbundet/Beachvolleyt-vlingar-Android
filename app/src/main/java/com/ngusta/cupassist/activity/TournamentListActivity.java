@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SectionIndexer;
+import android.widget.Toast;
 
 import java.util.Date;
 import java.util.List;
@@ -44,8 +45,12 @@ public class TournamentListActivity extends ListActivity {
         if (adapter.getItemViewType(position) != TournamentListAdapter.VIEW_TYPE_TOURNAMENT) {
             return;
         }
-        Tournament item = (Tournament) adapter.getItem(position);
-        TournamentActivity.startActivity(this, item);
+        Tournament tournament = (Tournament) adapter.getItem(position);
+        if (!tournament.getUrl().isEmpty()) {
+            TournamentActivity.startActivity(this, tournament);
+        } else {
+            Toast.makeText(this, "Anmälan har inte öppnat än", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
