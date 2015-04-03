@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Math.min;
+
 public class Tournament implements Serializable, Comparable<Tournament> {
 
     public static final String TAG = Tournament.class.getSimpleName();
@@ -85,27 +87,6 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         return parsedClazzes;
     }
 
-    public List<Team> getSeededTeamsForClazz(TournamentClazz clazz) {
-        if (getTeams().get(clazz.getClazz()) == null) {
-            return Collections.emptyList();
-        }
-        List<Team> seeded = getTeams().get(clazz.getClazz());
-        Collections.sort(seeded, level.getComparator());
-        if (seeded.size() > clazz.getMaxNumberOfTeams()) {
-            //seeded = seeded.subList(0, clazz.getMaxNumberOfTeams());
-        }
-        Collections.sort(seeded);
-        return seeded;
-    }
-
-    private int getNumberOfGroupsForClazz(TournamentClazz clazz) {
-        if (clazz.getMaxNumberOfTeams() == 12) {
-            return 4;
-        } else {
-            return (int) Math.round((clazz.getMaxNumberOfTeams() + 1.0) / 4);
-        }
-    }
-
     public CompetitionPeriod getCompetitionPeriod() {
         return competitionPeriod;
     }
@@ -138,17 +119,6 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         return registrationUrl;
     }
 
-    public String getClassesWithMaxNumberOfTeamsString() {
-        if (getClazzes().isEmpty()) {
-            return "[]";
-        }
-        String str = "[";
-        for (TournamentClazz clazz : getClazzes()) {
-            str = str + clazz.getClazz() + "(" + clazz.getMaxNumberOfTeams() + "), ";
-        }
-        return str.substring(0, str.length() - 2) + "]";
-    }
-
     public void setRegistrationUrl(String registrationUrl) {
         this.registrationUrl = registrationUrl;
     }
@@ -161,7 +131,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         int group = 0;
         int operator = 1;
         int numberOfGroups = getNumberOfGroupsForClazz(clazz);
-        List<TeamGroupPosition> teamGroupPositions = new ArrayList<>(clazz.getMaxNumberOfTeams());
+        List<TeamGroupPosition> teamGroupPositions = new ArrayList<>();
         for (Team team : getSeededTeamsForClazz(clazz)) {
             group += operator;
             if (group == (numberOfGroups + 1)) {
@@ -173,8 +143,25 @@ public class Tournament implements Serializable, Comparable<Tournament> {
             }
             teamGroupPositions.add(new TeamGroupPosition(group, team));
         }
-
         return teamGroupPositions;
+    }
+
+    private int getNumberOfGroupsForClazz(TournamentClazz clazz) {
+        if (clazz.getMaxNumberOfTeams() == 12) {
+            return 4;
+        } else {
+            return (int) Math.round((clazz.getMaxNumberOfTeams() + 1.0) / 4);
+        }
+    }
+
+    public List<Team> getSeededTeamsForClazz(TournamentClazz clazz) {
+        if (getTeams().get(clazz.getClazz()) == null) {
+            return Collections.emptyList();
+        }
+        List<Team> seeded = getTeams().get(clazz.getClazz());
+        Collections.sort(seeded, level.getComparator());
+        Collections.sort(seeded.subList(0, min(seeded.size(), clazz.getMaxNumberOfTeams())), level.ENTRY_POINTS_COMPARATOR);
+        return seeded;
     }
 
     public void setMaxNumberOfTeams(Map<Clazz, Integer> maxNumberOfTeams) {
@@ -323,6 +310,11 @@ public class Tournament implements Serializable, Comparable<Tournament> {
                         clazz, guess));
                 return guess;
             }
+        }
+
+        @Override
+        public String toString() {
+            return clazz.toString() + " (" + maxNumberOfTeams + ")";
         }
     }
 }

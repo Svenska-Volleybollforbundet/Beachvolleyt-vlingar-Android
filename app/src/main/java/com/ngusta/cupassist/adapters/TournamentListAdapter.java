@@ -255,7 +255,7 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
         return sections;
     }
 
-    private int getLevelIndicatorResource(Tournament.Level level) {
+    public static int getLevelIndicatorResource(Tournament.Level level) {
         switch (level) {
             case OPEN:
                 return R.color.level_open;
