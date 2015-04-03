@@ -22,6 +22,10 @@ public enum Clazz {
     }
 
     public static Clazz parse(String clazzString) {
+        int leftParenthesisIndex = clazzString.indexOf("(");
+        if (leftParenthesisIndex > -1) {
+            clazzString = clazzString.substring(0, leftParenthesisIndex).trim();
+        }
         switch (clazzString) {
             case "H":
                 return MEN;
@@ -67,5 +71,37 @@ public enum Clazz {
                 return V55H;
         }
         return UNKNOWN;
+    }
+
+    public static Clazz getGeneralGenderClazz(Clazz clazz) {
+        switch (clazz) {
+            case MEN:
+            case U13P:
+            case U15P:
+            case U17P:
+            case U19P:
+            case U21P:
+            case V35H:
+            case V40H:
+            case V45H:
+            case V55H:
+                return MEN;
+            case MIXED:
+                return MIXED;
+            case WOMEN:
+            case U13F:
+            case U15F:
+            case U17F:
+            case U19F:
+            case U21F:
+            case V35D:
+            case V40D:
+            case V45D:
+            case V55D:
+                return WOMEN;
+            case UNKNOWN:
+            default:
+                return UNKNOWN;
+        }
     }
 }

@@ -63,6 +63,7 @@ public class TournamentParser {
 
         String club = tableRow.child(1).text();
         Clazz clazz = Clazz.parse(tableRow.child(2).text());
+        Clazz generalGenderClazz = Clazz.getGeneralGenderClazz(clazz);
 
         Date registrationDate = null;
         try {
@@ -86,9 +87,9 @@ public class TournamentParser {
         playerAFirstName = excludeParenthesisFromName(playerAFirstName);
         playerBFirstName = excludeParenthesisFromName(playerBFirstName);
         Player playerA = findPlayer(allPlayersMap, playerAFirstName, playerALastName, playerAClub,
-                clazz);
+                generalGenderClazz);
         Player playerB = findPlayer(allPlayersMap, playerBFirstName, playerBLastName, playerBClub,
-                clazz);
+                generalGenderClazz);
         if (clazz == Clazz.MIXED) {
             int menEntryPlayerA = findPlayer(allPlayersMap, playerAFirstName, playerALastName, playerAClub,
                     Clazz.MEN).getEntryPoints();
