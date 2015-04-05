@@ -1,6 +1,5 @@
 package com.ngusta.cupassist.activity;
 
-import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Team;
 import com.ngusta.cupassist.domain.Tournament;
@@ -11,7 +10,6 @@ import android.app.Application;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class MyApplication extends Application {
 
@@ -29,7 +27,7 @@ public class MyApplication extends Application {
     private static void desktopRun() {
         long start = System.currentTimeMillis();
         PlayerListCache playerListCache = new PlayerListCache();
-        Map<Clazz, Set<Player>> players = playerListCache.getPlayers();
+        Map<String, Player> players = playerListCache.getPlayers();
         System.out.println("Players loaded, took " + (System.currentTimeMillis() - start) + " ms");
 
         start = System.currentTimeMillis();

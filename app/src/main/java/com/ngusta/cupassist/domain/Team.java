@@ -11,23 +11,11 @@ public class Team implements Serializable, Comparable<Team> {
     private Date registrationTime;
     private Clazz clazz;
 
-    private int entryPoints;
-
     public Team(Player playerA, Player playerB, Date registrationTime, Clazz clazz) {
         this.playerA = playerA;
         this.playerB = playerB;
         this.registrationTime = registrationTime;
         this.clazz = clazz;
-        entryPoints = playerA.getEntryPoints() + playerB.getEntryPoints();
-    }
-
-    public Team(Player playerA, Player playerB, Date registrationTime, int individualEntryPointsPlayerA, int individualEntryPointsPlayerB) {
-        this.playerA = playerA;
-        this.playerB = playerB;
-        this.registrationTime = registrationTime;
-        this.clazz = Clazz.MIXED;
-        entryPoints = playerA.getEntryPoints() + playerB.getEntryPoints() + (int) Math.round(0.15 * individualEntryPointsPlayerA) + (int) Math
-                .round(0.15 * individualEntryPointsPlayerB);
     }
 
     public Player getPlayerA() {
@@ -47,10 +35,18 @@ public class Team implements Serializable, Comparable<Team> {
     }
 
     public int getEntryPoints() {
-        return entryPoints;
+        if (clazz == Clazz.MIXED) {
+            return (int) (Math.round(playerA.getEntryPoints() * 0.15) + playerA.getMixEntryPoints() + Math.round(playerB.getEntryPoints() * 0.15)
+                    + playerB.getMixEntryPoints());
+        }
+        return playerA.getEntryPoints() + playerB.getEntryPoints();
     }
 
     public int getRankingPoints() {
+        if (clazz == Clazz.MIXED) {
+            return (int) (Math.round(playerA.getRankingPoints() * 0.15) + playerA.getMixRankingPoints() + Math
+                    .round(playerB.getRankingPoints() * 0.15) + playerB.getMixRankingPoints());
+        }
         return playerA.getRankingPoints() + playerB.getRankingPoints();
     }
 
@@ -73,10 +69,16 @@ public class Team implements Serializable, Comparable<Team> {
     }
 
     private int getHighestEntryPoints() {
+        if (clazz == Clazz.MIXED) {
+            return Math.max(playerA.getMixEntryPoints(), playerB.getMixEntryPoints());
+        }
         return Math.max(playerA.getEntryPoints(), playerB.getEntryPoints());
     }
 
     private int getHighestRankingPoints() {
+        if (clazz == Clazz.MIXED) {
+            return Math.max(playerA.getMixRankingPoints(), playerB.getMixRankingPoints());
+        }
         return Math.max(playerA.getRankingPoints(), playerB.getRankingPoints());
     }
 

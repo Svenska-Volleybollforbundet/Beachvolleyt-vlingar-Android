@@ -10,6 +10,10 @@ public class Player implements Serializable {
     private int rankingPoints;
     private int entryPoints;
 
+    private int mixRankingPoints;
+
+    private int mixEntryPoints;
+
     public Player(String firstName, String lastName, String playerClub) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,6 +47,22 @@ public class Player implements Serializable {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public int getMixRankingPoints() {
+        return mixRankingPoints;
+    }
+
+    public void setMixRankingPoints(int mixRankingPoints) {
+        this.mixRankingPoints = mixRankingPoints;
+    }
+
+    public int getMixEntryPoints() {
+        return mixEntryPoints;
+    }
+
+    public void setMixEntryPoints(int mixEntryPoints) {
+        this.mixEntryPoints = mixEntryPoints;
     }
 
     @Override

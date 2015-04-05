@@ -1,7 +1,6 @@
 package com.ngusta.cupassist.io;
 
 import com.ngusta.cupassist.activity.MyApplication;
-import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.CompetitionPeriod;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.PlayerList;
@@ -11,6 +10,7 @@ import android.content.Context;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,9 +22,7 @@ public class PlayerListCache extends Cache<Player> {
     private static String CUP_ASSIST_PLAYERS_RANKING_MIXED_URL = "http://www.cupassist.com/pa/ranking_beach/visrank.php?k=M";
 
     private PlayerListParser playerListParser;
-
     private SourceCodeRequester sourceCodeRequester;
-
     private PlayerList playerList;
 
     private Context context;
@@ -39,7 +37,7 @@ public class PlayerListCache extends Cache<Player> {
         sourceCodeRequester = new SourceCodeRequester();
     }
 
-    public Map<Clazz, Set<Player>> getPlayers() {
+    public Map<String, Player> getPlayers() {
         if (playerList != null) {
             return playerList.getPlayers();
         }
@@ -53,12 +51,31 @@ public class PlayerListCache extends Cache<Player> {
             try {
                 sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_BASE_URL);
                 playerList = new PlayerList(CompetitionPeriod.findPeriodByDate(new Date()));
-                playerList.getPlayers().put(Clazz.MEN, playerListParser.parsePlayerList(
-                        sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_MEN_URL)));
-                playerList.getPlayers().put(Clazz.WOMEN, playerListParser.parsePlayerList(
-                        sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_WOMEN_URL)));
-                playerList.getPlayers().put(Clazz.MIXED, playerListParser.parsePlayerList(
-                        sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_MIXED_URL)));
+
+                Set<Player> men = playerListParser.parsePlayerList(sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_MEN_URL));
+                Set<Player> women = playerListParser.parsePlayerList(sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_WOMEN_URL));
+                Set<Player> mix = playerListParser.parsePlayerList(sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_MIXED_URL));
+
+                Map<String, Player> players = new HashMap<>();
+                for (Player man : men) {
+                    if (!players.containsKey(man.getNameAndClub())) {
+                        players.put(man.getNameAndClub(), man);
+                    }
+                }
+                for (Player woman : women) {
+                    if (!players.containsKey(woman.getNameAndClub())) {
+                        players.put(woman.getNameAndClub(), woman);
+                    }
+                }
+
+                for (Player mixPlayer : mix) {
+                    Player player = players.get(mixPlayer.getNameAndClub());
+                    if (player != null) {
+                        player.setMixEntryPoints(mixPlayer.getEntryPoints());
+                        player.setMixRankingPoints(mixPlayer.getRankingPoints());
+                    }
+                }
+                playerList.setPlayers(players);
                 save(playerList, FILE_NAME, context);
             } catch (IOException e) {
                 e.printStackTrace();

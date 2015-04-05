@@ -1,7 +1,6 @@
 package com.ngusta.cupassist.io;
 
 import com.ngusta.cupassist.activity.MyApplication;
-import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Tournament;
 import com.ngusta.cupassist.parser.TournamentListParser;
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class TournamentListCache extends Cache<Tournament> {
 
@@ -73,7 +71,7 @@ public class TournamentListCache extends Cache<Tournament> {
         return tournaments;
     }
 
-    public void getTournamentDetails(Tournament tournament, Map<Clazz, Set<Player>> allPlayers) {
+    public void getTournamentDetails(Tournament tournament, Map<String, Player> allPlayers) {
         if (tournament.getTeams() != null && MyApplication.CACHE_TOURNAMENTS) {
             return;
         }

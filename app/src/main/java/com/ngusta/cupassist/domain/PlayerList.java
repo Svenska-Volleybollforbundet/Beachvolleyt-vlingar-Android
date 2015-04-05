@@ -4,11 +4,10 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class PlayerList implements Serializable {
 
-    private Map<Clazz, Set<Player>> players;
+    private Map<String, Player> players;
 
     private CompetitionPeriod competitionPeriodOfSave;
 
@@ -17,8 +16,12 @@ public class PlayerList implements Serializable {
         this.players = new HashMap<>();
     }
 
-    public Map<Clazz, Set<Player>> getPlayers() {
+    public Map<String, Player> getPlayers() {
         return players;
+    }
+
+    public void setPlayers(Map<String, Player> players) {
+        this.players = players;
     }
 
     public boolean isFromCurrentCompetitionPeriod() {

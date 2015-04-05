@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,7 +25,7 @@ public class TournamentParser {
     private static final String REGEXP_PATTERN_FOR_REGISTRATION_URL
             = "pamelding/redirect.php\\?tknavn=(.*?)\", \"_blank\"";
 
-    public List<Team> parseTeams(String source, Map<Clazz, Set<Player>> allPlayers) {
+    public List<Team> parseTeams(String source, Map<String, Player> allPlayers) {
         ArrayList<Team> teams = new ArrayList<Team>();
         Document document = Jsoup.parse(source);
         Elements tableRows = document.select("table:first-of-type tr:gt(0)");
@@ -35,16 +34,8 @@ public class TournamentParser {
             return teams;
         }
 
-        Map<Clazz, Map<String, Player>> allPlayersMap = new HashMap<>();
-        for (Clazz clazz : allPlayers.keySet()) {
-            allPlayersMap.put(clazz, new HashMap<String, Player>());
-            for (Player player : allPlayers.get(clazz)) {
-                allPlayersMap.get(clazz).put(player.getNameAndClub(), player);
-            }
-        }
-
         for (Element tableRow : tableRows) {
-            Team team = readTeamFromTableRow(tableRow, allPlayersMap);
+            Team team = readTeamFromTableRow(tableRow, allPlayers);
             if (team != null) {
                 teams.add(team);
             }
@@ -53,7 +44,7 @@ public class TournamentParser {
     }
 
     private Team readTeamFromTableRow(Element tableRow,
-            Map<Clazz, Map<String, Player>> allPlayersMap) {
+            Map<String, Player> allPlayers) {
         String[] names = tableRow.child(0).text().split("[,/]");
 
         if (names.length != 4) {
@@ -63,12 +54,10 @@ public class TournamentParser {
 
         String club = tableRow.child(1).text();
         Clazz clazz = Clazz.parse(tableRow.child(2).text());
-        Clazz generalGenderClazz = Clazz.getGeneralGenderClazz(clazz);
 
         Date registrationDate = null;
         try {
-            registrationDate
-                    = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(tableRow.child(3).text());
+            registrationDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(tableRow.child(3).text());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -80,28 +69,16 @@ public class TournamentParser {
             playerAClub = clubs[0].trim();
             playerBClub = clubs[1].trim();
         }
+
         String playerAFirstName = names[1].trim();
-        String playerALastName = names[0].trim();
-        String playerBFirstName = names[3].trim();
-        String playerBLastName = names[2].trim();
         playerAFirstName = excludeParenthesisFromName(playerAFirstName);
+        String playerALastName = names[0].trim();
+        Player playerA = findPlayer(allPlayers, playerAFirstName, playerALastName, playerAClub);
+
+        String playerBFirstName = names[3].trim();
         playerBFirstName = excludeParenthesisFromName(playerBFirstName);
-        Player playerA = findPlayer(allPlayersMap, playerAFirstName, playerALastName, playerAClub,
-                generalGenderClazz);
-        Player playerB = findPlayer(allPlayersMap, playerBFirstName, playerBLastName, playerBClub,
-                generalGenderClazz);
-        if (clazz == Clazz.MIXED) {
-            int menEntryPlayerA = findPlayer(allPlayersMap, playerAFirstName, playerALastName, playerAClub,
-                    Clazz.MEN).getEntryPoints();
-            int womanEntryPlayerA = findPlayer(allPlayersMap, playerAFirstName, playerALastName, playerAClub,
-                    Clazz.WOMEN).getEntryPoints();
-            int menEntryPlayerB = findPlayer(allPlayersMap, playerBFirstName, playerBLastName, playerBClub,
-                    Clazz.MEN).getEntryPoints();
-            int womenEntryPlayerB = findPlayer(allPlayersMap, playerBFirstName, playerBLastName, playerBClub,
-                    Clazz.WOMEN).getEntryPoints();
-            return new Team(playerA, playerB, registrationDate, Math.max(menEntryPlayerA, womanEntryPlayerA),
-                    Math.max(menEntryPlayerB, womenEntryPlayerB));
-        }
+        String playerBLastName = names[2].trim();
+        Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub);
         return new Team(playerA, playerB, registrationDate, clazz);
     }
 
@@ -112,11 +89,11 @@ public class TournamentParser {
         return playerName;
     }
 
-    private Player findPlayer(Map<Clazz, Map<String, Player>> allPlayers, String playerFirstName,
-            String playerLastName, String playerClub, Clazz playerClazz) {
+    private Player findPlayer(Map<String, Player> allPlayers, String playerFirstName,
+            String playerLastName, String playerClub) {
         Player newPlayer = new Player(playerFirstName, playerLastName, playerClub);
-        if (allPlayers.get(playerClazz).containsKey(newPlayer.getNameAndClub())) {
-            return allPlayers.get(playerClazz).get(newPlayer.getNameAndClub());
+        if (allPlayers.containsKey(newPlayer.getNameAndClub())) {
+            return allPlayers.get(newPlayer.getNameAndClub());
         }
         return newPlayer;
     }
