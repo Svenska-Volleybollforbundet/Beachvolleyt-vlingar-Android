@@ -5,56 +5,43 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <GridLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:alignmentMode="alignMargins"
-        android:columnCount="2"
-        android:columnOrderPreserved="false"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_club" />
+        android:alignmentMode="alignMargins">
 
         <TextView
             android:id="@+id/club"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="10pt" />
 
-        <TextView
+        <ImageButton
+            android:src="@drawable/link_icon_disabled"
+            android:id="@+id/open_cupassist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_period" />
-
-        <TextView
-            android:id="@+id/period"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_start_date" />
+            android:layout_toRightOf="@id/club"
+            android:text="@string/open_cupassist"
+            android:background="@null"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="3dp" />
 
         <TextView
             android:id="@+id/start_date"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/open_cupassist"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/open_cupassist"
-            android:enabled="false" />
+            android:layout_alignParentRight="true"
+            android:textSize="10pt"
+            android:layout_marginRight="5dp" />
 
         <Spinner
             android:id="@+id/clazz_spinner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </GridLayout>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/club" />
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/teamList"

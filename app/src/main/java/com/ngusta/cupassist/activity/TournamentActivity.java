@@ -3,6 +3,7 @@ package com.ngusta.cupassist.activity;
 import com.google.gson.Gson;
 
 import com.ngusta.cupassist.R;
+import com.ngusta.cupassist.adapters.TeamAdapter;
 import com.ngusta.cupassist.adapters.TournamentListAdapter;
 import com.ngusta.cupassist.domain.Tournament;
 import com.ngusta.cupassist.io.TournamentListCache;
@@ -18,14 +19,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.List;
-
-import static java.lang.Math.min;
 
 public class TournamentActivity extends Activity {
 
@@ -55,7 +54,6 @@ public class TournamentActivity extends Activity {
         getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(
                 TournamentListAdapter.getLevelIndicatorResource(tournament.getLevel()))));
         ((TextView) findViewById(R.id.club)).setText(tournament.getClub());
-        ((TextView) findViewById(R.id.period)).setText(tournament.getCompetitionPeriod().getName());
         ((TextView) findViewById(R.id.start_date)).setText(tournament.getFormattedStartDate());
     }
 
@@ -69,19 +67,19 @@ public class TournamentActivity extends Activity {
 
         @Override
         protected void onPostExecute(Void voids) {
-            initSpinner();
+            initClazzSpinner();
             initCALink();
             updateTeams(tournament.getClazzes().get(0));
         }
     }
 
-    private void initSpinner() {
-        Spinner spinner = (Spinner) findViewById(R.id.clazz_spinner);
+    private void initClazzSpinner() {
+        Spinner clazzSpinner = (Spinner) findViewById(R.id.clazz_spinner);
         ArrayAdapter<Tournament.TournamentClazz> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapter.addAll(tournament.getClazzes());
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        clazzSpinner.setAdapter(adapter);
+        clazzSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 updateTeams((Tournament.TournamentClazz) parent.getSelectedItem());
@@ -94,8 +92,8 @@ public class TournamentActivity extends Activity {
     }
 
     private void initCALink() {
-        final Button button = (Button) findViewById(R.id.open_cupassist);
-        button.setEnabled(true);
+        final ImageButton button = (ImageButton) findViewById(R.id.open_cupassist);
+        button.setImageResource(R.drawable.link_icon_enabled);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Uri cupAssistUri = Uri.parse(TournamentListCache.CUP_ASSIST_TOURNAMENT_URL + tournament.getRegistrationUrl());
@@ -107,18 +105,8 @@ public class TournamentActivity extends Activity {
 
     private void updateTeams(Tournament.TournamentClazz clazz) {
         ListView teamListView = (ListView) findViewById(R.id.teamList);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        teamListView.setAdapter(adapter);
-        adapter.setNotifyOnChange(false);
         List<Tournament.TeamGroupPosition> teams = tournament.getTeamGroupPositionsForClazz(clazz);
-        for (Tournament.TeamGroupPosition position : teams.subList(0, min(teams.size(), clazz.getMaxNumberOfTeams()))) {
-            adapter.add(String.format("%s. %s (%d)", position.group, position.team.getNames(), position.team.getEntryPoints()));
-        }
-        if (teams.size() > clazz.getMaxNumberOfTeams()) {
-            for (Tournament.TeamGroupPosition position : teams.subList(clazz.getMaxNumberOfTeams(), teams.size())) {
-                adapter.add(String.format("%s (%d)", position.team.getNames(), position.team.getEntryPoints()));
-            }
-        }
-        adapter.notifyDataSetChanged();
+        final ArrayAdapter<Tournament.TeamGroupPosition> adapter = new TeamAdapter(this, R.layout.team_list_item, teams, clazz.getMaxNumberOfTeams());
+        teamListView.setAdapter(adapter);
     }
 }
