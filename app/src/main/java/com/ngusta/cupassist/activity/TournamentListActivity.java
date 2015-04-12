@@ -2,22 +2,28 @@ package com.ngusta.cupassist.activity;
 
 import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.adapters.TournamentListAdapter;
+import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.CompetitionPeriod;
 import com.ngusta.cupassist.domain.Tournament;
 import com.ngusta.cupassist.service.TournamentService;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.animation.AnimationUtils;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +35,16 @@ public class TournamentListActivity extends ListActivity {
 
     private boolean mListShown;
 
+    private List<Clazz> mClazzesToFilter;
+
+    private List<Tournament.Level> mLevelsToFilter;
+
+    private AlertDialog.Builder mClazzDialog;
+
+    private AlertDialog.Builder mLevelDialog;
+
+    private List<Tournament> mTournaments;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +53,25 @@ public class TournamentListActivity extends ListActivity {
         mProgressContainer = findViewById(R.id.progressContainer);
         mListContainer = findViewById(R.id.listContainer);
         setListShown(false, false);
+
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        mClazzesToFilter = TournamentListDialogs.getDefaultClazzes(preferences);
+        mClazzDialog = TournamentListDialogs.createClazzFilterDialog(this, preferences);
+        mLevelsToFilter = TournamentListDialogs.getDefaultLevels(preferences);
+        mLevelDialog = TournamentListDialogs.createLevelFilterDialog(this, preferences);
+        makeActionOverflowMenuShown();
+    }
+
+    private void makeActionOverflowMenuShown() {
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception e) {
+        }
     }
 
     @Override
@@ -49,7 +84,7 @@ public class TournamentListActivity extends ListActivity {
         if (!tournament.getUrl().isEmpty()) {
             TournamentActivity.startActivity(this, tournament);
         } else {
-            Toast.makeText(this, "Anmälan har inte öppnat än", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.registration_not_open, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -59,15 +94,27 @@ public class TournamentListActivity extends ListActivity {
         menu.add(Menu.NONE, R.id.menu_item_today, Menu.NONE, R.string.current_competition_period)
                 .setIcon(android.R.drawable.ic_menu_today)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        menu.add(Menu.NONE, R.id.menu_item_clazzes, Menu.NONE, R.string.show_clazzes)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        menu.add(Menu.NONE, R.id.menu_item_levels, Menu.NONE, R.string.show_levels)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-        if (item.getItemId() == R.id.menu_item_today) {
-            selectCurrentCompetitionPeriod();
-            return true;
+        switch (item.getItemId()) {
+            case R.id.menu_item_today:
+                selectCurrentCompetitionPeriod();
+                return true;
+            case R.id.menu_item_clazzes:
+                mClazzDialog.show();
+                return true;
+            case R.id.menu_item_levels:
+                mLevelDialog.show();
+                return true;
         }
         return false;
     }
@@ -126,8 +173,38 @@ public class TournamentListActivity extends ListActivity {
 
         @Override
         protected void onPostExecute(List<Tournament> tournaments) {
-            setListAdapter(new TournamentListAdapter(TournamentListActivity.this, tournaments));
-            setListShown(true, true);
+            mTournaments = tournaments;
+            updateList();
         }
+    }
+
+    void updateList() {
+        List<Tournament> filteredTournaments = filter(mTournaments);
+        if (filteredTournaments.isEmpty()) {
+            Toast.makeText(this, R.string.no_matching_tournaments, Toast.LENGTH_SHORT).show();
+        }
+        setListAdapter(new TournamentListAdapter(this, filteredTournaments));
+        setListShown(true, true);
+    }
+
+    private List<Tournament> filter(List<Tournament> tournaments) {
+        List<Tournament> filteredTournaments = new ArrayList<>();
+        for (Tournament tournament : tournaments) {
+            for (Tournament.TournamentClazz tournamentClazz : tournament.getClazzes()) {
+                if (mClazzesToFilter.contains(tournamentClazz.getClazz()) && mLevelsToFilter.contains(tournament.getLevel())) {
+                    filteredTournaments.add(tournament);
+                    break;
+                }
+            }
+        }
+        return filteredTournaments;
+    }
+
+    public void setClazzesToFilter(List<Clazz> clazzesToFilter) {
+        mClazzesToFilter = clazzesToFilter;
+    }
+
+    public void setLevelsToFilter(List<Tournament.Level> levelsToFilter) {
+        mLevelsToFilter = levelsToFilter;
     }
 }

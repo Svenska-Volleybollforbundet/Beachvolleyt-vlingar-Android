@@ -1,5 +1,8 @@
 package com.ngusta.cupassist.domain;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum Clazz {
     MEN("H"), WOMEN("D"), MIXED("M"), U13F("U13 F"), U13P("U13 P"), U15F("U15 F"), U15P("U15 P"),
     U17F("U17 F"), U17P("U17 P"), U19F("U19 F"), U19P("U19 P"), U21F("U21 F"), U21P("U21 P"),
@@ -71,5 +74,15 @@ public enum Clazz {
                 return V55H;
         }
         return UNKNOWN;
+    }
+
+    public static List<Clazz> getYouthClazzes() {
+        Clazz[] youthClazzes = {U13F, U13P, U15F, U15P, U17F, U17P, U19F, U19P, U21F, U21P, UNKNOWN};
+        return Arrays.asList(youthClazzes);
+    }
+
+    public static List<Clazz> getVeteranClazzes() {
+        Clazz[] youthClazzes = {V35D, V35H, V40D, V40H, V45D, V45H, V55D, V55H, UNKNOWN};
+        return Arrays.asList(youthClazzes);
     }
 }
