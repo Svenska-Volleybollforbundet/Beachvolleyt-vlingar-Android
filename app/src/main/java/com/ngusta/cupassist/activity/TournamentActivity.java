@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -29,6 +30,12 @@ import java.util.List;
 public class TournamentActivity extends Activity {
 
     public static final String TOURNAMENT_INTENT = "tournament";
+
+    private View mProgressContainer;
+
+    private View mTeamList;
+
+    private boolean mListShown;
 
     private Tournament tournament;
 
@@ -45,8 +52,43 @@ public class TournamentActivity extends Activity {
         setContentView(R.layout.tournament_view);
         Gson gson = new Gson();
         tournament = gson.fromJson(getIntent().getStringExtra("tournament"), Tournament.class);
+        mProgressContainer = findViewById(R.id.progressContainer);
+        mTeamList = findViewById(R.id.teamList);
+        setListShown(false, false);
         initInfo();
         new RequestTournamentDetailsTask().execute();
+    }
+
+    private void setListShown(boolean shown, boolean animate) {
+        if (mListShown == shown) {
+            return;
+        }
+        mListShown = shown;
+        if (shown) {
+            if (animate) {
+                mProgressContainer.startAnimation(
+                        AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
+                mTeamList
+                        .startAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+            } else {
+                mProgressContainer.clearAnimation();
+                mTeamList.clearAnimation();
+            }
+            mProgressContainer.setVisibility(View.GONE);
+            mTeamList.setVisibility(View.VISIBLE);
+        } else {
+            if (animate) {
+                mProgressContainer
+                        .startAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+                mTeamList.startAnimation(
+                        AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
+            } else {
+                mProgressContainer.clearAnimation();
+                mTeamList.clearAnimation();
+            }
+            mProgressContainer.setVisibility(View.VISIBLE);
+            mTeamList.setVisibility(View.GONE);
+        }
     }
 
     private void initInfo() {
@@ -108,5 +150,6 @@ public class TournamentActivity extends Activity {
         List<Tournament.TeamGroupPosition> teams = tournament.getTeamGroupPositionsForClazz(clazz);
         final ArrayAdapter<Tournament.TeamGroupPosition> adapter = new TeamAdapter(this, R.layout.team_list_item, teams, clazz.getMaxNumberOfTeams());
         teamListView.setAdapter(adapter);
+        setListShown(true, true);
     }
 }

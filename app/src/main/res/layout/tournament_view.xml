@@ -43,6 +43,20 @@
             android:layout_below="@id/club" />
     </RelativeLayout>
 
+
+    <LinearLayout
+        android:id="@+id/progressContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <ListView
         android:id="@+id/teamList"
         android:layout_width="match_parent"
