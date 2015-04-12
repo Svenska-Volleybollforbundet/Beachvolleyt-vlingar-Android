@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Beachvolley</string>
+    <string name="app_name">Beachvolleytävlingar</string>
     <string name="title_level">Nivå:</string>
     <string name="title_club">Arrangör:</string>
     <string name="title_period">Period:</string>
