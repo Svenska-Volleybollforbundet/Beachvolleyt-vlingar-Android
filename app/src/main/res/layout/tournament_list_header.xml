@@ -11,7 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/start_date"
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
@@ -19,7 +18,20 @@
         android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
     <TextView
-        android:id="@id/start_date"
+        android:id="@+id/sm_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/competition_period"
+        android:layout_toRightOf="@id/competition_period"
+        android:gravity="center_vertical"
+        android:paddingLeft="5dp"
+        android:text="@string/sm"
+        android:textSize="7pt"
+        android:textStyle="bold"
+        android:textColor="@color/gold" />
+
+    <TextView
+        android:id="@+id/start_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/competition_period"

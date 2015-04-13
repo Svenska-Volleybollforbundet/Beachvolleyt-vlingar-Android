@@ -117,7 +117,8 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
     private String formatDate(Date date) {
         return DateUtils.formatDateTime(getContext(), date.getTime(),
                 DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY
-                        | DateUtils.FORMAT_SHOW_DATE);
+                        | DateUtils.FORMAT_SHOW_DATE
+        );
     }
 
     private View getSectionHeaderView(int position, View convertView, ViewGroup parent) {
@@ -142,6 +143,11 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
                 .formatDateTime(getContext(), competitionPeriod.getStartDate().getTime(), 0) + " - "
                 + DateUtils.formatDateTime(
                 getContext(), competitionPeriod.getEndDate().getTime(), 0));
+        if (CompetitionPeriod.qualifiesForSm(competitionPeriod)) {
+            holder.smFlag.setVisibility(View.VISIBLE);
+        } else {
+            holder.smFlag.setVisibility(View.INVISIBLE);
+        }
 
         return view;
     }
@@ -324,9 +330,12 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
 
         final TextView startDate;
 
+        final TextView smFlag;
+
         private SectionHeaderViewHolder(View view) {
             competitionPeriod = (TextView) view.findViewById(R.id.competition_period);
             startDate = (TextView) view.findViewById(R.id.start_date);
+            smFlag = (TextView) view.findViewById(R.id.sm_flag);
         }
     }
 }

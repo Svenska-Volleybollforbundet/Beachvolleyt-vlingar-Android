@@ -14,4 +14,5 @@
     <string name="show">Visa</string>
     <string name="registration_not_open">Anmälan har inte öppnat än</string>
     <string name="no_matching_tournaments">Inga turneringar matchade dina filter.</string>
+    <string name="sm">SM</string>
 </resources>

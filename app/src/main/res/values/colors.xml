@@ -7,4 +7,5 @@
     <color name="level_veteran">#eeea815f</color>
     <color name="level_sbt">#eea75ca5</color>
     <color name="level_unknown">#66000000</color>
+    <color name="gold">#ffffd700</color>
 </resources>
