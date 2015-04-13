@@ -47,7 +47,7 @@ public class TournamentParser {
             Map<String, Player> allPlayers) {
         String[] names = tableRow.child(0).text().split("[,/]");
 
-        if (names.length != 4) {
+        if (names.length != 4 && names.length != 3) {
             System.err.print("Skipping incomplete Team table row: " + tableRow.text());
             return null;
         }
@@ -75,11 +75,15 @@ public class TournamentParser {
         String playerALastName = names[0].trim();
         Player playerA = findPlayer(allPlayers, playerAFirstName, playerALastName, playerAClub);
 
-        String playerBFirstName = names[3].trim();
-        playerBFirstName = excludeParenthesisFromName(playerBFirstName);
-        String playerBLastName = names[2].trim();
-        Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub);
-        return new Team(playerA, playerB, registrationDate, clazz);
+        if (names.length == 4) {
+            String playerBFirstName = names[3].trim();
+            playerBFirstName = excludeParenthesisFromName(playerBFirstName);
+            String playerBLastName = names[2].trim();
+            Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub);
+            return new Team(playerA, playerB, registrationDate, clazz);
+        } else {
+            return new Team(playerA, registrationDate, clazz);
+        }
     }
 
     private String excludeParenthesisFromName(String playerName) {

@@ -11,11 +11,22 @@ public class Team implements Serializable, Comparable<Team> {
     private Date registrationTime;
     private Clazz clazz;
 
+    private boolean completeTeam;
+
     public Team(Player playerA, Player playerB, Date registrationTime, Clazz clazz) {
         this.playerA = playerA;
         this.playerB = playerB;
         this.registrationTime = registrationTime;
         this.clazz = clazz;
+        this.completeTeam = true;
+    }
+
+    public Team(Player playerA, Date registrationDate, Clazz clazz) {
+        this.playerA = playerA;
+        this.playerB = new Player("Partner sökes", "", "");
+        this.registrationTime = registrationDate;
+        this.clazz = clazz;
+        this.completeTeam = false;
     }
 
     public Player getPlayerA() {
@@ -52,6 +63,12 @@ public class Team implements Serializable, Comparable<Team> {
 
     @Override
     public int compareTo(Team another) {
+        if (completeTeam && !another.completeTeam) {
+            return -1;
+        } else if (!completeTeam && another.completeTeam) {
+            return 1;
+        }
+
         int cmp = compare(another.getEntryPoints(), this.getEntryPoints());
         if (cmp != 0) {
             return cmp;
