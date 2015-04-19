@@ -18,6 +18,10 @@ public class Tournament implements Serializable, Comparable<Tournament> {
 
     public static final String TAG = Tournament.class.getSimpleName();
 
+    private static int defaultId = 0;
+
+    private int id;
+
     private Date startDate;
 
     private Date endDate;
@@ -43,6 +47,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     public Tournament(Date startDate, Date endDate, String period, String club, String name,
             String url,
             String level, String clazzes) {
+        this.id = defaultId++;
         this.startDate = startDate;
         this.endDate = endDate;
         this.competitionPeriod = CompetitionPeriod.findByName(period);
@@ -124,7 +129,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     public Map<Clazz, List<Team>> getTeams() {
-        return teams != null ? teams : Collections.<Clazz, List<Team>>emptyMap();
+        return teams;
     }
 
     public List<TeamGroupPosition> getTeamGroupPositionsForClazz(TournamentClazz clazz) {
@@ -155,12 +160,12 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     public List<Team> getSeededTeamsForClazz(TournamentClazz clazz) {
-        if (getTeams().get(clazz.getClazz()) == null) {
+        if (getTeams() == null || getTeams().get(clazz.getClazz()) == null) {
             return Collections.emptyList();
         }
         List<Team> seeded = getTeams().get(clazz.getClazz());
         Collections.sort(seeded, level.getComparator());
-        Collections.sort(seeded.subList(0, min(seeded.size(), clazz.getMaxNumberOfTeams())), level.ENTRY_POINTS_COMPARATOR);
+        Collections.sort(seeded.subList(0, min(seeded.size(), clazz.getMaxNumberOfTeams())), Level.ENTRY_POINTS_COMPARATOR);
         return seeded;
     }
 
@@ -198,6 +203,14 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         return startDate.before(endDate);
     }
 
+    public boolean isRegistrationOpen() {
+        return registrationUrl != null;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "Tournament{" +
@@ -217,7 +230,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         return this.getStartDate().compareTo(tournament.getStartDate());
     }
 
-    public enum Level {
+    public enum Level implements Serializable {
         OPEN, OPEN_GREEN, CHALLENGER, SWEDISH_BEACH_TOUR, YOUTH, VETERAN, UNKNOWN;
 
         private static final Comparator<Team> REGISTRATION_TIME_COMPARATOR
@@ -270,7 +283,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         }
     }
 
-    public static class TeamGroupPosition {
+    public static class TeamGroupPosition implements Serializable {
 
         public final int group;
 
@@ -314,7 +327,11 @@ public class Tournament implements Serializable, Comparable<Tournament> {
 
         @Override
         public String toString() {
-            return clazz.toString() + " (" + maxNumberOfTeams + ")";
+            String clazzString = clazz.toString();
+            if (maxNumberOfTeams != null) {
+                clazzString += " (" + maxNumberOfTeams + ")";
+            }
+            return clazzString;
         }
     }
 }

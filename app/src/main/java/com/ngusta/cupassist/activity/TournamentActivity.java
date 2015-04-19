@@ -1,13 +1,10 @@
 package com.ngusta.cupassist.activity;
 
-import com.google.gson.Gson;
-
 import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.adapters.TeamAdapter;
 import com.ngusta.cupassist.adapters.TournamentListAdapter;
 import com.ngusta.cupassist.domain.Tournament;
 import com.ngusta.cupassist.io.TournamentListCache;
-import com.ngusta.cupassist.service.TournamentService;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,12 +21,14 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.List;
 
 public class TournamentActivity extends Activity {
 
-    public static final String TOURNAMENT_INTENT = "tournament";
+    public static final String TOURNAMENT_INTENT = "tournamentId";
 
     private View mProgressContainer;
 
@@ -41,8 +40,8 @@ public class TournamentActivity extends Activity {
 
     public static void startActivity(Context context, Tournament tournament) {
         Intent intent = new Intent(context, TournamentActivity.class);
-        String json = new Gson().toJson(tournament);
-        intent.putExtra(TOURNAMENT_INTENT, json);
+        //String json = new Gson().toJson(tournament.getId());
+        intent.putExtra(TOURNAMENT_INTENT, tournament.getId());
         context.startActivity(intent);
     }
 
@@ -50,8 +49,9 @@ public class TournamentActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tournament_view);
-        Gson gson = new Gson();
-        tournament = gson.fromJson(getIntent().getStringExtra("tournament"), Tournament.class);
+        //Gson gson = new Gson();
+        //tournament = gson.fromJson(getIntent().getStringExtra("tournament"), Tournament.class);
+        tournament = ((MyApplication) getApplication()).getTournamentService().getTournamentById(getIntent().getIntExtra(TOURNAMENT_INTENT, -1));
         mProgressContainer = findViewById(R.id.progressContainer);
         mTeamList = findViewById(R.id.teamList);
         setListShown(false, false);
@@ -99,19 +99,30 @@ public class TournamentActivity extends Activity {
         ((TextView) findViewById(R.id.start_date)).setText(tournament.getFormattedStartDate());
     }
 
-    private class RequestTournamentDetailsTask extends AsyncTask<Void, String, Void> {
+    private class RequestTournamentDetailsTask extends AsyncTask<Void, String, Exception> {
 
         @Override
-        protected Void doInBackground(Void... voids) {
-            new TournamentService(TournamentActivity.this).loadTournamentDetails(tournament);
+        protected Exception doInBackground(Void... voids) {
+            try {
+                ((MyApplication) getApplication()).getTournamentService().loadTournamentDetails(tournament);
+            } catch (IOException e) {
+                return e;
+            }
             return null;
         }
 
         @Override
-        protected void onPostExecute(Void voids) {
-            initClazzSpinner();
-            initCALink();
-            updateTeams(tournament.getClazzes().get(0));
+        protected void onPostExecute(Exception exception) {
+            if (exception == null && tournament.isRegistrationOpen()) {
+                initClazzSpinner();
+                initCALink();
+                updateTeams(tournament.getClazzes().get(0));
+            } else if (exception != null) {
+                Toast.makeText(TournamentActivity.this, "Kunde inte ladda lag. Kolla din internetanslutning.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(TournamentActivity.this, "Registreringen har inte öppnat", Toast.LENGTH_LONG).show();
+            }
+            setListShown(true, true);
         }
     }
 
@@ -150,6 +161,5 @@ public class TournamentActivity extends Activity {
         List<Tournament.TeamGroupPosition> teams = tournament.getTeamGroupPositionsForClazz(clazz);
         final ArrayAdapter<Tournament.TeamGroupPosition> adapter = new TeamAdapter(this, R.layout.team_list_item, teams, clazz.getMaxNumberOfTeams());
         teamListView.setAdapter(adapter);
-        setListShown(true, true);
     }
 }

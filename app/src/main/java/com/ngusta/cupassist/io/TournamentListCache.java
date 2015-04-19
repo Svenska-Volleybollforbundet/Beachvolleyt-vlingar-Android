@@ -3,6 +3,7 @@ package com.ngusta.cupassist.io;
 import com.ngusta.cupassist.activity.MyApplication;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Tournament;
+import com.ngusta.cupassist.domain.TournamentList;
 import com.ngusta.cupassist.parser.TournamentListParser;
 import com.ngusta.cupassist.parser.TournamentParser;
 
@@ -29,9 +30,9 @@ public class TournamentListCache extends Cache<Tournament> {
     private static final String CUP_ASSIST_TOURNAMENT_PLAYERS_URL
             = "http://www.cupassist.com/pamelding/vis_paamelding.php?order=rp";
 
-    public List<Tournament> tournaments;
+    public TournamentList tournamentList;
 
-    private static final String FILE_NAME = "tournaments";
+    private static final String FILE_NAME = "tournamentList";
 
     private Context context;
 
@@ -53,41 +54,44 @@ public class TournamentListCache extends Cache<Tournament> {
     }
 
     public List<Tournament> getTournaments() {
-        if (tournaments != null) {
-            return tournaments;
+        if (tournamentList != null) {
+            return tournamentList.getTournaments();
         }
-        tournaments = MyApplication.CACHE_TOURNAMENTS ? (List<Tournament>) load(FILE_NAME, context)
-                : null;
-        if (tournaments == null) {
+        try {
+            tournamentList = (TournamentList) load(FILE_NAME, context);
+        } catch (RuntimeException e) {
+            tournamentList = null;
+        }
+
+        if (downloadTournaments()) {
             try {
-                tournaments = tournamentListParser.parseTournamentList(
+                List<Tournament> tournaments = tournamentListParser.parseTournamentList(
                         sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL));
                 Collections.sort(tournaments);
-                save(tournaments, FILE_NAME, context);
+                tournamentList = new TournamentList(tournaments);
+                save(tournamentList, FILE_NAME, context);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return tournaments;
+        return tournamentList.getTournaments();
     }
 
-    public void getTournamentDetails(Tournament tournament, Map<String, Player> allPlayers) {
-        if (tournament.getTeams() != null && MyApplication.CACHE_TOURNAMENTS) {
-            return;
-        }
-        try {
-            String source = sourceCodeRequester
-                    .getSourceCode(CUP_ASSIST_BASE_URL + "pa/" + tournament.getUrl());
-            tournament.setRegistrationUrl(tournamentParser.parseRegistrationUrl(source));
-            tournament.setMaxNumberOfTeams(tournamentParser.parseMaxNumberOfTeams(source));
+    private boolean downloadTournaments() {
+        return !MyApplication.CACHE_TOURNAMENTS || tournamentList == null || !tournamentList.isValid();
+    }
 
+    public void getTournamentDetails(Tournament tournament, Map<String, Player> allPlayers) throws IOException {
+        String source = sourceCodeRequester
+                .getSourceCode(CUP_ASSIST_BASE_URL + "pa/" + tournament.getUrl());
+        tournament.setRegistrationUrl(tournamentParser.parseRegistrationUrl(source));
+        tournament.setMaxNumberOfTeams(tournamentParser.parseMaxNumberOfTeams(source));
+
+        if (tournament.isRegistrationOpen()) {
             sourceCodeRequester.getSourceCode(
                     CUP_ASSIST_TOURNAMENT_URL + tournament.getRegistrationUrl());
             source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL);
             tournament.setTeams(tournamentParser.parseTeams(source, allPlayers));
-            save(tournaments, FILE_NAME, context);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

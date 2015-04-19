@@ -5,9 +5,12 @@ import com.ngusta.cupassist.domain.Team;
 import com.ngusta.cupassist.domain.Tournament;
 import com.ngusta.cupassist.io.PlayerListCache;
 import com.ngusta.cupassist.io.TournamentListCache;
+import com.ngusta.cupassist.service.PlayerService;
+import com.ngusta.cupassist.service.TournamentService;
 
 import android.app.Application;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -19,12 +22,30 @@ public class MyApplication extends Application {
 
     public static final boolean CACHE_TOURNAMENTS = false;
 
+    private PlayerService playerService;
+
+    private TournamentService tournamentService;
+
     @Override
     public void onCreate() {
         super.onCreate();
     }
 
-    private static void desktopRun() {
+    public PlayerService getPlayerService() {
+        if (playerService == null) {
+            playerService = new PlayerService(getApplicationContext());
+        }
+        return playerService;
+    }
+
+    public TournamentService getTournamentService() {
+        if (tournamentService == null) {
+            tournamentService = new TournamentService(getApplicationContext(), getPlayerService());
+        }
+        return tournamentService;
+    }
+
+    private static void desktopRun() throws IOException {
         long start = System.currentTimeMillis();
         PlayerListCache playerListCache = new PlayerListCache();
         Map<String, Player> players = playerListCache.getPlayers();
@@ -60,6 +81,10 @@ public class MyApplication extends Application {
 
     public static void main(String[] args) {
         RUN_AS_ANDROID_APP = false;
-        desktopRun();
+        try {
+            desktopRun();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

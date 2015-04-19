@@ -5,7 +5,6 @@ import com.ngusta.cupassist.adapters.TournamentListAdapter;
 import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.CompetitionPeriod;
 import com.ngusta.cupassist.domain.Tournament;
-import com.ngusta.cupassist.service.TournamentService;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -168,7 +167,7 @@ public class TournamentListActivity extends ListActivity {
 
         @Override
         protected List<Tournament> doInBackground(Void... voids) {
-            return new TournamentService(TournamentListActivity.this).getAllTournaments();
+            return ((MyApplication) getApplication()).getTournamentService().getAllTournaments();
         }
 
         @Override
