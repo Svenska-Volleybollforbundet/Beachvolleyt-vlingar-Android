@@ -27,7 +27,7 @@ public class TournamentListParser {
             try {
                 tournaments.add(createTournament(tableRow));
             } catch (ParseException e) {
-                System.err.print("Failed to extract tournament from document: " + source);
+                System.err.print("Failed to extract tournament from tableRow: " + tableRow);
                 e.printStackTrace();
             }
         }
@@ -40,8 +40,13 @@ public class TournamentListParser {
                 .parse(tableRow.child(0).text());
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(startDate);
-        Date endDate = new SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
-                .parse(calendar.get(Calendar.YEAR) + "." + tableRow.child(1).text());
+        Date endDate;
+        try {
+            endDate = new SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
+                    .parse(calendar.get(Calendar.YEAR) + "." + tableRow.child(1).text());
+        } catch (ParseException e) {
+            endDate = startDate;
+        }
         String period = tableRow.child(2).text();
         String club = tableRow.child(3).text();
         String name = tableRow.child(4).text();
