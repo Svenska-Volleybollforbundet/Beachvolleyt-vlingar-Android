@@ -18,7 +18,7 @@
             android:textSize="10pt" />
 
         <ImageButton
-            android:src="@drawable/link_icon_disabled"
+            android:src="@drawable/external_link_disabled"
             android:id="@+id/open_cupassist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

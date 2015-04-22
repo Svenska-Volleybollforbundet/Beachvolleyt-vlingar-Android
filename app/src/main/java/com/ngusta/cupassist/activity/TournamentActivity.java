@@ -40,7 +40,6 @@ public class TournamentActivity extends Activity {
 
     public static void startActivity(Context context, Tournament tournament) {
         Intent intent = new Intent(context, TournamentActivity.class);
-        //String json = new Gson().toJson(tournament.getId());
         intent.putExtra(TOURNAMENT_INTENT, tournament.getId());
         context.startActivity(intent);
     }
@@ -49,8 +48,6 @@ public class TournamentActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tournament_view);
-        //Gson gson = new Gson();
-        //tournament = gson.fromJson(getIntent().getStringExtra("tournament"), Tournament.class);
         tournament = ((MyApplication) getApplication()).getTournamentService().getTournamentById(getIntent().getIntExtra(TOURNAMENT_INTENT, -1));
         mProgressContainer = findViewById(R.id.progressContainer);
         mTeamList = findViewById(R.id.teamList);
@@ -146,7 +143,7 @@ public class TournamentActivity extends Activity {
 
     private void initCALink() {
         final ImageButton button = (ImageButton) findViewById(R.id.open_cupassist);
-        button.setImageResource(R.drawable.link_icon_enabled);
+        button.setImageResource(R.drawable.external_link_enabled);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Uri cupAssistUri = Uri.parse(TournamentListCache.CUP_ASSIST_TOURNAMENT_URL + tournament.getRegistrationUrl());
