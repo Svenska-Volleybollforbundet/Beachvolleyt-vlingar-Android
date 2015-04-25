@@ -2,6 +2,7 @@ package com.ngusta.cupassist.activity;
 
 import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.domain.Clazz;
+import com.ngusta.cupassist.domain.Region;
 import com.ngusta.cupassist.domain.Tournament;
 
 import android.app.AlertDialog;
@@ -18,6 +19,8 @@ public class TournamentListDialogs {
     private static final String CLAZZ_PREFERENCES_KEY = "defaultClazzIndexes";
 
     private static final String LEVEL_PREFERENCES_KEY = "defaultLevelIndexes";
+
+    private static final String REGION_PREFERENCES_KEY = "defaultLevelIndexes";
 
     private static final int MEN_INDEX = 0;
 
@@ -40,6 +43,14 @@ public class TournamentListDialogs {
     private static final int YOUTH_LEVEL_INDEX = 4;
 
     private static final int VETERAN_LEVEL_INDEX = 5;
+
+    private static final int NORTH_REGION_INDEX = 0;
+
+    private static final int STOCKHOLM_REGION_INDEX = 1;
+
+    private static final int MIDDLE_REGION_INDEX = 2;
+
+    private static final int SOUTH_REGION_INDEX = 3;
 
     static List<Clazz> getDefaultClazzes(SharedPreferences preferences) {
         Set<String> savedClazzIndexes = getSavedClazzPreferences(preferences);
@@ -200,6 +211,83 @@ public class TournamentListDialogs {
                         editor.putStringSet(LEVEL_PREFERENCES_KEY, levelIndexesToSave);
                         editor.apply();
                         activity.setLevelsToFilter(levelsToFilter);
+                        activity.updateList();
+                    }
+                });
+        return dialogBuilder;
+    }
+
+    public static List<Region> getDefaultRegions(SharedPreferences preferences) {
+        Set<String> savedRegionIndexes = getSavedRegionPreferences(preferences);
+        ArrayList<Region> regionsToFilter = new ArrayList<>();
+        for (String regionIndex : savedRegionIndexes) {
+            int i = Integer.parseInt(regionIndex);
+            addRegionsFromIndex(regionsToFilter, i);
+        }
+        return regionsToFilter;
+    }
+
+    private static Set<String> getSavedRegionPreferences(SharedPreferences preferences) {
+        Set<String> defaultRegionIndexes = new HashSet<>();
+        defaultRegionIndexes.add("" + NORTH_REGION_INDEX);
+        defaultRegionIndexes.add("" + STOCKHOLM_REGION_INDEX);
+        defaultRegionIndexes.add("" + MIDDLE_REGION_INDEX);
+        defaultRegionIndexes.add("" + SOUTH_REGION_INDEX);
+        return preferences.getStringSet(REGION_PREFERENCES_KEY, defaultRegionIndexes);
+    }
+
+    private static void addRegionsFromIndex(ArrayList<Region> regionsToFilter, int i) {
+        switch (i) {
+            case NORTH_REGION_INDEX:
+                regionsToFilter.add(Region.NORTH);
+                break;
+            case STOCKHOLM_REGION_INDEX:
+                regionsToFilter.add(Region.STOCKHOLM);
+                break;
+            case MIDDLE_REGION_INDEX:
+                regionsToFilter.add(Region.MIDDLE);
+                break;
+            case SOUTH_REGION_INDEX:
+                regionsToFilter.add(Region.SOUTH);
+                break;
+        }
+    }
+
+    static AlertDialog.Builder createRegionFilterDialog(final TournamentListActivity activity, final SharedPreferences preferences) {
+        Set<String> savedRegionIndexes = getSavedRegionPreferences(preferences);
+        final ArrayList<Integer> selectedItemsIndexList = new ArrayList<>();
+        boolean[] defaultSelected = {true, true, true, true};
+        for (String regionIndex : savedRegionIndexes) {
+            int i = Integer.parseInt(regionIndex);
+            defaultSelected[i] = true;
+            selectedItemsIndexList.add(i);
+        }
+        String[] clazzNames = {"Norr", "Stockholm", "Mellan", "Syd"};
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
+        dialogBuilder.setTitle(R.string.show_regions)
+                .setMultiChoiceItems(clazzNames, defaultSelected, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (isChecked) {
+                            selectedItemsIndexList.add(which);
+                        } else if (selectedItemsIndexList.contains(which)) {
+                            selectedItemsIndexList.remove(Integer.valueOf(which));
+                        }
+                    }
+                })
+                .setPositiveButton(R.string.show, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        ArrayList<Region> regionsToFilter = new ArrayList<>();
+                        HashSet<String> regionIndexesToSave = new HashSet<>();
+                        for (Integer selectedRegionIndex : selectedItemsIndexList) {
+                            regionIndexesToSave.add(selectedRegionIndex.toString());
+                            addRegionsFromIndex(regionsToFilter, selectedRegionIndex);
+                        }
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putStringSet(REGION_PREFERENCES_KEY, regionIndexesToSave);
+                        editor.apply();
+                        activity.setRegionsToFilter(regionsToFilter);
                         activity.updateList();
                     }
                 });

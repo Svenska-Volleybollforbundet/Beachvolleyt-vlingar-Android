@@ -3,4 +3,5 @@
     <item name="menu_item_today" type="id" />
     <item name="menu_item_clazzes" type="id" />
     <item name="menu_item_levels" type="id" />
+    <item name="menu_item_regions" type="id" />
 </resources>

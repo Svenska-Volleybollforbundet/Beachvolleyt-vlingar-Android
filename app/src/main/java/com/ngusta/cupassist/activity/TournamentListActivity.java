@@ -4,6 +4,7 @@ import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.adapters.TournamentListAdapter;
 import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.CompetitionPeriod;
+import com.ngusta.cupassist.domain.Region;
 import com.ngusta.cupassist.domain.Tournament;
 
 import android.app.AlertDialog;
@@ -38,9 +39,13 @@ public class TournamentListActivity extends ListActivity {
 
     private List<Tournament.Level> mLevelsToFilter;
 
+    private List<Region> mRegionsToFilter;
+
     private AlertDialog.Builder mClazzDialog;
 
     private AlertDialog.Builder mLevelDialog;
+
+    private AlertDialog.Builder mRegionDialog;
 
     private List<Tournament> mTournaments;
 
@@ -58,6 +63,9 @@ public class TournamentListActivity extends ListActivity {
         mClazzDialog = TournamentListDialogs.createClazzFilterDialog(this, preferences);
         mLevelsToFilter = TournamentListDialogs.getDefaultLevels(preferences);
         mLevelDialog = TournamentListDialogs.createLevelFilterDialog(this, preferences);
+        mRegionsToFilter = TournamentListDialogs.getDefaultRegions(preferences);
+        mRegionDialog = TournamentListDialogs.createRegionFilterDialog(this, preferences);
+
         makeActionOverflowMenuShown();
     }
 
@@ -97,6 +105,8 @@ public class TournamentListActivity extends ListActivity {
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         menu.add(Menu.NONE, R.id.menu_item_levels, Menu.NONE, R.string.show_levels)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        menu.add(Menu.NONE, R.id.menu_item_regions, Menu.NONE, R.string.show_regions)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
         return true;
     }
@@ -113,6 +123,9 @@ public class TournamentListActivity extends ListActivity {
                 return true;
             case R.id.menu_item_levels:
                 mLevelDialog.show();
+                return true;
+            case R.id.menu_item_regions:
+                mRegionDialog.show();
                 return true;
         }
         return false;
@@ -190,7 +203,8 @@ public class TournamentListActivity extends ListActivity {
         List<Tournament> filteredTournaments = new ArrayList<>();
         for (Tournament tournament : tournaments) {
             for (Tournament.TournamentClazz tournamentClazz : tournament.getClazzes()) {
-                if (mClazzesToFilter.contains(tournamentClazz.getClazz()) && mLevelsToFilter.contains(tournament.getLevel())) {
+                if (mClazzesToFilter.contains(tournamentClazz.getClazz()) && mLevelsToFilter.contains(tournament.getLevel())
+                        && (tournament.getRegion() == null || mRegionsToFilter.contains(tournament.getRegion()))) {
                     filteredTournaments.add(tournament);
                     break;
                 }
@@ -205,5 +219,9 @@ public class TournamentListActivity extends ListActivity {
 
     public void setLevelsToFilter(List<Tournament.Level> levelsToFilter) {
         mLevelsToFilter = levelsToFilter;
+    }
+
+    public void setRegionsToFilter(List<Region> regionsToFilter) {
+        mRegionsToFilter = regionsToFilter;
     }
 }

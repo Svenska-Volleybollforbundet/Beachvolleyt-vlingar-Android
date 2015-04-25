@@ -44,6 +44,8 @@ public class Tournament implements Serializable, Comparable<Tournament> {
 
     private Map<Clazz, List<Team>> teams;
 
+    private Region region;
+
     public Tournament(Date startDate, Date endDate, String period, String club, String name,
             String url,
             String level, String clazzes) {
@@ -60,6 +62,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
             this.level = guessLevel(name);
         }
         this.clazzes = parseClazzes(clazzes);
+        this.region = Region.findRegionByClub(this.club);
     }
 
     private Level guessLevel(String name) {
@@ -209,6 +212,10 @@ public class Tournament implements Serializable, Comparable<Tournament> {
 
     public int getId() {
         return id;
+    }
+
+    public Region getRegion() {
+        return region;
     }
 
     @Override
