@@ -113,7 +113,9 @@ public class TournamentActivity extends Activity {
             if (exception == null && tournament.isRegistrationOpen()) {
                 initClazzSpinner();
                 initCALink();
-                updateTeams(tournament.getClazzes().get(0));
+                Tournament.TournamentClazz clazz = tournament.getClazzes().get(0);
+                setTeamsInfo(clazz);
+                updateTeams(clazz);
             } else if (exception != null) {
                 Toast.makeText(TournamentActivity.this, "Kunde inte ladda lag. Kolla din internetanslutning.", Toast.LENGTH_LONG).show();
             } else {
@@ -132,7 +134,9 @@ public class TournamentActivity extends Activity {
         clazzSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                updateTeams((Tournament.TournamentClazz) parent.getSelectedItem());
+                Tournament.TournamentClazz clazz = (Tournament.TournamentClazz) parent.getSelectedItem();
+                setTeamsInfo(clazz);
+                updateTeams(clazz);
             }
 
             @Override
@@ -151,6 +155,12 @@ public class TournamentActivity extends Activity {
                 startActivity(browserIntent);
             }
         });
+    }
+
+    private void setTeamsInfo(Tournament.TournamentClazz clazz) {
+        ((TextView) findViewById(R.id.teams_info)).setText(
+                getResources().getString(R.string.registered) + " " + tournament.getNumberOfCompleteTeamsForClazz(clazz) + "/" + clazz
+                        .getMaxNumberOfTeams());
     }
 
     private void updateTeams(Tournament.TournamentClazz clazz) {

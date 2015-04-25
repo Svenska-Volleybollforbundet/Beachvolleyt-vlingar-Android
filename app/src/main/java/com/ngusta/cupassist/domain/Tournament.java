@@ -172,6 +172,20 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         return seeded;
     }
 
+    public int getNumberOfCompleteTeamsForClazz(TournamentClazz clazz) {
+        if (getTeams() == null || getTeams().get(clazz.getClazz()) == null) {
+            return 0;
+        }
+        List<Team> teams = getTeams().get(clazz.getClazz());
+        int numberOfCompleteTeams = 0;
+        for (Team team : teams) {
+            if (!team.getPlayerB().getName().trim().equals("Partner sökes")) {
+                numberOfCompleteTeams++;
+            }
+        }
+        return numberOfCompleteTeams;
+    }
+
     public void setMaxNumberOfTeams(Map<Clazz, Integer> maxNumberOfTeams) {
         clazzes.clear();
         for (Clazz clazz : maxNumberOfTeams.keySet()) {
@@ -335,9 +349,6 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         @Override
         public String toString() {
             String clazzString = clazz.toString();
-            if (maxNumberOfTeams != null) {
-                clazzString += " (" + maxNumberOfTeams + ")";
-            }
             return clazzString;
         }
     }

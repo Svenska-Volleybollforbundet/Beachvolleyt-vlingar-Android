@@ -18,8 +18,8 @@
             android:textSize="10pt" />
 
         <ImageButton
-            android:src="@drawable/external_link_disabled"
             android:id="@+id/open_cupassist"
+            android:src="@drawable/external_link_disabled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/club"
@@ -41,6 +41,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/club" />
+
+        <TextView
+            android:id="@+id/teams_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/club"
+            android:layout_alignParentRight="true"
+            android:textSize="8pt"
+            android:layout_marginRight="5dp" />
     </RelativeLayout>
 
 
