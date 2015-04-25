@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="level_open">#eeefa249</color>
+    <color name="level_open">#ee666666</color>
     <color name="level_open_green">#ee16a765</color>
     <color name="level_challenger">#eee55c68</color>
     <color name="level_youth">#ee67a1bb</color>
