@@ -20,7 +20,7 @@ public class TournamentListDialogs {
 
     private static final String LEVEL_PREFERENCES_KEY = "defaultLevelIndexes";
 
-    private static final String REGION_PREFERENCES_KEY = "defaultLevelIndexes";
+    private static final String REGION_PREFERENCES_KEY = "defaultRegionIndexes";
 
     private static final int MEN_INDEX = 0;
 
@@ -256,7 +256,7 @@ public class TournamentListDialogs {
     static AlertDialog.Builder createRegionFilterDialog(final TournamentListActivity activity, final SharedPreferences preferences) {
         Set<String> savedRegionIndexes = getSavedRegionPreferences(preferences);
         final ArrayList<Integer> selectedItemsIndexList = new ArrayList<>();
-        boolean[] defaultSelected = {true, true, true, true};
+        boolean[] defaultSelected = {false, false, false, false};
         for (String regionIndex : savedRegionIndexes) {
             int i = Integer.parseInt(regionIndex);
             defaultSelected[i] = true;
