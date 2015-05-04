@@ -53,7 +53,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         this.startDate = startDate;
         this.endDate = endDate;
         this.competitionPeriod = CompetitionPeriod.findByName(period);
-        this.club = club;
+        this.club = shortenName(club);
         this.name = name;
         this.url = url;
         this.levelString = level;
@@ -63,6 +63,16 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         }
         this.clazzes = parseClazzes(clazzes);
         this.region = Region.findRegionByClub(this.club);
+    }
+
+    private String shortenName(String club) {
+        if ("KFUM Gymnastik & IA Karskrona".equals(club)) {
+            return "KFUM Karlskrona";
+        }
+        if ("Föreningen Beachvolley-Aid".equals(club)) {
+            return "Beachvolley-Aid";
+        }
+        return club;
     }
 
     private Level guessLevel(String name) {
@@ -128,6 +138,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     public void setRegistrationUrl(String registrationUrl) {
+        Log.i(TAG, "Setting reg url to : " + registrationUrl + " Old value: " + this.registrationUrl);
         this.registrationUrl = registrationUrl;
     }
 
@@ -221,6 +232,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     public boolean isRegistrationOpen() {
+        Log.i(TAG, "isRegistrationOpen: " + (registrationUrl != null) + " Reg url: " + registrationUrl);
         return registrationUrl != null;
     }
 

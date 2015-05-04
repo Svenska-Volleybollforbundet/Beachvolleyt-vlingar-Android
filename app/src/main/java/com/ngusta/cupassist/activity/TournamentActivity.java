@@ -119,7 +119,8 @@ public class TournamentActivity extends Activity {
             } else if (exception != null) {
                 Toast.makeText(TournamentActivity.this, "Kunde inte ladda lag. Kolla din internetanslutning.", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(TournamentActivity.this, "Registreringen har inte öppnat", Toast.LENGTH_LONG).show();
+                Toast.makeText(TournamentActivity.this, "Registreringen har inte öppnat. Registration url is " + tournament.getRegistrationUrl(),
+                        Toast.LENGTH_LONG).show();
             }
             setListShown(true, true);
         }
