@@ -94,20 +94,19 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/dates"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/dates"
-        android:layout_alignStart="@id/club"
-        android:layout_below="@id/club"
+        android:layout_alignBaseline="@id/club"
+        android:layout_alignParentEnd="true"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@id/dates"
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/name"
-        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@id/club"
+        android:layout_below="@id/club"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>
