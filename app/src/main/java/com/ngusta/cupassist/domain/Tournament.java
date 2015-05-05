@@ -138,8 +138,10 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     public void setRegistrationUrl(String registrationUrl) {
-        Log.i(TAG, "Setting reg url to : " + registrationUrl + " Old value: " + this.registrationUrl);
-        this.registrationUrl = registrationUrl;
+        Log.i(TAG, "Trying to set reg url to: " + registrationUrl + " Old value: " + this.registrationUrl);
+        if (registrationUrl != null) {
+            this.registrationUrl = registrationUrl;
+        }
     }
 
     public Map<Clazz, List<Team>> getTeams() {
@@ -198,9 +200,12 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     public void setMaxNumberOfTeams(Map<Clazz, Integer> maxNumberOfTeams) {
-        clazzes.clear();
-        for (Clazz clazz : maxNumberOfTeams.keySet()) {
-            clazzes.add(new TournamentClazz(clazz, maxNumberOfTeams.get(clazz)));
+        Log.i(TAG, "Trying to set max number of teams: " + maxNumberOfTeams + " Old clazzes: " + this.clazzes);
+        if (maxNumberOfTeams != null) {
+            clazzes.clear();
+            for (Clazz clazz : maxNumberOfTeams.keySet()) {
+                clazzes.add(new TournamentClazz(clazz, maxNumberOfTeams.get(clazz)));
+            }
         }
     }
 
