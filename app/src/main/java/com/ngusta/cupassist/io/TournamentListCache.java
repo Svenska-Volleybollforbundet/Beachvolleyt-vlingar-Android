@@ -19,9 +19,6 @@ public class TournamentListCache extends Cache<Tournament> {
     private static final String CUP_ASSIST_TOURNAMENT_LIST_URL
             = "http://www.cupassist.com/pa/terminliste.php?org=SVBF.SE.SVB&p=36";
 
-    private static final String CUP_ASSIST_TOURNAMENT_LIST_2014_URL
-            = "http://www.cupassist.com/pa/terminliste.php?org=SVBF.SE.SVB&p=32";
-
     private static final String CUP_ASSIST_BASE_URL = "http://www.cupassist.com/";
 
     public static final String CUP_ASSIST_TOURNAMENT_URL
@@ -29,6 +26,8 @@ public class TournamentListCache extends Cache<Tournament> {
 
     private static final String CUP_ASSIST_TOURNAMENT_PLAYERS_URL
             = "http://www.cupassist.com/pamelding/vis_paamelding.php?order=rp";
+
+    private static final String STRING_ONLY_IN_REAL_TOURNAMENT_PAGE = "evenemang";
 
     public TournamentList tournamentList;
 
@@ -82,8 +81,11 @@ public class TournamentListCache extends Cache<Tournament> {
     }
 
     public void getTournamentDetails(Tournament tournament, Map<String, Player> allPlayers) throws IOException {
-        String source = sourceCodeRequester
-                .getSourceCode(CUP_ASSIST_BASE_URL + "pa/" + tournament.getUrl());
+        String source = sourceCodeRequester.getSourceCode(CUP_ASSIST_BASE_URL + "pa/" + tournament.getUrl());
+        if (cookieHasExpired(source)) {
+            sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL);
+            source = sourceCodeRequester.getSourceCode(CUP_ASSIST_BASE_URL + "pa/" + tournament.getUrl());
+        }
         tournament.setRegistrationUrl(tournamentParser.parseRegistrationUrl(source));
         tournament.setMaxNumberOfTeams(tournamentParser.parseMaxNumberOfTeams(source));
 
@@ -93,5 +95,9 @@ public class TournamentListCache extends Cache<Tournament> {
             source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL);
             tournament.setTeams(tournamentParser.parseTeams(source, allPlayers));
         }
+    }
+
+    private boolean cookieHasExpired(String source) {
+        return !source.contains(STRING_ONLY_IN_REAL_TOURNAMENT_PAGE);
     }
 }
