@@ -11,9 +11,12 @@ public class PlayerList implements Serializable {
 
     private CompetitionPeriod competitionPeriodOfSave;
 
+    private Date created;
+
     public PlayerList(CompetitionPeriod competitionPeriodOfSave) {
         this.competitionPeriodOfSave = competitionPeriodOfSave;
         this.players = new HashMap<>();
+        this.created = new Date();
     }
 
     public Map<String, Player> getPlayers() {
@@ -26,5 +29,9 @@ public class PlayerList implements Serializable {
 
     public boolean isFromCurrentCompetitionPeriod() {
         return competitionPeriodOfSave.equals(CompetitionPeriod.findPeriodByDate(new Date()));
+    }
+
+    public Date getCreated() {
+        return created;
     }
 }

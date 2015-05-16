@@ -86,6 +86,6 @@ public class PlayerListCache extends Cache<Player> {
 
     private boolean downloadPlayers() {
         return !MyApplication.CACHE_PLAYERS || playerList == null || !playerList
-                .isFromCurrentCompetitionPeriod();
+                .isFromCurrentCompetitionPeriod() || (new Date().getTime() - playerList.getCreated().getTime() > 24 * 60 * 60 * 1000);
     }
 }
