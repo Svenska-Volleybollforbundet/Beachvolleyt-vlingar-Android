@@ -57,7 +57,7 @@ public class TournamentParser {
 
         Date registrationDate = null;
         try {
-            registrationDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(tableRow.child(3).text());
+            registrationDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(tableRow.child(3).text());
         } catch (ParseException e) {
             e.printStackTrace();
         }
