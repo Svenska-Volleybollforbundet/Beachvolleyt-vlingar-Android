@@ -274,6 +274,9 @@ public class Tournament implements Serializable, Comparable<Tournament> {
                 if (lhs.getRegistrationTime() == null) {
                     return rhs.getRegistrationTime() == null ? 0 : -1;
                 }
+                if (rhs.getRegistrationTime() == null) {
+                    return 1;
+                }
                 return lhs.getRegistrationTime().compareTo(rhs.getRegistrationTime());
             }
         };
