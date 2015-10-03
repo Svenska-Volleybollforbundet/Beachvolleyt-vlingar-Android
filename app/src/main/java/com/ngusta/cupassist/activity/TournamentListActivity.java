@@ -203,7 +203,8 @@ public class TournamentListActivity extends ListActivity {
         List<Tournament> filteredTournaments = new ArrayList<>();
         for (Tournament tournament : tournaments) {
             for (Tournament.TournamentClazz tournamentClazz : tournament.getClazzes()) {
-                if (mClazzesToFilter.contains(tournamentClazz.getClazz()) && mLevelsToFilter.contains(tournament.getLevel())
+                if (mClazzesToFilter.contains(tournamentClazz.getClazz()) && (tournament.getLevel() == Tournament.Level.UNKNOWN || mLevelsToFilter
+                        .contains(tournament.getLevel()))
                         && (tournament.getRegion() == null || mRegionsToFilter.contains(tournament.getRegion()))) {
                     filteredTournaments.add(tournament);
                     break;

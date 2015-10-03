@@ -91,6 +91,12 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         if (name.contains("ungdom") || name.contains("junior")) {
             guessedLevel = Level.YOUTH;
         }
+        if (name.contains("mixed-sm")) {
+            guessedLevel = Level.SWEDISH_BEACH_TOUR;
+        }
+        if (name.contains("senior-sm")) {
+            guessedLevel = Level.SWEDISH_BEACH_TOUR;
+        }
         return guessedLevel;
     }
 
