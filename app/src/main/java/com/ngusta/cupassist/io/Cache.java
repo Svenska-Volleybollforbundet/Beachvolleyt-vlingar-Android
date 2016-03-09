@@ -40,7 +40,7 @@ public abstract class Cache<T> {
         } catch (InvalidClassException e) {
             System.out.println("Couldn't use cache.");
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("No cache found.");
         }
         return null;
     }

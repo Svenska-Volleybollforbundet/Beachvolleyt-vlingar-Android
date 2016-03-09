@@ -57,7 +57,7 @@ public class MyApplication extends Application {
         System.out.println(
                 "Tournaments loaded, took " + (System.currentTimeMillis() - start) + " ms");
         for (Tournament tournament : tournaments) {
-            if (tournament.getName().equals("Beachhallen Challenger II 2014")) {
+            if (tournament.getName().equals("BBVC Challenger II")) {
 
                 System.out.println("\n" + tournament);
                 tournamentListCache.getTournamentDetails(tournament, players);
