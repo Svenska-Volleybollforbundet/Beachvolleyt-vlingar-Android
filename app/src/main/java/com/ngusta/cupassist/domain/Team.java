@@ -106,4 +106,8 @@ public class Team implements Serializable, Comparable<Team> {
     public Clazz getClazz() {
         return clazz;
     }
+
+    public boolean isCompleteTeam() {
+        return completeTeam;
+    }
 }

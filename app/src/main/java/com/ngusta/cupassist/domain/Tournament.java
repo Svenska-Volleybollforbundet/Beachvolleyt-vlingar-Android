@@ -1,5 +1,7 @@
 package com.ngusta.cupassist.domain;
 
+import com.ngusta.cupassist.activity.MyApplication;
+
 import android.util.Log;
 
 import java.io.Serializable;
@@ -144,7 +146,9 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     public void setRegistrationUrl(String registrationUrl) {
-        Log.i(TAG, "Trying to set reg url to: " + registrationUrl + " Old value: " + this.registrationUrl);
+        if (MyApplication.RUN_AS_ANDROID_APP) {
+            Log.i(TAG, "Trying to set reg url to: " + registrationUrl + " Old value: " + this.registrationUrl);
+        }
         this.registrationUrl = registrationUrl;
     }
 
@@ -204,7 +208,9 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     public void setMaxNumberOfTeams(Map<Clazz, Integer> maxNumberOfTeams) {
-        Log.i(TAG, "Trying to set max number of teams: " + maxNumberOfTeams + " Old clazzes: " + this.clazzes);
+        if (MyApplication.RUN_AS_ANDROID_APP) {
+            Log.i(TAG, "Trying to set max number of teams: " + maxNumberOfTeams + " Old clazzes: " + this.clazzes);
+        }
         clazzes.clear();
         for (Clazz clazz : maxNumberOfTeams.keySet()) {
             clazzes.add(new TournamentClazz(clazz, maxNumberOfTeams.get(clazz)));
@@ -239,7 +245,9 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     public boolean isRegistrationOpen() {
-        Log.i(TAG, "isRegistrationOpen: " + (registrationUrl != null) + " Reg url: " + registrationUrl);
+        if (MyApplication.RUN_AS_ANDROID_APP) {
+            Log.i(TAG, "isRegistrationOpen: " + (registrationUrl != null) + " Reg url: " + registrationUrl);
+        }
         return registrationUrl != null;
     }
 
@@ -281,6 +289,11 @@ public class Tournament implements Serializable, Comparable<Tournament> {
                     return rhs.getRegistrationTime() == null ? 0 : -1;
                 }
                 if (rhs.getRegistrationTime() == null) {
+                    return 1;
+                }
+                if (lhs.isCompleteTeam() && !rhs.isCompleteTeam()) {
+                    return -1;
+                } else if (!lhs.isCompleteTeam() && rhs.isCompleteTeam()) {
                     return 1;
                 }
                 return lhs.getRegistrationTime().compareTo(rhs.getRegistrationTime());
