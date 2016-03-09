@@ -39,6 +39,9 @@ public class PlayerListParser {
         Integer rank = !hasRanking(rankString) ? Integer.parseInt(rankString) : null;
         String[] name = tableRow.child(1).text().split(",");
         String firstName = name[1].trim();
+        if (firstName.charAt(firstName.length() - 1) == '*') {
+            firstName = firstName.substring(0, firstName.length() - 1);
+        }
         String lastName = name[0].trim();
         String club = tableRow.child(2).text();
         int rankPoints = Integer.parseInt(tableRow.child(3).text());
