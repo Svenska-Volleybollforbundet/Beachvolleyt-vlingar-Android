@@ -285,15 +285,15 @@ public class Tournament implements Serializable, Comparable<Tournament> {
                 = new Comparator<Team>() {
             @Override
             public int compare(Team lhs, Team rhs) {
+                if (lhs.isCompleteTeam() && !rhs.isCompleteTeam()) {
+                    return -1;
+                } else if (!lhs.isCompleteTeam() && rhs.isCompleteTeam()) {
+                    return 1;
+                }
                 if (lhs.getRegistrationTime() == null) {
                     return rhs.getRegistrationTime() == null ? 0 : -1;
                 }
                 if (rhs.getRegistrationTime() == null) {
-                    return 1;
-                }
-                if (lhs.isCompleteTeam() && !rhs.isCompleteTeam()) {
-                    return -1;
-                } else if (!lhs.isCompleteTeam() && rhs.isCompleteTeam()) {
                     return 1;
                 }
                 return lhs.getRegistrationTime().compareTo(rhs.getRegistrationTime());

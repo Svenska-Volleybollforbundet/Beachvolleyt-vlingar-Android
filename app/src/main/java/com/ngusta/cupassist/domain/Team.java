@@ -110,4 +110,13 @@ public class Team implements Serializable, Comparable<Team> {
     public boolean isCompleteTeam() {
         return completeTeam;
     }
+
+    @Override
+    public String toString() {
+        return playerA.getName() + "/" + playerB.getName() +
+                ", entry: " + getEntryPoints() +
+                ", registrationTime=" + registrationTime +
+                ", clazz=" + clazz +
+                ", completeTeam=" + completeTeam;
+    }
 }
