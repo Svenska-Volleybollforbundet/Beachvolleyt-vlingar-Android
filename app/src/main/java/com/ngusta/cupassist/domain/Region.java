@@ -5,7 +5,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 public enum Region {
-    NORTH(asList("IK Studenterna", "Lule Volley")),
+    NORTH(asList("IK Studenterna i Umeå", "Lule Volley")),
     STOCKHOLM(asList("Beachhallen BVC", "Bromma KFUK-KFUM", "Fyrishov BC", "Södertelge VBK", "Beachbrothers BC", "Stockholm BVC")),
     MIDDLE(asList("Linköping Beach AC", "KFUM Gymnastik & IA Karskrona", "Jönköpings BC", "Ljungby VBK", "Föreningen Beachvolley-Aid", "Kalmar VBK",
             "Växjö VK", "Mariestads VBK")),
