@@ -78,7 +78,7 @@ public class CompetitionPeriod implements Serializable {
     }
 
     public static boolean qualifiesForSm(CompetitionPeriod period) {
-        return period.getPeriodNumber() >= 2 && period.getPeriodNumber() <= 11;
+        return period.getPeriodNumber() >= 1 && period.getPeriodNumber() <= 10;
     }
 
     public int getPeriodNumber() {
