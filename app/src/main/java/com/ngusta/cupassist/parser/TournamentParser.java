@@ -75,14 +75,16 @@ public class TournamentParser {
         String playerALastName = names[0].trim();
         Player playerA = findPlayer(allPlayers, playerAFirstName, playerALastName, playerAClub);
 
+        boolean paid = "OK".equals(tableRow.child(6).text());
         if (names.length == 4) {
             String playerBFirstName = names[3].trim();
             playerBFirstName = excludeParenthesisFromName(playerBFirstName);
             String playerBLastName = names[2].trim();
             Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub);
-            return new Team(playerA, playerB, registrationDate, clazz);
+
+            return new Team(playerA, playerB, registrationDate, clazz, paid);
         } else {
-            return new Team(playerA, registrationDate, clazz);
+            return new Team(playerA, registrationDate, clazz, paid);
         }
     }
 

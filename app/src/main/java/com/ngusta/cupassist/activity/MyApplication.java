@@ -71,7 +71,8 @@ public class MyApplication extends Application {
                                 group + " " + team.getPlayerA().getName() + " och " + team
                                         .getPlayerB().getName()
                                         + " entry: " + (team.getPlayerA().getEntryPoints() + team
-                                        .getPlayerB().getEntryPoints()));
+                                        .getPlayerB().getEntryPoints()) + " Paid: " + team.hasPaid()
+                        );
                     }
                     System.out.println();
                 }
