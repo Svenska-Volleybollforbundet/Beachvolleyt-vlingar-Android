@@ -78,7 +78,7 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
         holder.club.setText(tournament.getClub());
         holder.dates.setText(getDates(tournament));
         holder.levelClazzIndicator
-                .setBackgroundResource(getLevelIndicatorResource(tournament.getLevel()));
+                .setBackgroundResource(getLevelIndicatorResource(tournament));
 
         boolean women = false, men = false, youth = false, mixed = false, veteran = false;
 
@@ -261,7 +261,12 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
         return sections;
     }
 
-    public static int getLevelIndicatorResource(Tournament.Level level) {
+    public static int getLevelIndicatorResource(Tournament tournament) {
+        Tournament.Level level = tournament.getLevel();
+        Clazz clazz = tournament.getClazzes().get(0).getClazz();
+        if (tournament.getClazzes().size() == 1 && clazz == Clazz.MIXED) {
+            return R.color.clazz_mixed;
+        }
         switch (level) {
             case OPEN:
                 return R.color.level_open;

@@ -91,7 +91,7 @@ public class TournamentActivity extends Activity {
     private void initInfo() {
         getActionBar().setTitle(tournament.getName());
         getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(
-                TournamentListAdapter.getLevelIndicatorResource(tournament.getLevel()))));
+                TournamentListAdapter.getLevelIndicatorResource(tournament))));
         ((TextView) findViewById(R.id.club)).setText(tournament.getClub());
         ((TextView) findViewById(R.id.start_date)).setText(tournament.getFormattedStartDate());
     }
