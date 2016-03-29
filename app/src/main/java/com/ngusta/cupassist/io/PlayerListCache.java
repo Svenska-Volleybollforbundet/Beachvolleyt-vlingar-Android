@@ -73,6 +73,12 @@ public class PlayerListCache extends Cache<Player> {
                     if (player != null) {
                         player.setMixEntryPoints(mixPlayer.getEntryPoints());
                         player.setMixRankingPoints(mixPlayer.getRankingPoints());
+                    } else {
+                        mixPlayer.setMixEntryPoints(mixPlayer.getEntryPoints());
+                        mixPlayer.setMixRankingPoints(mixPlayer.getRankingPoints());
+                        mixPlayer.setEntryPoints(0);
+                        mixPlayer.setRankingPoints(0);
+                        players.put(mixPlayer.getNameAndClub(), mixPlayer);
                     }
                 }
                 playerList.setPlayers(players);

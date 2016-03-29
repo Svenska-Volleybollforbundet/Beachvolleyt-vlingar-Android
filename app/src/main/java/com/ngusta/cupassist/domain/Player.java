@@ -37,10 +37,6 @@ public class Player implements Serializable {
         return firstName + " " + lastName + " " + club;
     }
 
-    public int getEntryPoints() {
-        return entryPoints;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -65,6 +61,26 @@ public class Player implements Serializable {
         this.mixEntryPoints = mixEntryPoints;
     }
 
+    public int getEntryPoints() {
+        return entryPoints;
+    }
+
+    public void setEntryPoints(int entryPoints) {
+        this.entryPoints = entryPoints;
+    }
+
+    public int getRankingPoints() {
+        return rankingPoints;
+    }
+
+    public void setRankingPoints(int rankingPoints) {
+        this.rankingPoints = rankingPoints;
+    }
+
+    public String getClub() {
+        return club;
+    }
+
     @Override
     public String toString() {
         return rank + " " +
@@ -73,13 +89,5 @@ public class Player implements Serializable {
                 club + " " +
                 rankingPoints + " " +
                 entryPoints;
-    }
-
-    public String getClub() {
-        return club;
-    }
-
-    public int getRankingPoints() {
-        return rankingPoints;
     }
 }
