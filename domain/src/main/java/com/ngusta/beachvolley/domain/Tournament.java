@@ -1,8 +1,4 @@
-package com.ngusta.cupassist.domain;
-
-import com.ngusta.cupassist.activity.MyApplication;
-
-import android.util.Log;
+package com.ngusta.beachvolley.domain;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -17,8 +13,6 @@ import java.util.Map;
 import static java.lang.Math.min;
 
 public class Tournament implements Serializable, Comparable<Tournament> {
-
-    public static final String TAG = Tournament.class.getSimpleName();
 
     private static int defaultId = 0;
 
@@ -146,9 +140,6 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     public void setRegistrationUrl(String registrationUrl) {
-        if (MyApplication.RUN_AS_ANDROID_APP) {
-            Log.i(TAG, "Trying to set reg url to: " + registrationUrl + " Old value: " + this.registrationUrl);
-        }
         this.registrationUrl = registrationUrl;
     }
 
@@ -208,9 +199,6 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     public void setMaxNumberOfTeams(Map<Clazz, Integer> maxNumberOfTeams) {
-        if (MyApplication.RUN_AS_ANDROID_APP) {
-            Log.i(TAG, "Trying to set max number of teams: " + maxNumberOfTeams + " Old clazzes: " + this.clazzes);
-        }
         clazzes.clear();
         for (Clazz clazz : maxNumberOfTeams.keySet()) {
             clazzes.add(new TournamentClazz(clazz, maxNumberOfTeams.get(clazz)));
@@ -245,9 +233,6 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     public boolean isRegistrationOpen() {
-        if (MyApplication.RUN_AS_ANDROID_APP) {
-            Log.i(TAG, "isRegistrationOpen: " + (registrationUrl != null) + " Reg url: " + registrationUrl);
-        }
         return registrationUrl != null;
     }
 
@@ -375,8 +360,6 @@ public class Tournament implements Serializable, Comparable<Tournament> {
                 return maxNumberOfTeams;
             } else {
                 int guess = level == Level.OPEN ? 16 : 12;
-                Log.i(TAG, String.format("Guessing number of teams in '%s' for clazz %s: %d", name,
-                        clazz, guess));
                 return guess;
             }
         }

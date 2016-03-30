@@ -1,4 +1,4 @@
-package com.ngusta.cupassist.parser;
+package com.ngusta.beachvolley.backend.parser;
 
 import com.ngusta.beachvolley.domain.Player;
 

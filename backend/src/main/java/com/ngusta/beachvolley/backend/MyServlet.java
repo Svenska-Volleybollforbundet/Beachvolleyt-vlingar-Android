@@ -11,10 +11,16 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.ngusta.beachvolley.backend.io.PlayerListCache;
+import com.ngusta.beachvolley.backend.io.TournamentListCache;
+import com.ngusta.beachvolley.domain.Player;
+import com.ngusta.beachvolley.domain.Tournament;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -30,14 +36,17 @@ public class MyServlet extends HttpServlet {
 
     static Logger Log = Logger.getLogger("com.ngusta.beachvolley.backend.MyServlet");
 
+    private Firebase firebase;
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        Log.info("Got cron message, constructing email.");
+        Log.info("hej");
+        firebase = new Firebase("https://incandescent-heat-8146.firebaseio.com/");
+        firebase.child("Latest ran").setValue(new Date().toString());
 
-        //Create a new Firebase instance and subscribe on child events.
-        Firebase firebase = new Firebase("https://incandescent-heat-8146.firebaseio.com/");
-        firebase.child("" + System.currentTimeMillis()).setValue(new Date().toString());
+        updateTournaments();
+        updatePlayers();
         /*firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -47,5 +56,17 @@ public class MyServlet extends HttpServlet {
             public void onCancelled(FirebaseError firebaseError) {
             }
         });*/
+    }
+
+    private void updateTournaments() {
+        TournamentListCache tournamentListCache = new TournamentListCache();
+        List<Tournament> tournaments = tournamentListCache.getTournaments();
+        firebase.child("tournaments").setValue(tournaments);
+    }
+
+    private void updatePlayers() {
+        PlayerListCache playerListCache = new PlayerListCache();
+        Map<String, Player> players = playerListCache.getPlayers();
+        firebase.child("players").setValue(players);
     }
 }

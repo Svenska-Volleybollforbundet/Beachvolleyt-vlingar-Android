@@ -1,4 +1,4 @@
-package com.ngusta.cupassist.domain;
+package com.ngusta.beachvolley.domain;
 
 import java.io.Serializable;
 
@@ -34,7 +34,7 @@ public class Player implements Serializable {
     }
 
     public String getNameAndClub() {
-        return firstName + " " + lastName + " " + club;
+        return (firstName + " " + lastName + " " + club).replaceAll("/|\\.|#|\\$|\\[|\\]", "");
     }
 
     public String getFirstName() {

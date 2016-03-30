@@ -3,7 +3,7 @@ package com.ngusta.cupassist.activity;
 import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.adapters.TeamAdapter;
 import com.ngusta.cupassist.adapters.TournamentListAdapter;
-import com.ngusta.cupassist.domain.Tournament;
+import com.ngusta.beachvolley.domain.Tournament;
 import com.ngusta.cupassist.io.TournamentListCache;
 
 import android.app.Activity;

@@ -1,7 +1,7 @@
 package com.ngusta.cupassist.adapters;
 
 import com.ngusta.cupassist.R;
-import com.ngusta.cupassist.domain.Tournament;
+import com.ngusta.beachvolley.domain.Tournament;
 
 import android.app.Activity;
 import android.content.Context;

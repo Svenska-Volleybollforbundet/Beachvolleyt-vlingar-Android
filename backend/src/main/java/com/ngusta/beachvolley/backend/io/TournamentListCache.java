@@ -1,20 +1,17 @@
-package com.ngusta.cupassist.io;
+package com.ngusta.beachvolley.backend.io;
 
-import com.ngusta.cupassist.activity.MyApplication;
 import com.ngusta.beachvolley.domain.Player;
 import com.ngusta.beachvolley.domain.Tournament;
 import com.ngusta.beachvolley.domain.TournamentList;
-import com.ngusta.cupassist.parser.TournamentListParser;
-import com.ngusta.cupassist.parser.TournamentParser;
-
-import android.content.Context;
+import com.ngusta.beachvolley.backend.parser.TournamentListParser;
+import com.ngusta.beachvolley.backend.parser.TournamentParser;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class TournamentListCache extends Cache<Tournament> {
+public class TournamentListCache {
 
     private static final String CUP_ASSIST_TOURNAMENT_LIST_URL
             = "http://www.cupassist.com/pa/terminliste.php?org=SVBF.SE.SVB&p=40";
@@ -33,18 +30,11 @@ public class TournamentListCache extends Cache<Tournament> {
 
     private static final String FILE_NAME = "tournamentList";
 
-    private Context context;
-
     private TournamentListParser tournamentListParser;
 
     private TournamentParser tournamentParser;
 
     private SourceCodeRequester sourceCodeRequester;
-
-    public TournamentListCache(Context context) {
-        this();
-        this.context = context;
-    }
 
     public TournamentListCache() {
         tournamentListParser = new TournamentListParser();
@@ -56,11 +46,6 @@ public class TournamentListCache extends Cache<Tournament> {
         if (tournamentList != null) {
             return tournamentList.getTournaments();
         }
-        try {
-            tournamentList = (TournamentList) load(FILE_NAME, context);
-        } catch (RuntimeException e) {
-            tournamentList = null;
-        }
 
         if (downloadTournaments()) {
             try {
@@ -68,7 +53,6 @@ public class TournamentListCache extends Cache<Tournament> {
                         sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL));
                 Collections.sort(tournaments);
                 tournamentList = new TournamentList(tournaments);
-                save(tournamentList, FILE_NAME, context);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -77,7 +61,7 @@ public class TournamentListCache extends Cache<Tournament> {
     }
 
     private boolean downloadTournaments() {
-        return !MyApplication.CACHE_TOURNAMENTS || tournamentList == null || !tournamentList.isValid();
+        return true;// tournamentList == null || !tournamentList.isValid();
     }
 
     public void getTournamentDetails(Tournament tournament, Map<String, Player> allPlayers) throws IOException {

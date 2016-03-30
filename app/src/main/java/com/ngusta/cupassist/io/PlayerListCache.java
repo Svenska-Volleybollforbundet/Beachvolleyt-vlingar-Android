@@ -1,9 +1,9 @@
 package com.ngusta.cupassist.io;
 
 import com.ngusta.cupassist.activity.MyApplication;
-import com.ngusta.cupassist.domain.CompetitionPeriod;
-import com.ngusta.cupassist.domain.Player;
-import com.ngusta.cupassist.domain.PlayerList;
+import com.ngusta.beachvolley.domain.CompetitionPeriod;
+import com.ngusta.beachvolley.domain.Player;
+import com.ngusta.beachvolley.domain.PlayerList;
 import com.ngusta.cupassist.parser.PlayerListParser;
 
 import android.content.Context;

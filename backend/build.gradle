@@ -27,6 +27,8 @@ dependencies {
     compile 'com.google.appengine:appengine-api-1.0-sdk:1.9.34'
     compile 'com.firebase:firebase-client-jvm:2.5.2'
     compile 'org.apache.httpcomponents:httpclient:4.5.2'
+    compile 'org.jsoup:jsoup:1.7.3'
+    compile project(':domain')
 }
 
 appengine {

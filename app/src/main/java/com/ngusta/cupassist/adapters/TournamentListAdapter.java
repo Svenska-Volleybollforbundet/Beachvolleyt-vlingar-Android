@@ -3,9 +3,9 @@ package com.ngusta.cupassist.adapters;
 import com.hb.views.PinnedSectionListView;
 import com.ngusta.cupassist.BuildConfig;
 import com.ngusta.cupassist.R;
-import com.ngusta.cupassist.domain.Clazz;
-import com.ngusta.cupassist.domain.CompetitionPeriod;
-import com.ngusta.cupassist.domain.Tournament;
+import com.ngusta.beachvolley.domain.Clazz;
+import com.ngusta.beachvolley.domain.CompetitionPeriod;
+import com.ngusta.beachvolley.domain.Tournament;
 
 import android.content.Context;
 import android.text.format.DateUtils;

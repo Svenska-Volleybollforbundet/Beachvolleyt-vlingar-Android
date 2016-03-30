@@ -2,10 +2,10 @@ package com.ngusta.cupassist.activity;
 
 import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.adapters.TournamentListAdapter;
-import com.ngusta.cupassist.domain.Clazz;
-import com.ngusta.cupassist.domain.CompetitionPeriod;
-import com.ngusta.cupassist.domain.Region;
-import com.ngusta.cupassist.domain.Tournament;
+import com.ngusta.beachvolley.domain.Clazz;
+import com.ngusta.beachvolley.domain.CompetitionPeriod;
+import com.ngusta.beachvolley.domain.Region;
+import com.ngusta.beachvolley.domain.Tournament;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;

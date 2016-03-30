@@ -1,6 +1,6 @@
 package com.ngusta.cupassist.service;
 
-import com.ngusta.cupassist.domain.Player;
+import com.ngusta.beachvolley.domain.Player;
 import com.ngusta.cupassist.io.PlayerListCache;
 
 import android.content.Context;

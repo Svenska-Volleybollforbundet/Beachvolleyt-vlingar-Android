@@ -1,4 +1,4 @@
-package com.ngusta.cupassist.domain;
+package com.ngusta.beachvolley.domain;
 
 import java.io.Serializable;
 import java.text.ParseException;

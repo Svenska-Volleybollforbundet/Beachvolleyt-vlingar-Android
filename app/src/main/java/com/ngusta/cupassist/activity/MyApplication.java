@@ -1,9 +1,9 @@
 package com.ngusta.cupassist.activity;
 
 import com.firebase.client.Firebase;
-import com.ngusta.cupassist.domain.Player;
-import com.ngusta.cupassist.domain.Team;
-import com.ngusta.cupassist.domain.Tournament;
+import com.ngusta.beachvolley.domain.Player;
+import com.ngusta.beachvolley.domain.Team;
+import com.ngusta.beachvolley.domain.Tournament;
 import com.ngusta.cupassist.io.PlayerListCache;
 import com.ngusta.cupassist.io.TournamentListCache;
 import com.ngusta.cupassist.service.PlayerService;
