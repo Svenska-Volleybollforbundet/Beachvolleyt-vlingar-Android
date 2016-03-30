@@ -13,6 +13,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.ngusta.beachvolley.backend.io.PlayerListCache;
 import com.ngusta.beachvolley.backend.io.TournamentListCache;
+import com.ngusta.beachvolley.backend.parser.TournamentParser;
 import com.ngusta.beachvolley.domain.Player;
 import com.ngusta.beachvolley.domain.Tournament;
 
@@ -38,6 +39,12 @@ public class MyServlet extends HttpServlet {
 
     private Firebase firebase;
 
+    private Map<String, Player> players;
+
+    private List<Tournament> tournaments;
+
+    private TournamentListCache tournamentListCache;
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
@@ -45,8 +52,11 @@ public class MyServlet extends HttpServlet {
         firebase = new Firebase("https://incandescent-heat-8146.firebaseio.com/");
         firebase.child("Latest ran").setValue(new Date().toString());
 
-        updateTournaments();
         updatePlayers();
+        tournamentListCache = new TournamentListCache();
+        tournaments = tournamentListCache.getTournaments();
+        tournamentListCache.getTournamentDetails(tournaments.get(29), players);
+        firebase.child("tournaments").setValue(tournaments);
         /*firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -58,15 +68,9 @@ public class MyServlet extends HttpServlet {
         });*/
     }
 
-    private void updateTournaments() {
-        TournamentListCache tournamentListCache = new TournamentListCache();
-        List<Tournament> tournaments = tournamentListCache.getTournaments();
-        firebase.child("tournaments").setValue(tournaments);
-    }
-
     private void updatePlayers() {
         PlayerListCache playerListCache = new PlayerListCache();
-        Map<String, Player> players = playerListCache.getPlayers();
+        players = playerListCache.getPlayers();
         firebase.child("players").setValue(players);
     }
 }
