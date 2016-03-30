@@ -68,6 +68,7 @@ public class TournamentListCache extends Cache<Tournament> {
                         sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL));
                 Collections.sort(tournaments);
                 tournamentList = new TournamentList(tournaments);
+                MyApplication.getFirebase().child("tournamentList").setValue(tournamentList);
                 save(tournamentList, FILE_NAME, context);
             } catch (IOException e) {
                 e.printStackTrace();

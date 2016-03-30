@@ -1,5 +1,6 @@
 package com.ngusta.cupassist.activity;
 
+import com.firebase.client.Firebase;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Team;
 import com.ngusta.cupassist.domain.Tournament;
@@ -18,7 +19,7 @@ public class MyApplication extends Application {
 
     public static boolean RUN_AS_ANDROID_APP = true;
 
-    public static final boolean CACHE_PLAYERS = true;
+    public static final boolean CACHE_PLAYERS = false;
 
     public static final boolean CACHE_TOURNAMENTS = false;
 
@@ -26,9 +27,13 @@ public class MyApplication extends Application {
 
     private TournamentService tournamentService;
 
+    private static Firebase firebase;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        Firebase.setAndroidContext(this);
+        firebase = new Firebase("https://incandescent-heat-8146.firebaseio.com/");
     }
 
     public PlayerService getPlayerService() {
@@ -43,6 +48,10 @@ public class MyApplication extends Application {
             tournamentService = new TournamentService(getApplicationContext(), getPlayerService());
         }
         return tournamentService;
+    }
+
+    public static Firebase getFirebase() {
+        return firebase;
     }
 
     private static void desktopRun() throws IOException {
