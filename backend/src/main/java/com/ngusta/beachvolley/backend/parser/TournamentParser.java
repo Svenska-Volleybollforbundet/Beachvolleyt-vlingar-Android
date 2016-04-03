@@ -1,6 +1,7 @@
 package com.ngusta.beachvolley.backend.parser;
 
 import com.ngusta.beachvolley.domain.Clazz;
+import com.ngusta.beachvolley.domain.NewTeam;
 import com.ngusta.beachvolley.domain.Player;
 import com.ngusta.beachvolley.domain.Team;
 
@@ -25,8 +26,8 @@ public class TournamentParser {
     private static final String REGEXP_PATTERN_FOR_REGISTRATION_URL
             = "pamelding/redirect.php\\?tknavn=(.*?)\", \"_blank\"";
 
-    public List<Team> parseTeams(String source, Map<String, Player> allPlayers) {
-        ArrayList<Team> teams = new ArrayList<Team>();
+    public List<NewTeam> parseTeams(String source, Map<String, Player> allPlayers) {
+        ArrayList<NewTeam> teams = new ArrayList<>();
         Document document = Jsoup.parse(source);
         Elements tableRows = document.select("table:first-of-type tr:gt(0)");
 
@@ -35,7 +36,7 @@ public class TournamentParser {
         }
 
         for (Element tableRow : tableRows) {
-            Team team = readTeamFromTableRow(tableRow, allPlayers);
+            NewTeam team = readTeamFromTableRow(tableRow, allPlayers);
             if (team != null) {
                 teams.add(team);
             }
@@ -43,7 +44,7 @@ public class TournamentParser {
         return teams;
     }
 
-    private Team readTeamFromTableRow(Element tableRow,
+    private NewTeam readTeamFromTableRow(Element tableRow,
             Map<String, Player> allPlayers) {
         String[] names = tableRow.child(0).text().split("[,/]");
 
@@ -82,9 +83,9 @@ public class TournamentParser {
             String playerBLastName = names[2].trim();
             Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub);
 
-            return new Team(playerA, playerB, registrationDate, clazz, paid);
+            return new NewTeam(playerA, playerB, registrationDate, clazz, paid);
         } else {
-            return new Team(playerA, registrationDate, clazz, paid);
+            return new NewTeam(playerA, registrationDate, clazz, paid);
         }
     }
 
@@ -98,8 +99,8 @@ public class TournamentParser {
     private Player findPlayer(Map<String, Player> allPlayers, String playerFirstName,
             String playerLastName, String playerClub) {
         Player newPlayer = new Player(playerFirstName, playerLastName, playerClub);
-        if (allPlayers.containsKey(newPlayer.getNameAndClub())) {
-            return allPlayers.get(newPlayer.getNameAndClub());
+        if (allPlayers.containsKey(newPlayer.uniqueIdentifier())) {
+            return allPlayers.get(newPlayer.uniqueIdentifier());
         }
         return newPlayer;
     }

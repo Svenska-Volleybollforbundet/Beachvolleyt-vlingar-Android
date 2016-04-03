@@ -98,8 +98,8 @@ public class TournamentParser {
     private Player findPlayer(Map<String, Player> allPlayers, String playerFirstName,
             String playerLastName, String playerClub) {
         Player newPlayer = new Player(playerFirstName, playerLastName, playerClub);
-        if (allPlayers.containsKey(newPlayer.getNameAndClub())) {
-            return allPlayers.get(newPlayer.getNameAndClub());
+        if (allPlayers.containsKey(newPlayer.uniqueIdentifier())) {
+            return allPlayers.get(newPlayer.uniqueIdentifier());
         }
         return newPlayer;
     }

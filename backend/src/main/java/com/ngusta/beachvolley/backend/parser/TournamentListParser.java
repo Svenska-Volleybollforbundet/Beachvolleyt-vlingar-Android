@@ -13,19 +13,22 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class TournamentListParser {
 
-    public List<Tournament> parseTournamentList(String source) {
+    public Map<String, Tournament> parseTournamentList(String source) {
         Document document = Jsoup.parse(source);
         Elements tableRows = document.select("table tr[class]");
-        List<Tournament> tournaments = new ArrayList<>(tableRows.size());
+        Map<String, Tournament> tournaments = new HashMap<>();
 
         for (Element tableRow : tableRows) {
             try {
-                tournaments.add(createTournament(tableRow));
+                Tournament tournament = createTournament(tableRow);
+                tournaments.put(tournament.uniqueIdentifier(), tournament);
             } catch (ParseException e) {
                 System.err.print("Failed to extract tournament from tableRow: " + tableRow);
                 e.printStackTrace();

@@ -36,18 +36,18 @@ public class PlayerListCache {
             Set<Player> mix = playerListParser.parsePlayerList(sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_MIXED_URL));
 
             for (Player man : men) {
-                if (!players.containsKey(man.getNameAndClub())) {
-                    players.put(man.getNameAndClub(), man);
+                if (!players.containsKey(man.uniqueIdentifier())) {
+                    players.put(man.uniqueIdentifier(), man);
                 }
             }
             for (Player woman : women) {
-                if (!players.containsKey(woman.getNameAndClub())) {
-                    players.put(woman.getNameAndClub(), woman);
+                if (!players.containsKey(woman.uniqueIdentifier())) {
+                    players.put(woman.uniqueIdentifier(), woman);
                 }
             }
 
             for (Player mixPlayer : mix) {
-                Player player = players.get(mixPlayer.getNameAndClub());
+                Player player = players.get(mixPlayer.uniqueIdentifier());
                 if (player != null) {
                     player.setMixEntryPoints(mixPlayer.getEntryPoints());
                     player.setMixRankingPoints(mixPlayer.getRankingPoints());
@@ -56,7 +56,7 @@ public class PlayerListCache {
                     mixPlayer.setMixRankingPoints(mixPlayer.getRankingPoints());
                     mixPlayer.setEntryPoints(0);
                     mixPlayer.setRankingPoints(0);
-                    players.put(mixPlayer.getNameAndClub(), mixPlayer);
+                    players.put(mixPlayer.uniqueIdentifier(), mixPlayer);
                 }
             }
         } catch (IOException e) {

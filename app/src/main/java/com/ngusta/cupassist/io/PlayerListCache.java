@@ -58,18 +58,18 @@ public class PlayerListCache extends Cache<Player> {
 
                 Map<String, Player> players = new HashMap<>();
                 for (Player man : men) {
-                    if (!players.containsKey(man.getNameAndClub())) {
-                        players.put(man.getNameAndClub(), man);
+                    if (!players.containsKey(man.uniqueIdentifier())) {
+                        players.put(man.uniqueIdentifier(), man);
                     }
                 }
                 for (Player woman : women) {
-                    if (!players.containsKey(woman.getNameAndClub())) {
-                        players.put(woman.getNameAndClub(), woman);
+                    if (!players.containsKey(woman.uniqueIdentifier())) {
+                        players.put(woman.uniqueIdentifier(), woman);
                     }
                 }
 
                 for (Player mixPlayer : mix) {
-                    Player player = players.get(mixPlayer.getNameAndClub());
+                    Player player = players.get(mixPlayer.uniqueIdentifier());
                     if (player != null) {
                         player.setMixEntryPoints(mixPlayer.getEntryPoints());
                         player.setMixRankingPoints(mixPlayer.getRankingPoints());
@@ -78,7 +78,7 @@ public class PlayerListCache extends Cache<Player> {
                         mixPlayer.setMixRankingPoints(mixPlayer.getRankingPoints());
                         mixPlayer.setEntryPoints(0);
                         mixPlayer.setRankingPoints(0);
-                        players.put(mixPlayer.getNameAndClub(), mixPlayer);
+                        players.put(mixPlayer.uniqueIdentifier(), mixPlayer);
                     }
                 }
                 playerList.setPlayers(players);
