@@ -1,5 +1,7 @@
 package com.ngusta.beachvolley.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 public class Player implements Serializable {
@@ -13,6 +15,9 @@ public class Player implements Serializable {
     private int mixRankingPoints;
 
     private int mixEntryPoints;
+
+    public Player() {
+    }
 
     public Player(String firstName, String lastName, String playerClub) {
         this.firstName = firstName;
@@ -29,11 +34,12 @@ public class Player implements Serializable {
         this.entryPoints = entryPoints;
     }
 
+    @JsonIgnore
     public String getName() {
         return firstName + " " + lastName;
     }
 
-    public String getNameAndClub() {
+    public String uniqueIdentifier() {
         return (firstName + " " + lastName + " " + club).replaceAll("/|\\.|#|\\$|\\[|\\]", "");
     }
 

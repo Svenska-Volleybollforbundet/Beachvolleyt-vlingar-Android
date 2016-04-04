@@ -1,5 +1,7 @@
 package com.ngusta.beachvolley.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
 
     private Date endDate;
 
-    private CompetitionPeriod competitionPeriod;
+    private String competitionPeriod;
 
     private String club;
 
@@ -32,8 +34,6 @@ public class Tournament implements Serializable, Comparable<Tournament> {
 
     private Level level;
 
-    private String levelString;
-
     private List<TournamentClazz> clazzes;
 
     private String registrationUrl;
@@ -42,17 +42,20 @@ public class Tournament implements Serializable, Comparable<Tournament> {
 
     private Region region;
 
+    public Tournament() {
+        //For firebase
+    }
+
     public Tournament(Date startDate, Date endDate, String period, String club, String name,
             String url,
             String level, String clazzes) {
         this.id = defaultId++;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.competitionPeriod = CompetitionPeriod.findByName(period);
+        this.competitionPeriod = period;
         this.club = shortenName(club);
         this.name = name;
         this.url = url;
-        this.levelString = level;
         this.level = Level.parse(level);
         if (this.level == Level.UNKNOWN) {
             this.level = guessLevel(name);
@@ -107,7 +110,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         return parsedClazzes;
     }
 
-    public CompetitionPeriod getCompetitionPeriod() {
+    public String getCompetitionPeriod() {
         return competitionPeriod;
     }
 
@@ -125,10 +128,6 @@ public class Tournament implements Serializable, Comparable<Tournament> {
 
     public Level getLevel() {
         return level;
-    }
-
-    public String getLevelString() {
-        return levelString;
     }
 
     public List<TournamentClazz> getClazzes() {
@@ -223,15 +222,16 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         return endDate;
     }
 
+    @JsonIgnore
     public String getFormattedStartDate() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return simpleDateFormat.format(startDate);
+        return new SimpleDateFormat("yyyy-MM-dd").format(startDate);
     }
 
     public boolean spansOverSeveralDays() {
         return startDate.before(endDate);
     }
 
+    @JsonIgnore
     public boolean isRegistrationOpen() {
         return registrationUrl != null;
     }
@@ -244,11 +244,15 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         return region;
     }
 
+    public String uniqueIdentifier() {
+        return (getName() + " " + getClub() + " " + getStartDate().getTime()).replaceAll("/|\\.|#|\\$|\\[|\\]", "");
+    }
+
     @Override
     public String toString() {
         return "Tournament{" +
                 "startDate=" + getFormattedStartDate() +
-                ", period='" + competitionPeriod.getName() + '\'' +
+                ", period='" + competitionPeriod + '\'' +
                 ", club='" + club + '\'' +
                 ", name='" + name + '\'' +
                 ", url='" + url + '\'' +
@@ -336,11 +340,14 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         }
     }
 
-    public class TournamentClazz implements Serializable {
+    public static class TournamentClazz implements Serializable {
 
         private Clazz clazz;
 
         private Integer maxNumberOfTeams;
+
+        public TournamentClazz() {
+        }
 
         TournamentClazz(Clazz clazz) {
             this.clazz = clazz;
@@ -359,15 +366,13 @@ public class Tournament implements Serializable, Comparable<Tournament> {
             if (maxNumberOfTeams != null) {
                 return maxNumberOfTeams;
             } else {
-                int guess = level == Level.OPEN ? 16 : 12;
-                return guess;
+                return 12;//TODO should be this: level == Level.OPEN ? 16 : 12;
             }
         }
 
         @Override
         public String toString() {
-            String clazzString = clazz.toString();
-            return clazzString;
+            return clazz.toString();
         }
     }
 }

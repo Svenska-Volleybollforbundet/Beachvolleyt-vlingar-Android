@@ -1,12 +1,16 @@
 package com.ngusta.beachvolley.backend.io;
 
+import com.ngusta.beachvolley.domain.NewTeam;
 import com.ngusta.beachvolley.domain.Player;
+import com.ngusta.beachvolley.domain.Team;
 import com.ngusta.beachvolley.domain.Tournament;
 import com.ngusta.beachvolley.domain.TournamentList;
 import com.ngusta.beachvolley.backend.parser.TournamentListParser;
 import com.ngusta.beachvolley.backend.parser.TournamentParser;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -42,29 +46,22 @@ public class TournamentListCache {
         sourceCodeRequester = new SourceCodeRequester();
     }
 
-    public List<Tournament> getTournaments() {
-        if (tournamentList != null) {
-            return tournamentList.getTournaments();
+    public Map<String, Tournament> getTournaments() {
+        //TODO add cache?
+        Map<String, Tournament> tournamentMap = null;
+        try {
+            tournamentMap = tournamentListParser.parseTournamentList(
+                    sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL));
+            List<Tournament> tournaments = new ArrayList(tournamentMap.values());
+            Collections.sort(tournaments);
+            tournamentList = new TournamentList(tournaments);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        if (downloadTournaments()) {
-            try {
-                List<Tournament> tournaments = tournamentListParser.parseTournamentList(
-                        sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL));
-                Collections.sort(tournaments);
-                tournamentList = new TournamentList(tournaments);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return tournamentList.getTournaments();
+        return tournamentMap;
     }
 
-    private boolean downloadTournaments() {
-        return true;// tournamentList == null || !tournamentList.isValid();
-    }
-
-    public void getTournamentDetails(Tournament tournament, Map<String, Player> allPlayers) throws IOException {
+    public List<NewTeam> getTournamentDetails(Tournament tournament, Map<String, Player> allPlayers) throws IOException {
         String source = sourceCodeRequester.getSourceCode(CUP_ASSIST_BASE_URL + "pa/" + tournament.getUrl());
         if (cookieHasExpired(source)) {
             sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL);
@@ -77,8 +74,9 @@ public class TournamentListCache {
             sourceCodeRequester.getSourceCode(
                     CUP_ASSIST_TOURNAMENT_URL + tournament.getRegistrationUrl());
             source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL);
-            tournament.setTeams(tournamentParser.parseTeams(source, allPlayers));
+            return tournamentParser.parseTeams(source, allPlayers);
         }
+        return null;
     }
 
     private boolean cookieHasExpired(String source) {

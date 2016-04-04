@@ -1,9 +1,3 @@
-/*
-   For step-by-step instructions on connecting your Android application to this backend module,
-   see "App Engine Java Servlet Module" template documentation at
-   https://github.com/GoogleCloudPlatform/gradle-appengine-templates/tree/master/HelloWorld
-*/
-
 package com.ngusta.beachvolley.backend;
 
 
@@ -13,25 +7,20 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.ngusta.beachvolley.backend.io.PlayerListCache;
 import com.ngusta.beachvolley.backend.io.TournamentListCache;
-import com.ngusta.beachvolley.backend.parser.TournamentParser;
+import com.ngusta.beachvolley.domain.NewTeam;
 import com.ngusta.beachvolley.domain.Player;
+import com.ngusta.beachvolley.domain.Team;
 import com.ngusta.beachvolley.domain.Tournament;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.logging.Logger;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class MyServlet extends HttpServlet {
 
@@ -39,38 +28,74 @@ public class MyServlet extends HttpServlet {
 
     private Firebase firebase;
 
-    private Map<String, Player> players;
-
-    private List<Tournament> tournaments;
-
-    private TournamentListCache tournamentListCache;
-
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        Log.info("hej");
         firebase = new Firebase("https://incandescent-heat-8146.firebaseio.com/");
+        long start = System.currentTimeMillis();
         firebase.child("Latest ran").setValue(new Date().toString());
 
-        updatePlayers();
-        tournamentListCache = new TournamentListCache();
-        tournaments = tournamentListCache.getTournaments();
-        tournamentListCache.getTournamentDetails(tournaments.get(29), players);
-        firebase.child("tournaments").setValue(tournaments);
-        /*firebase.addListenerForSingleValueEvent(new ValueEventListener() {
+        //updateAll();
+
+        firebase.child("tournaments").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.info(dataSnapshot.toString());
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println("There are " + snapshot.getChildrenCount() + " tournaments");
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    Tournament tournament = postSnapshot.getValue(Tournament.class);
+                    System.out.println(tournament);
+                }
             }
 
             public void onCancelled(FirebaseError firebaseError) {
             }
-        });*/
+        });
+
+        firebase.child("players").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println("There are " + snapshot.getChildrenCount() + " players");
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    Player player = postSnapshot.getValue(Player.class);
+                    System.out.println(player);
+                }
+            }
+
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
+        firebase.child("registeredTeams").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println("There are " + snapshot.getChildrenCount() + " tournaments with registered teams");
+                for (DataSnapshot teamListSnapshot : snapshot.getChildren()) {
+                    for (DataSnapshot teamSnapshot : teamListSnapshot.getChildren()) {
+                        NewTeam team = teamSnapshot.getValue(NewTeam.class);
+                        System.out.println(team);
+                    }
+                }
+            }
+
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+        long duration = System.currentTimeMillis() - start;
+        firebase.child("Run time").setValue(duration + " ms");
     }
 
-    private void updatePlayers() {
+    private void updateAll() throws IOException {
+        TournamentListCache tournamentListCache = new TournamentListCache();
+        Map<String, Tournament> tournaments = tournamentListCache.getTournaments();
+
         PlayerListCache playerListCache = new PlayerListCache();
-        players = playerListCache.getPlayers();
+        Map<String, Player> players = playerListCache.getPlayers();
         firebase.child("players").setValue(players);
+
+        for (Tournament tournament : tournaments.values()) {
+            List<NewTeam> teams = tournamentListCache.getTournamentDetails(tournament, players);
+            firebase.child("registeredTeams/" + tournament.uniqueIdentifier()).setValue(teams);
+        }
+        firebase.child("tournaments").setValue(tournaments);
     }
 }

@@ -223,7 +223,8 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
         Integer[] sections = new Integer[CompetitionPeriod.COMPETITION_PERIODS.length];
         int listIndex;
         int periodIndex;
-        int firstPeriodIndex = !tournaments.isEmpty() ? tournaments.get(0).getCompetitionPeriod().getPeriodNumber() - 1 : 0;
+        int firstPeriodIndex = !tournaments.isEmpty() ? CompetitionPeriod.findByName(tournaments.get(0).getCompetitionPeriod()).getPeriodNumber() - 1
+                : 0;
         listIndex = periodIndex = firstPeriodIndex;
 
         for (int i = 0; i <= firstPeriodIndex; i++) {
@@ -231,7 +232,7 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
         }
 
         for (Tournament tournament : tournaments) {
-            int newPeriodIndex = tournament.getCompetitionPeriod().getPeriodNumber() - 1;
+            int newPeriodIndex = CompetitionPeriod.findByName(tournament.getCompetitionPeriod()).getPeriodNumber() - 1;
 
             if (newPeriodIndex > periodIndex) {
                 listIndex += newPeriodIndex - periodIndex;

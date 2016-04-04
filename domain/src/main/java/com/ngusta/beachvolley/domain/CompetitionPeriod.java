@@ -53,7 +53,7 @@ public class CompetitionPeriod implements Serializable {
         }
     }
 
-    static CompetitionPeriod findByName(String name) {
+    public static CompetitionPeriod findByName(String name) {
         for (CompetitionPeriod competitionPeriod : COMPETITION_PERIODS) {
             if (competitionPeriod.getName().equalsIgnoreCase(name)) {
                 return competitionPeriod;
