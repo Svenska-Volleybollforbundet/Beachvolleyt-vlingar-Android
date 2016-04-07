@@ -1,6 +1,7 @@
 package com.ngusta.cupassist.service;
 
 import com.ngusta.beachvolley.domain.Tournament;
+import com.ngusta.cupassist.io.FirebaseTournamentList;
 import com.ngusta.cupassist.io.TournamentListCache;
 
 import android.content.Context;
@@ -19,7 +20,7 @@ public class TournamentService {
     }
 
     public TournamentService(Context context, PlayerService playerService) {
-        tournamentListCache = new TournamentListCache(context);
+        tournamentListCache = new FirebaseTournamentList();
         this.playerService = playerService;
     }
 

@@ -1,6 +1,10 @@
 package com.ngusta.cupassist.activity;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+import com.ngusta.beachvolley.domain.NewTeam;
 import com.ngusta.beachvolley.domain.Player;
 import com.ngusta.beachvolley.domain.Team;
 import com.ngusta.beachvolley.domain.Tournament;
@@ -12,6 +16,8 @@ import com.ngusta.cupassist.service.TournamentService;
 import android.app.Application;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +39,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Firebase.setAndroidContext(this);
-        firebase = new Firebase("https://incandescent-heat-8146.firebaseio.com/");
+        firebase = new Firebase("https://beachvolleydb.firebaseio.com/v1");
     }
 
     public PlayerService getPlayerService() {

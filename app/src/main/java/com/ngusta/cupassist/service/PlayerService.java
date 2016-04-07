@@ -1,6 +1,7 @@
 package com.ngusta.cupassist.service;
 
 import com.ngusta.beachvolley.domain.Player;
+import com.ngusta.cupassist.io.FirebasePlayerList;
 import com.ngusta.cupassist.io.PlayerListCache;
 
 import android.content.Context;
@@ -16,7 +17,7 @@ public class PlayerService {
     }
 
     public PlayerService(Context context) {
-        playerListCache = new PlayerListCache(context);
+        playerListCache = new FirebasePlayerList();
     }
 
     public Map<String, Player> getPlayers() {
