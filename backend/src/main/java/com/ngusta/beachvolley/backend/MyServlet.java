@@ -31,12 +31,12 @@ public class MyServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        firebase = new Firebase("https://incandescent-heat-8146.firebaseio.com/");
+        firebase = new Firebase("https://beachvolleydb.firebaseio.com/v1");
         long start = System.currentTimeMillis();
         firebase.child("Latest ran").setValue(new Date().toString());
 
-        //updateAll();
-
+        updateAll();
+/*
         firebase.child("tournaments").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -79,7 +79,7 @@ public class MyServlet extends HttpServlet {
 
             public void onCancelled(FirebaseError firebaseError) {
             }
-        });
+        });*/
         long duration = System.currentTimeMillis() - start;
         firebase.child("Run time").setValue(duration + " ms");
     }
@@ -93,7 +93,7 @@ public class MyServlet extends HttpServlet {
         firebase.child("players").setValue(players);
 
         for (Tournament tournament : tournaments.values()) {
-            List<NewTeam> teams = tournamentListCache.getTournamentDetails(tournament, players);
+            List<Team> teams = tournamentListCache.getTournamentDetails(tournament, players);
             firebase.child("registeredTeams/" + tournament.uniqueIdentifier()).setValue(teams);
         }
         firebase.child("tournaments").setValue(tournaments);

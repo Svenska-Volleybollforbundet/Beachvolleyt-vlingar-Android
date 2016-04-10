@@ -19,7 +19,7 @@
 
         <ImageButton
             android:id="@+id/open_cupassist"
-            android:src="@drawable/external_link_disabled"
+            android:src="@drawable/external_link_enabled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/club"

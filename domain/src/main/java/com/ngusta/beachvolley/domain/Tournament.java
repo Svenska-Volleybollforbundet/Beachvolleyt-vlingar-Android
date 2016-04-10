@@ -233,7 +233,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
 
     @JsonIgnore
     public boolean isRegistrationOpen() {
-        return registrationUrl != null;
+        return url != null && !url.isEmpty() && registrationUrl != null;
     }
 
     public int getId() {

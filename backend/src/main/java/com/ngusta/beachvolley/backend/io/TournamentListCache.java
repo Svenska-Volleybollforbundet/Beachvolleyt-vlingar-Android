@@ -61,7 +61,7 @@ public class TournamentListCache {
         return tournamentMap;
     }
 
-    public List<NewTeam> getTournamentDetails(Tournament tournament, Map<String, Player> allPlayers) throws IOException {
+    public List<Team> getTournamentDetails(Tournament tournament, Map<String, Player> allPlayers) throws IOException {
         String source = sourceCodeRequester.getSourceCode(CUP_ASSIST_BASE_URL + "pa/" + tournament.getUrl());
         if (cookieHasExpired(source)) {
             sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL);

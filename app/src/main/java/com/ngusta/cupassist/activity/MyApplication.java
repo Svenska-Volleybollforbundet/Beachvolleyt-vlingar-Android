@@ -1,37 +1,25 @@
 package com.ngusta.cupassist.activity;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-import com.ngusta.beachvolley.domain.NewTeam;
 import com.ngusta.beachvolley.domain.Player;
 import com.ngusta.beachvolley.domain.Team;
 import com.ngusta.beachvolley.domain.Tournament;
-import com.ngusta.cupassist.io.PlayerListCache;
-import com.ngusta.cupassist.io.TournamentListCache;
-import com.ngusta.cupassist.service.PlayerService;
-import com.ngusta.cupassist.service.TournamentService;
+import com.ngusta.cupassist.io.PlayerListDownloader;
+import com.ngusta.cupassist.io.TournamentListDownloader;
 
 import android.app.Application;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MyApplication extends Application {
 
+    public static final String FIREBASE_TOURNAMENTS_PATH = "tournaments";
+
+    public static final String FIREBASE_REGISTERED_TEAMS_PATH = "registeredTeams";
+
     public static boolean RUN_AS_ANDROID_APP = true;
-
-    public static final boolean CACHE_PLAYERS = false;
-
-    public static final boolean CACHE_TOURNAMENTS = false;
-
-    private PlayerService playerService;
-
-    private TournamentService tournamentService;
 
     private static Firebase firebase;
 
@@ -42,40 +30,30 @@ public class MyApplication extends Application {
         firebase = new Firebase("https://beachvolleydb.firebaseio.com/v1");
     }
 
-    public PlayerService getPlayerService() {
-        if (playerService == null) {
-            playerService = new PlayerService(getApplicationContext());
-        }
-        return playerService;
+    public static Firebase getTournamentsFirebase() {
+        return firebase.child(FIREBASE_TOURNAMENTS_PATH);
     }
 
-    public TournamentService getTournamentService() {
-        if (tournamentService == null) {
-            tournamentService = new TournamentService(getApplicationContext(), getPlayerService());
-        }
-        return tournamentService;
-    }
-
-    public static Firebase getFirebase() {
-        return firebase;
+    public static Firebase getTeamsFirebase() {
+        return firebase.child(FIREBASE_REGISTERED_TEAMS_PATH);
     }
 
     private static void desktopRun() throws IOException {
         long start = System.currentTimeMillis();
-        PlayerListCache playerListCache = new PlayerListCache();
-        Map<String, Player> players = playerListCache.getPlayers();
+        PlayerListDownloader playerListDownloader = new PlayerListDownloader();
+        Map<String, Player> players = playerListDownloader.getPlayers();
         System.out.println("Players loaded, took " + (System.currentTimeMillis() - start) + " ms");
 
         start = System.currentTimeMillis();
-        TournamentListCache tournamentListCache = new TournamentListCache();
-        List<Tournament> tournaments = tournamentListCache.getTournaments();
+        TournamentListDownloader tournamentListDownloader = new TournamentListDownloader();
+        List<Tournament> tournaments = tournamentListDownloader.getTournaments();
         System.out.println(
                 "Tournaments loaded, took " + (System.currentTimeMillis() - start) + " ms");
         for (Tournament tournament : tournaments) {
             if (tournament.getName().equals("BBVC Challenger II")) {
 
                 System.out.println("\n" + tournament);
-                tournamentListCache.getTournamentDetails(tournament, players);
+                tournamentListDownloader.getTournamentDetails(tournament, players);
 
                 for (Tournament.TournamentClazz clazz : tournament.getClazzes()) {
                     for (Tournament.TeamGroupPosition groupTeamPair : tournament
