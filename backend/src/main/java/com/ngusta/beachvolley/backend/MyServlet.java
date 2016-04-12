@@ -14,6 +14,7 @@ import com.ngusta.beachvolley.domain.Tournament;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -28,12 +29,30 @@ public class MyServlet extends HttpServlet {
 
     private Firebase firebase;
 
+    Map<String, Player> players;
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         firebase = new Firebase("https://beachvolleydb.firebaseio.com/v1");
         long start = System.currentTimeMillis();
         firebase.child("Latest ran").setValue(new Date().toString());
+
+        firebase.child("players").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println("There are " + snapshot.getChildrenCount() + " players");
+                Map<String, Player> newPlayers = new HashMap<>();
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    Player player = postSnapshot.getValue(Player.class);
+                    newPlayers.put(player.uniqueIdentifier(), player);
+                }
+                players = newPlayers;
+            }
+
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
 
         updateAll();
 /*
@@ -88,13 +107,22 @@ public class MyServlet extends HttpServlet {
         TournamentListCache tournamentListCache = new TournamentListCache();
         Map<String, Tournament> tournaments = tournamentListCache.getTournaments();
 
-        PlayerListCache playerListCache = new PlayerListCache();
-        Map<String, Player> players = playerListCache.getPlayers();
-        firebase.child("players").setValue(players);
+        //PlayerListCache playerListCache = new PlayerListCache();
+        //Map<String, Player> players = playerListCache.getPlayers();
+        //firebase.child("players").setValue(players);
+        try {
+            while (players == null || players.isEmpty()) {
+                Thread.sleep(100);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         for (Tournament tournament : tournaments.values()) {
-            List<Team> teams = tournamentListCache.getTournamentDetails(tournament, players);
-            firebase.child("registeredTeams/" + tournament.uniqueIdentifier()).setValue(teams);
+            if (tournament.getUrl() != null && !tournament.getUrl().isEmpty()) {
+                List<Team> teams = tournamentListCache.getTournamentDetails(tournament, players);
+                firebase.child("registeredTeams/" + tournament.uniqueIdentifier()).setValue(teams);
+            }
         }
         firebase.child("tournaments").setValue(tournaments);
     }
