@@ -1,5 +1,8 @@
 package com.ngusta.cupassist.activity;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.adapters.TournamentListAdapter;
 import com.ngusta.beachvolley.domain.Clazz;
@@ -10,7 +13,6 @@ import com.ngusta.beachvolley.domain.Tournament;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +55,8 @@ public class TournamentListActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new RequestTournamentsTask().execute();
+        mTournaments = new ArrayList<>();
+        MyApplication.getTournamentsFirebase().addValueEventListener(getTournamentListListener());
         setContentView(R.layout.activity_tournament_list);
         mProgressContainer = findViewById(R.id.progressContainer);
         mListContainer = findViewById(R.id.listContainer);
@@ -67,6 +71,32 @@ public class TournamentListActivity extends ListActivity {
         mRegionDialog = TournamentListDialogs.createRegionFilterDialog(this, preferences);
 
         makeActionOverflowMenuShown();
+    }
+
+    private ValueEventListener getTournamentListListener() {
+        return new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                mTournaments.clear();
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    mTournaments.add(postSnapshot.getValue(Tournament.class));
+                }
+                Collections.sort(mTournaments);
+                updateList();
+            }
+
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        };
+    }
+
+    void updateList() {
+        List<Tournament> filteredTournaments = filter(mTournaments);
+        if (filteredTournaments.isEmpty()) {
+            Toast.makeText(this, R.string.no_matching_tournaments, Toast.LENGTH_SHORT).show();
+        }
+        setListAdapter(new TournamentListAdapter(this, filteredTournaments));
+        setListShown(true, true);
     }
 
     private void makeActionOverflowMenuShown() {
@@ -88,7 +118,7 @@ public class TournamentListActivity extends ListActivity {
             return;
         }
         Tournament tournament = (Tournament) adapter.getItem(position);
-        if (!tournament.getUrl().isEmpty()) {
+        if (tournament.isRegistrationOpen()) {
             TournamentActivity.startActivity(this, tournament);
         } else {
             Toast.makeText(this, R.string.registration_not_open, Toast.LENGTH_SHORT).show();
@@ -174,29 +204,6 @@ public class TournamentListActivity extends ListActivity {
         CompetitionPeriod period = CompetitionPeriod.findPeriodByDate(new Date());
         int position = listAdapter.getPositionForSection(period.getPeriodNumber() - 1);
         setSelection(position);
-    }
-
-    private class RequestTournamentsTask extends AsyncTask<Void, String, List<Tournament>> {
-
-        @Override
-        protected List<Tournament> doInBackground(Void... voids) {
-            return ((MyApplication) getApplication()).getTournamentService().getAllTournaments();
-        }
-
-        @Override
-        protected void onPostExecute(List<Tournament> tournaments) {
-            mTournaments = tournaments;
-            updateList();
-        }
-    }
-
-    void updateList() {
-        List<Tournament> filteredTournaments = filter(mTournaments);
-        if (filteredTournaments.isEmpty()) {
-            Toast.makeText(this, R.string.no_matching_tournaments, Toast.LENGTH_SHORT).show();
-        }
-        setListAdapter(new TournamentListAdapter(this, filteredTournaments));
-        setListShown(true, true);
     }
 
     private List<Tournament> filter(List<Tournament> tournaments) {

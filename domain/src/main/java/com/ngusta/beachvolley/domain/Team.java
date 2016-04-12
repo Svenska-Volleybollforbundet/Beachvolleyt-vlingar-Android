@@ -1,5 +1,7 @@
 package com.ngusta.beachvolley.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,6 +21,9 @@ public class Team implements Serializable, Comparable<Team> {
 
     private boolean completeTeam;
 
+    public Team() {
+    }
+
     public Team(Player playerA, Player playerB, Date registrationTime, Clazz clazz, boolean paid) {
         this.playerA = playerA;
         this.playerB = playerB;
@@ -37,22 +42,17 @@ public class Team implements Serializable, Comparable<Team> {
         this.paid = paid;
     }
 
-    public Player getPlayerA() {
-        return playerA;
-    }
-
-    public Player getPlayerB() {
-        return playerB;
-    }
-
+    @JsonIgnore
     public String getNames() {
         return playerA.getName() + "/" + playerB.getName();
     }
 
+    @JsonIgnore
     public String getClubs() {
         return playerA.getClub() + "/" + playerB.getClub();
     }
 
+    @JsonIgnore
     public int getEntryPoints() {
         if (clazz == Clazz.MIXED) {
             return (int) (Math.round(playerA.getEntryPoints() * 0.1) + playerA.getMixEntryPoints() + Math.round(playerB.getEntryPoints() * 0.1)
@@ -61,12 +61,51 @@ public class Team implements Serializable, Comparable<Team> {
         return playerA.getEntryPoints() + playerB.getEntryPoints();
     }
 
+    @JsonIgnore
     public int getRankingPoints() {
         if (clazz == Clazz.MIXED) {
             return (int) (Math.round(playerA.getRankingPoints() * 0.1) + playerA.getMixRankingPoints() + Math
                     .round(playerB.getRankingPoints() * 0.1) + playerB.getMixRankingPoints());
         }
         return playerA.getRankingPoints() + playerB.getRankingPoints();
+    }
+
+    private int getHighestEntryPoints() {
+        if (clazz == Clazz.MIXED) {
+            return Math.max(playerA.getMixEntryPoints(), playerB.getMixEntryPoints());
+        }
+        return Math.max(playerA.getEntryPoints(), playerB.getEntryPoints());
+    }
+
+    private int getHighestRankingPoints() {
+        if (clazz == Clazz.MIXED) {
+            return Math.max(playerA.getMixRankingPoints(), playerB.getMixRankingPoints());
+        }
+        return Math.max(playerA.getRankingPoints(), playerB.getRankingPoints());
+    }
+
+    public Player getPlayerA() {
+        return playerA;
+    }
+
+    public Player getPlayerB() {
+        return playerB;
+    }
+
+    public Date getRegistrationTime() {
+        return registrationTime;
+    }
+
+    public Clazz getClazz() {
+        return clazz;
+    }
+
+    public boolean isCompleteTeam() {
+        return completeTeam;
+    }
+
+    public boolean hasPaid() {
+        return paid;
     }
 
     @Override
@@ -91,36 +130,6 @@ public class Team implements Serializable, Comparable<Team> {
         }
         cmp = compare(another.getHighestRankingPoints(), this.getHighestRankingPoints());
         return cmp;
-    }
-
-    private int getHighestEntryPoints() {
-        if (clazz == Clazz.MIXED) {
-            return Math.max(playerA.getMixEntryPoints(), playerB.getMixEntryPoints());
-        }
-        return Math.max(playerA.getEntryPoints(), playerB.getEntryPoints());
-    }
-
-    private int getHighestRankingPoints() {
-        if (clazz == Clazz.MIXED) {
-            return Math.max(playerA.getMixRankingPoints(), playerB.getMixRankingPoints());
-        }
-        return Math.max(playerA.getRankingPoints(), playerB.getRankingPoints());
-    }
-
-    public Date getRegistrationTime() {
-        return registrationTime;
-    }
-
-    public Clazz getClazz() {
-        return clazz;
-    }
-
-    public boolean isCompleteTeam() {
-        return completeTeam;
-    }
-
-    public boolean hasPaid() {
-        return paid;
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class TournamentListCache extends Cache<Tournament> {
+public class TournamentListDownloader {
 
     private static final String CUP_ASSIST_TOURNAMENT_LIST_URL
             = "http://www.cupassist.com/pa/terminliste.php?org=SVBF.SE.SVB&p=40";
@@ -31,22 +31,13 @@ public class TournamentListCache extends Cache<Tournament> {
 
     public TournamentList tournamentList;
 
-    private static final String FILE_NAME = "tournamentList";
-
-    private Context context;
-
     private TournamentListParser tournamentListParser;
 
     private TournamentParser tournamentParser;
 
     private SourceCodeRequester sourceCodeRequester;
 
-    public TournamentListCache(Context context) {
-        this();
-        this.context = context;
-    }
-
-    public TournamentListCache() {
+    public TournamentListDownloader() {
         tournamentListParser = new TournamentListParser();
         tournamentParser = new TournamentParser();
         sourceCodeRequester = new SourceCodeRequester();
@@ -57,27 +48,14 @@ public class TournamentListCache extends Cache<Tournament> {
             return tournamentList.getTournaments();
         }
         try {
-            tournamentList = (TournamentList) load(FILE_NAME, context);
-        } catch (RuntimeException e) {
-            tournamentList = null;
-        }
-
-        if (downloadTournaments()) {
-            try {
-                List<Tournament> tournaments = tournamentListParser.parseTournamentList(
-                        sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL));
-                Collections.sort(tournaments);
-                tournamentList = new TournamentList(tournaments);
-                save(tournamentList, FILE_NAME, context);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            List<Tournament> tournaments = tournamentListParser.parseTournamentList(
+                    sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL));
+            Collections.sort(tournaments);
+            tournamentList = new TournamentList(tournaments);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return tournamentList.getTournaments();
-    }
-
-    private boolean downloadTournaments() {
-        return !MyApplication.CACHE_TOURNAMENTS || tournamentList == null || !tournamentList.isValid();
     }
 
     public void getTournamentDetails(Tournament tournament, Map<String, Player> allPlayers) throws IOException {

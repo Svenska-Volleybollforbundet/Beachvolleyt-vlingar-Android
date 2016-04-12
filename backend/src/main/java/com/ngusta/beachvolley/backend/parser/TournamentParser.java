@@ -26,8 +26,8 @@ public class TournamentParser {
     private static final String REGEXP_PATTERN_FOR_REGISTRATION_URL
             = "pamelding/redirect.php\\?tknavn=(.*?)\", \"_blank\"";
 
-    public List<NewTeam> parseTeams(String source, Map<String, Player> allPlayers) {
-        ArrayList<NewTeam> teams = new ArrayList<>();
+    public List<Team> parseTeams(String source, Map<String, Player> allPlayers) {
+        ArrayList<Team> teams = new ArrayList<>();
         Document document = Jsoup.parse(source);
         Elements tableRows = document.select("table:first-of-type tr:gt(0)");
 
@@ -36,7 +36,7 @@ public class TournamentParser {
         }
 
         for (Element tableRow : tableRows) {
-            NewTeam team = readTeamFromTableRow(tableRow, allPlayers);
+            Team team = readTeamFromTableRow(tableRow, allPlayers);
             if (team != null) {
                 teams.add(team);
             }
@@ -44,7 +44,7 @@ public class TournamentParser {
         return teams;
     }
 
-    private NewTeam readTeamFromTableRow(Element tableRow,
+    private Team readTeamFromTableRow(Element tableRow,
             Map<String, Player> allPlayers) {
         String[] names = tableRow.child(0).text().split("[,/]");
 
@@ -83,9 +83,9 @@ public class TournamentParser {
             String playerBLastName = names[2].trim();
             Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub);
 
-            return new NewTeam(playerA, playerB, registrationDate, clazz, paid);
+            return new Team(playerA, playerB, registrationDate, clazz, paid);
         } else {
-            return new NewTeam(playerA, registrationDate, clazz, paid);
+            return new Team(playerA, registrationDate, clazz, paid);
         }
     }
 
