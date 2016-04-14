@@ -3,6 +3,6 @@
     <cron>
         <url>/hello</url>
         <description>Parse Cup Assist</description>
-        <schedule>every day 00:00</schedule>
+        <schedule>every 30 minutes</schedule>
     </cron>
 </cronentries>

@@ -55,6 +55,7 @@ public class MyServlet extends HttpServlet {
         });
 
         updateAll();
+        Firebase.goOffline();
 /*
         firebase.child("tournaments").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
