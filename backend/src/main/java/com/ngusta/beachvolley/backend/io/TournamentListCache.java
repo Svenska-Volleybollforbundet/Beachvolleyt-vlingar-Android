@@ -1,6 +1,5 @@
 package com.ngusta.beachvolley.backend.io;
 
-import com.ngusta.beachvolley.domain.NewTeam;
 import com.ngusta.beachvolley.domain.Player;
 import com.ngusta.beachvolley.domain.Team;
 import com.ngusta.beachvolley.domain.Tournament;
@@ -10,7 +9,6 @@ import com.ngusta.beachvolley.backend.parser.TournamentParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +72,19 @@ public class TournamentListCache {
             sourceCodeRequester.getSourceCode(
                     CUP_ASSIST_TOURNAMENT_URL + tournament.getRegistrationUrl());
             source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL);
-            return tournamentParser.parseTeams(source, allPlayers);
+            List<Team> teams = tournamentParser.parseTeams(source, allPlayers);
+            return teams;
+        }
+        return null;
+    }
+
+    public List<Team> getTeams(Tournament tournament, Map<String, Player> allPlayers) throws IOException {
+        if (tournament.isRegistrationOpen()) {
+            sourceCodeRequester.getSourceCode(
+                    CUP_ASSIST_TOURNAMENT_URL + tournament.getRegistrationUrl());
+            String source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL);
+            List<Team> teams = tournamentParser.parseTeams(source, allPlayers);
+            return teams;
         }
         return null;
     }

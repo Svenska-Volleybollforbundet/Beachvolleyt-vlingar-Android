@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
     <cron>
-        <url>/hello</url>
-        <description>Parse Cup Assist</description>
-        <schedule>every 30 minutes</schedule>
+        <url>/update/all</url>
+        <description>Update all</description>
+        <schedule>every day 00:00</schedule>
+    </cron>
+    <cron>
+        <url>/update/active</url>
+        <description>Update active</description>
+        <schedule>every 5 minutes</schedule>
     </cron>
 </cronentries>
