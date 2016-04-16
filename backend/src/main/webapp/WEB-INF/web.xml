@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
     <servlet>
-        <servlet-name>MyServlet</servlet-name>
-        <servlet-class>com.ngusta.beachvolley.backend.MyServlet</servlet-class>
+        <servlet-name>FirebaseUpdateServlet</servlet-name>
+        <servlet-class>com.ngusta.beachvolley.backend.FirebaseUpdateServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>MyServlet</servlet-name>
+        <servlet-name>FirebaseUpdateServlet</servlet-name>
         <url-pattern>/update/*</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
