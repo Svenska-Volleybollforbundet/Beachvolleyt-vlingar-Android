@@ -1,26 +1,32 @@
 package com.ngusta.cupassist.activity;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.ngusta.beachvolley.domain.Player;
 import com.ngusta.beachvolley.domain.Team;
 import com.ngusta.beachvolley.domain.Tournament;
+import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.io.PlayerListDownloader;
 import com.ngusta.cupassist.io.TournamentListDownloader;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class MyApplication extends Application {
 
-    public static final String FIREBASE_TOURNAMENTS_PATH = "tournaments";
-
-    public static final String FIREBASE_REGISTERED_TEAMS_PATH = "registeredTeams";
-
     public static boolean RUN_AS_ANDROID_APP = true;
 
+    private static final String FIREBASE_TOURNAMENTS_PATH = "tournaments";
+
+    private static final String FIREBASE_REGISTERED_TEAMS_PATH = "registeredTeams";
+
+    private static final String FIREBASE_SECRET = "nzgY8tDeQQKWgGvBCt98EGoQz1zNVp7HA0s2Fkvg";
     private static Firebase firebase;
 
     @Override
@@ -28,6 +34,17 @@ public class MyApplication extends Application {
         super.onCreate();
         Firebase.setAndroidContext(this);
         firebase = new Firebase("https://beachvolleydb.firebaseio.com/v1");
+        firebase.authWithCustomToken(FIREBASE_SECRET, new Firebase.AuthResultHandler() {
+            @Override
+            public void onAuthenticated(AuthData authData) {
+                System.out.println("Firebase authenticated.");
+            }
+
+            @Override
+            public void onAuthenticationError(FirebaseError firebaseError) {
+                System.err.println("Firebase failed to authenticate.");
+            }
+        });
     }
 
     public static Firebase getTournamentsFirebase() {
