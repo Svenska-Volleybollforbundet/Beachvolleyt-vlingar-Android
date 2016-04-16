@@ -3,6 +3,7 @@ package com.ngusta.cupassist.activity;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.ngusta.beachvolley.domain.Player;
 import com.ngusta.beachvolley.domain.Team;
 import com.ngusta.beachvolley.domain.Tournament;
@@ -25,6 +26,8 @@ public class MyApplication extends Application {
     private static final String FIREBASE_TOURNAMENTS_PATH = "tournaments";
 
     private static final String FIREBASE_REGISTERED_TEAMS_PATH = "registeredTeams";
+
+    private static final String FIREBASE_PLAYERS_PATH = "players";
 
     private static final String FIREBASE_SECRET = "nzgY8tDeQQKWgGvBCt98EGoQz1zNVp7HA0s2Fkvg";
     private static Firebase firebase;
@@ -53,6 +56,10 @@ public class MyApplication extends Application {
 
     public static Firebase getTeamsFirebase() {
         return firebase.child(FIREBASE_REGISTERED_TEAMS_PATH);
+    }
+
+    public static Firebase getPlayersFirebase() {
+        return firebase.child(FIREBASE_PLAYERS_PATH);
     }
 
     private static void desktopRun() throws IOException {

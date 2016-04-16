@@ -137,7 +137,8 @@ public class TournamentListActivity extends ListActivity {
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         menu.add(Menu.NONE, R.id.menu_item_regions, Menu.NONE, R.string.show_regions)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-
+        menu.add(Menu.NONE, R.id.menu_item_players, Menu.NONE, "Visa spelare")
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         return true;
     }
 
@@ -156,6 +157,9 @@ public class TournamentListActivity extends ListActivity {
                 return true;
             case R.id.menu_item_regions:
                 mRegionDialog.show();
+                return true;
+            case R.id.menu_item_players:
+                PlayerListActivity.startActivity(this);
                 return true;
         }
         return false;
