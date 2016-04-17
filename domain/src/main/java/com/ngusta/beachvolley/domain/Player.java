@@ -3,6 +3,7 @@ package com.ngusta.beachvolley.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 public class Player implements Serializable {
     private Integer rank;
@@ -11,6 +12,8 @@ public class Player implements Serializable {
     private String club;
     private int rankingPoints;
     private int entryPoints;
+
+    private Clazz clazz;
 
     private int mixRankingPoints;
 
@@ -71,6 +74,20 @@ public class Player implements Serializable {
         return entryPoints;
     }
 
+    public int getEntryPoints(Clazz clazz) {
+        if (clazz == Clazz.MIXED) {
+            return (int) Math.round(entryPoints * 0.1) + mixEntryPoints;
+        }
+        return entryPoints;
+    }
+
+    public int getRankingPoints(Clazz clazz) {
+        if (clazz == Clazz.MIXED) {
+            return (int) Math.round(rankingPoints * 0.1) + mixRankingPoints;
+        }
+        return rankingPoints;
+    }
+
     public void setEntryPoints(int entryPoints) {
         this.entryPoints = entryPoints;
     }
@@ -87,6 +104,14 @@ public class Player implements Serializable {
         return club;
     }
 
+    public void setClazz(Clazz clazz) {
+        this.clazz = clazz;
+    }
+
+    public Clazz getClazz() {
+        return clazz;
+    }
+
     @Override
     public String toString() {
         return rank + " " +
@@ -95,5 +120,24 @@ public class Player implements Serializable {
                 club + " " +
                 rankingPoints + " " +
                 entryPoints;
+    }
+
+    public static class PlayerComparator implements Comparator<Player> {
+
+        private final Clazz clazz;
+
+        public PlayerComparator(Clazz clazz) {
+            this.clazz = clazz;
+        }
+
+        @Override
+        public int compare(Player p1, Player p2) {
+            int cmp = Double.compare(p2.getEntryPoints(clazz), p1.getEntryPoints(clazz));
+            if (cmp != 0) {
+                return cmp;
+            }
+            cmp = Double.compare(p2.getRankingPoints(clazz), p1.getRankingPoints(clazz));
+            return cmp != 0 ? cmp : p1.getName().compareTo(p2.getName());
+        }
     }
 }

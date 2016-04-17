@@ -1,6 +1,7 @@
 package com.ngusta.beachvolley.backend.io;
 
 import com.ngusta.beachvolley.backend.parser.PlayerListParser;
+import com.ngusta.beachvolley.domain.Clazz;
 import com.ngusta.beachvolley.domain.Player;
 
 import java.io.IOException;
@@ -37,11 +38,13 @@ public class PlayerListCache {
 
             for (Player man : men) {
                 if (!players.containsKey(man.uniqueIdentifier())) {
+                    man.setClazz(Clazz.MEN);
                     players.put(man.uniqueIdentifier(), man);
                 }
             }
             for (Player woman : women) {
                 if (!players.containsKey(woman.uniqueIdentifier())) {
+                    woman.setClazz(Clazz.WOMEN);
                     players.put(woman.uniqueIdentifier(), woman);
                 }
             }
@@ -52,6 +55,7 @@ public class PlayerListCache {
                     player.setMixEntryPoints(mixPlayer.getEntryPoints());
                     player.setMixRankingPoints(mixPlayer.getRankingPoints());
                 } else {
+                    mixPlayer.setClazz(Clazz.MIXED);
                     mixPlayer.setMixEntryPoints(mixPlayer.getEntryPoints());
                     mixPlayer.setMixRankingPoints(mixPlayer.getRankingPoints());
                     mixPlayer.setEntryPoints(0);
