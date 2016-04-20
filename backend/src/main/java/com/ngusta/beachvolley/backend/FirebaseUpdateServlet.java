@@ -61,6 +61,7 @@ public class FirebaseUpdateServlet extends HttpServlet {
         long duration = System.currentTimeMillis() - start;
         log.info("Run time for " + path + ": " + duration + " ms");
         firebase.child("Run time for " + path).setValue(duration + " ms");
+        Firebase.goOffline();
     }
 
     private void getFirebase() {
