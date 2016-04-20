@@ -68,8 +68,14 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         if ("KFUM Gymnastik & IA Karskrona".equals(club)) {
             return "KFUM Karlskrona";
         }
-        if ("Föreningen Beachvolley-Aid".equals(club)) {
+        if (club != null && club.contains("reningen Beachvolley-Aid")) {
             return "Beachvolley-Aid";
+        }
+        if ("Katrineholms Beachvolley Klubb".equals(club)) {
+            return "Katrineholms BVK";
+        }
+        if ("Team Gotland Volleybollklubb".equals(club)) {
+            return "Team Gotland VBK";
         }
         return club;
     }
@@ -81,7 +87,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
                 .contains("midnight")) {
             guessedLevel = Level.OPEN;
         }
-        if (name.contains("grön")) {
+        if (name.contains("open gr") || name.contains("summerslam gr") || name.contains("open (gr")) {
             guessedLevel = Level.OPEN_GREEN;
         }
         if (name.contains("chall")) {
