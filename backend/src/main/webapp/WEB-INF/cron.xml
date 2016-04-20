@@ -4,10 +4,18 @@
         <url>/update/all</url>
         <description>Update all</description>
         <schedule>every day 00:00</schedule>
+        <timezone>Europe/Stockholm</timezone>
     </cron>
     <cron>
         <url>/update/active</url>
-        <description>Update active</description>
-        <schedule>every 5 minutes</schedule>
+        <description>Update active during peak hours</description>
+        <schedule>every 5 minutes from 10:00 to 22:30</schedule>
+        <timezone>Europe/Stockholm</timezone>
+    </cron>
+    <cron>
+        <url>/update/active</url>
+        <description>Update active off peak hours</description>
+        <schedule>every 2 hours from 22:30 to 10:00</schedule>
+        <timezone>Europe/Stockholm</timezone>
     </cron>
 </cronentries>
