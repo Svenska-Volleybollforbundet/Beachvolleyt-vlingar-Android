@@ -47,7 +47,7 @@ public class TournamentParser {
             Map<String, Player> allPlayers) {
         String[] names = tableRow.child(0).text().split("[,/]");
 
-        if (names.length != 4 && names.length != 3) {
+        if (names.length < 2 || names.length > 4) {
             System.err.print("Skipping incomplete Team table row: " + tableRow.text());
             return null;
         }
