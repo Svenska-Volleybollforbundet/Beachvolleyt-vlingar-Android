@@ -17,7 +17,7 @@ import java.util.Map;
 public class TournamentListCache extends Cache<Tournament> {
 
     private static final String CUP_ASSIST_TOURNAMENT_LIST_URL
-            = "http://www.cupassist.com/pa/terminliste.php?org=SVBF.SE.SVB&p=40";
+            = "http://www.cupassist.com/pa/terminliste.php?org=SVBF.SE.SVB&p=47";
 
     private static final String CUP_ASSIST_BASE_URL = "http://www.cupassist.com/";
 

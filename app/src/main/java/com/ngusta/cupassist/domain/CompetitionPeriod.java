@@ -10,22 +10,22 @@ import java.util.GregorianCalendar;
 public class CompetitionPeriod implements Serializable {
 
     public static final CompetitionPeriod[] COMPETITION_PERIODS = {
-            new CompetitionPeriod(1, "TP 01", "2016-01-01", "2016-04-03"),
-            new CompetitionPeriod(2, "TP 02", "2016-04-04", "2016-05-22"),
-            new CompetitionPeriod(3, "TP 03", "2016-05-23", "2016-06-06"),
-            new CompetitionPeriod(4, "TP 04", "2016-06-07", "2016-06-12"),
-            new CompetitionPeriod(5, "TP 05", "2016-06-13", "2016-06-26"),
-            new CompetitionPeriod(6, "TP 06", "2016-06-27", "2016-07-03"),
-            new CompetitionPeriod(7, "TP 07", "2016-07-04", "2016-07-10"),
-            new CompetitionPeriod(8, "TP 08", "2016-07-11", "2016-07-17"),
-            new CompetitionPeriod(9, "TP 09", "2016-07-18", "2016-07-24"),
-            new CompetitionPeriod(10, "TP 10", "2016-07-25", "2016-07-31"),
-            new CompetitionPeriod(11, "TP 11", "2016-08-01", "2016-08-07"),
-            new CompetitionPeriod(12, "TP 12", "2016-08-08", "2016-08-14"),
-            new CompetitionPeriod(13, "TP 13", "2016-08-15", "2016-08-21"),
-            new CompetitionPeriod(14, "TP 14", "2016-08-22", "2016-09-04"),
-            new CompetitionPeriod(15, "TP 15", "2016-09-05", "2016-10-16"),
-            new CompetitionPeriod(16, "TP 16", "2016-10-17", "2016-12-31")
+            new CompetitionPeriod(1, "TP 01", "2017-01-01", "2017-04-02"),
+            new CompetitionPeriod(2, "TP 02", "2017-04-03", "2017-05-21"),
+            new CompetitionPeriod(3, "TP 03", "2017-05-22", "2017-06-04"),
+            new CompetitionPeriod(4, "TP 04", "2017-06-05", "2017-06-11"),
+            new CompetitionPeriod(5, "TP 05", "2017-06-12", "2017-06-25"),
+            new CompetitionPeriod(6, "TP 06", "2017-06-26", "2017-07-02"),
+            new CompetitionPeriod(7, "TP 07", "2017-07-03", "2017-07-09"),
+            new CompetitionPeriod(8, "TP 08", "2017-07-10", "2017-07-16"),
+            new CompetitionPeriod(9, "TP 09", "2017-07-17", "2017-07-23"),
+            new CompetitionPeriod(10, "TP 10", "2017-07-24", "2017-07-30"),
+            new CompetitionPeriod(11, "TP 11", "2017-07-31", "2017-08-06"),
+            new CompetitionPeriod(12, "TP 12", "2017-08-07", "2017-08-13"),
+            new CompetitionPeriod(13, "TP 13", "2017-08-14", "2017-08-20"),
+            new CompetitionPeriod(14, "TP 14", "2017-08-21", "2017-09-03"),
+            new CompetitionPeriod(15, "TP 15", "2017-09-04", "2017-10-15"),
+            new CompetitionPeriod(16, "TP 16", "2017-10-16", "2017-12-31")
     };
 
     private int periodNumber;

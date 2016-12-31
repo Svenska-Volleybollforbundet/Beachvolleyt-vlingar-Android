@@ -49,6 +49,8 @@ public class TournamentListActivity extends ListActivity {
 
     private List<Tournament> mTournaments;
 
+    private boolean mShowOldTournaments;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +67,7 @@ public class TournamentListActivity extends ListActivity {
         mLevelDialog = TournamentListDialogs.createLevelFilterDialog(this, preferences);
         mRegionsToFilter = TournamentListDialogs.getDefaultRegions(preferences);
         mRegionDialog = TournamentListDialogs.createRegionFilterDialog(this, preferences);
+        mShowOldTournaments = true; //Should be false when Feedback fran Samuel: Mojlighet att dolja passerade tavlingar is done
 
         makeActionOverflowMenuShown();
     }
@@ -107,6 +110,9 @@ public class TournamentListActivity extends ListActivity {
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         menu.add(Menu.NONE, R.id.menu_item_regions, Menu.NONE, R.string.show_regions)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        //Add when Feedback fran Samuel: Mojlighet att dolja passerade tavlingar is done
+        //menu.add(Menu.NONE, R.id.menu_item_old_tournaments, Menu.NONE, R.string.show_old_tournaments)
+        //        .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
         return true;
     }
@@ -126,6 +132,10 @@ public class TournamentListActivity extends ListActivity {
                 return true;
             case R.id.menu_item_regions:
                 mRegionDialog.show();
+                return true;
+            case R.id.menu_item_old_tournaments:
+                mShowOldTournaments = true;
+                updateList();
                 return true;
         }
         return false;
@@ -195,7 +205,7 @@ public class TournamentListActivity extends ListActivity {
         if (filteredTournaments.isEmpty()) {
             Toast.makeText(this, R.string.no_matching_tournaments, Toast.LENGTH_SHORT).show();
         }
-        setListAdapter(new TournamentListAdapter(this, filteredTournaments));
+        setListAdapter(new TournamentListAdapter(this, filteredTournaments, mShowOldTournaments));
         setListShown(true, true);
     }
 
@@ -205,7 +215,8 @@ public class TournamentListActivity extends ListActivity {
             for (Tournament.TournamentClazz tournamentClazz : tournament.getClazzes()) {
                 if (mClazzesToFilter.contains(tournamentClazz.getClazz()) && (tournament.getLevel() == Tournament.Level.UNKNOWN || mLevelsToFilter
                         .contains(tournament.getLevel()))
-                        && (tournament.getRegion() == null || mRegionsToFilter.contains(tournament.getRegion()))) {
+                        && (tournament.getRegion() == null || mRegionsToFilter.contains(tournament.getRegion()))
+                        && (mShowOldTournaments || tournament.getCompetitionPeriod().getEndDate().after(new Date()))) {
                     filteredTournaments.add(tournament);
                     break;
                 }

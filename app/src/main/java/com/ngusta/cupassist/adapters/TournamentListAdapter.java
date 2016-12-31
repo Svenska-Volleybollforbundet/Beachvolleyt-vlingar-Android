@@ -42,10 +42,10 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
      */
     private Integer[] mSections;
 
-    public TournamentListAdapter(Context context, List<Tournament> tournaments) {
+    public TournamentListAdapter(Context context, List<Tournament> tournaments, boolean showOldPeriods) {
         super(context, 0, tournaments);
         mInflater = LayoutInflater.from(context);
-        mSections = calculateSections(tournaments);
+        mSections = calculateSections(tournaments, showOldPeriods);
     }
 
     @Override
@@ -83,16 +83,15 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
         boolean women = false, men = false, youth = false, mixed = false, veteran = false;
 
         for (Tournament.TournamentClazz tournamentClazz : tournament.getClazzes()) {
-            String initialLetter = tournamentClazz.getClazz().getInitialLetter();
-            if (Clazz.WOMEN.getInitialLetter().equals(initialLetter)) {
+            if (Clazz.WOMEN == tournamentClazz.getClazz()) {
                 women = true;
-            } else if (Clazz.MEN.getInitialLetter().equals(initialLetter)) {
+            } else if (Clazz.MEN == tournamentClazz.getClazz()) {
                 men = true;
-            } else if (Clazz.U13F.getInitialLetter().equals(initialLetter)) {
+            } else if (Clazz.getYouthClazzes().contains(tournamentClazz.getClazz())) {
                 youth = true;
-            } else if (Clazz.MIXED.getInitialLetter().equals(initialLetter)) {
+            } else if (Clazz.MIXED == tournamentClazz.getClazz()) {
                 mixed = true;
-            } else if (Clazz.V35D.getInitialLetter().equals(initialLetter)) {
+            } else if (Clazz.getVeteranClazzes().contains(tournamentClazz.getClazz())) {
                 veteran = true;
             }
         }
@@ -218,7 +217,7 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
         return start;
     }
 
-    private static Integer[] calculateSections(List<Tournament> tournaments) {
+    private static Integer[] calculateSections(List<Tournament> tournaments, boolean showOldPeriods) {
         // Assuming tournaments are sorted by competition period in ascending order.
         Integer[] sections = new Integer[CompetitionPeriod.COMPETITION_PERIODS.length];
         int listIndex;
@@ -321,11 +320,11 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
                     .findViewById(R.id.clazz_indicator_mixed);
             clazzIndicatorVeteran = (TextView) levelClazzIndicator
                     .findViewById(R.id.clazz_indicator_veteran);
-            clazzIndicatorWomen.setText(Clazz.WOMEN.getInitialLetter());
-            clazzIndicatorMen.setText(Clazz.MEN.getInitialLetter());
-            clazzIndicatorYouth.setText(Clazz.U13F.getInitialLetter());
-            clazzIndicatorMixed.setText(Clazz.MIXED.getInitialLetter());
-            clazzIndicatorVeteran.setText(Clazz.V35D.getInitialLetter());
+            clazzIndicatorWomen.setText("D");
+            clazzIndicatorMen.setText("M");
+            clazzIndicatorYouth.setText("U");
+            clazzIndicatorMixed.setText("M");
+            clazzIndicatorVeteran.setText("V");
         }
     }
 

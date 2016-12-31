@@ -16,5 +16,6 @@
     <string name="no_matching_tournaments">Inga turneringar matchade dina filter.</string>
     <string name="sm">SM</string>
     <string name="show_regions">Visa regioner</string>
+    <string name="show_old_tournaments">Visa/dölj tidigare tävlingsperioder</string>
     <string name="registered">Anmälda</string>
 </resources>

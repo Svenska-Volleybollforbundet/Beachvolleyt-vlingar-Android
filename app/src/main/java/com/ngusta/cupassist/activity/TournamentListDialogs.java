@@ -242,10 +242,10 @@ public class TournamentListDialogs {
                 regionsToFilter.add(Region.NORTH);
                 break;
             case STOCKHOLM_REGION_INDEX:
-                regionsToFilter.add(Region.STOCKHOLM);
+                regionsToFilter.add(Region.EAST);
                 break;
             case MIDDLE_REGION_INDEX:
-                regionsToFilter.add(Region.MIDDLE);
+                regionsToFilter.add(Region.WEST);
                 break;
             case SOUTH_REGION_INDEX:
                 regionsToFilter.add(Region.SOUTH);
@@ -262,7 +262,7 @@ public class TournamentListDialogs {
             defaultSelected[i] = true;
             selectedItemsIndexList.add(i);
         }
-        String[] clazzNames = {"Norr", "Stockholm", "Mellan", "Syd"};
+        String[] clazzNames = {"Norr", "\u00D6st", "V\u00E4st", "S\u00F6der"};
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
         dialogBuilder.setTitle(R.string.show_regions)
                 .setMultiChoiceItems(clazzNames, defaultSelected, new DialogInterface.OnMultiChoiceClickListener() {

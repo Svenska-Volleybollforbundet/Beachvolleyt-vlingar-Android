@@ -4,10 +4,16 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum Clazz {
-    MEN("H"), WOMEN("D"), MIXED("M"), U13F("U13 F"), U13P("U13 P"), U15F("U15 F"), U15P("U15 P"),
-    U17F("U17 F"), U17P("U17 P"), U19F("U19 F"), U19P("U19 P"), U21F("U21 F"), U21P("U21 P"),
-    V35D("V35+ D"), V35H("V35+ H"), V40D("V40+ D"), V40H("V40+ H"), V45D("V45+ D"), V45H("V45+ H"),
-    V55D("V55+ D"), V55H("V55+ H"), UNKNOWN("Unknown");
+    MEN("H"), WOMEN("D"), MIXED("M"),
+    D98("D98"), H98("H98"),
+    F00("U18 H"), P00("U18 P"), M00("U18 M"),
+    F02("U16 H"), P02("U16 P"), M02("U16 M"),
+    F03("Tremanna F"), O03("Tremanna O"), O07("Fyrmanna O"),
+    V35D("V35+ D"), V35H("V35+ H"),
+    V40D("V40+ D"), V40H("V40+ H"),
+    V45D("V45+ D"), V45H("V45+ H"),
+    V55D("V55+ D"), V55H("V55+ H"),
+    UNKNOWN("Unknown");
 
     private final String clazzString;
 
@@ -36,26 +42,28 @@ public enum Clazz {
                 return WOMEN;
             case "M":
                 return MIXED;
-            case "U13 F":
-                return U13F;
-            case "U13 P":
-                return U13P;
-            case "U15 F":
-                return U15F;
-            case "U15 P":
-                return U15P;
-            case "U17 F":
-                return U17F;
-            case "U17 P":
-                return U17P;
-            case "U19 F":
-                return U19F;
-            case "U19 P":
-                return U19P;
-            case "U21 F":
-                return U21F;
-            case "U21 P":
-                return U21P;
+            case "D98":
+                return D98;
+            case "H98":
+                return H98;
+            case "F00":
+                return F00;
+            case "P00":
+                return P00;
+            case "M00":
+                return M00;
+            case "F02":
+                return F02;
+            case "P02":
+                return P02;
+            case "M02":
+                return M02;
+            case "F03":
+                return F03;
+            case "O03":
+                return O03;
+            case "O07":
+                return O07;
             case "V35+ D":
                 return V35D;
             case "V35+ H":
@@ -77,7 +85,7 @@ public enum Clazz {
     }
 
     public static List<Clazz> getYouthClazzes() {
-        Clazz[] youthClazzes = {U13F, U13P, U15F, U15P, U17F, U17P, U19F, U19P, U21F, U21P, UNKNOWN};
+        Clazz[] youthClazzes = {D98, H98, F00, P00, M00, F02, P02, M02, F03, O03, O07, UNKNOWN};
         return Arrays.asList(youthClazzes);
     }
 
