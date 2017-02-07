@@ -16,10 +16,14 @@ import java.util.Set;
 
 public class PlayerListCache extends Cache<Player> {
     private static final String FILE_NAME = "players";
-    private static String CUP_ASSIST_PLAYERS_RANKING_BASE_URL = "http://www.cupassist.com/pa/ranking_beach/index.php";
-    private static String CUP_ASSIST_PLAYERS_RANKING_MEN_URL = "http://www.cupassist.com/pa/ranking_beach/visrank.php?k=H";
-    private static String CUP_ASSIST_PLAYERS_RANKING_WOMEN_URL = "http://www.cupassist.com/pa/ranking_beach/visrank.php?k=D";
-    private static String CUP_ASSIST_PLAYERS_RANKING_MIXED_URL = "http://www.cupassist.com/pa/ranking_beach/visrank.php?k=M";
+
+    private static final String CUP_ASSIST_PLAYERS_RANKING_BASE_URL = "https://profixio.com/pa/ranking_beach/index.php";
+
+    private static final String CUP_ASSIST_PLAYERS_RANKING_MEN_URL = "https://profixio.com/pa/ranking_beach/visrank.php?k=H";
+
+    private static final String CUP_ASSIST_PLAYERS_RANKING_WOMEN_URL = "https://profixio.com/pa/ranking_beach/visrank.php?k=D";
+
+    private static final String CUP_ASSIST_PLAYERS_RANKING_MIXED_URL = "https://profixio.com/pa/ranking_beach/visrank.php?k=M";
 
     private PlayerListParser playerListParser;
     private SourceCodeRequester sourceCodeRequester;

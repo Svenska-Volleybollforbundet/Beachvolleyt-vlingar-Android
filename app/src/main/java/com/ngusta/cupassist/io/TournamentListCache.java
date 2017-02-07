@@ -17,15 +17,15 @@ import java.util.Map;
 public class TournamentListCache extends Cache<Tournament> {
 
     private static final String CUP_ASSIST_TOURNAMENT_LIST_URL
-            = "http://www.cupassist.com/pa/terminliste.php?org=SVBF.SE.SVB&p=47";
+            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=47";
 
-    private static final String CUP_ASSIST_BASE_URL = "http://www.cupassist.com/";
+    private static final String CUP_ASSIST_BASE_URL = "http://profixio.com/";
 
     public static final String CUP_ASSIST_TOURNAMENT_URL
-            = "http://www.cupassist.com/pamelding/redirect.php?tknavn=";
+            = "https://profixio.com/pamelding/redirect.php?tknavn=";
 
     private static final String CUP_ASSIST_TOURNAMENT_PLAYERS_URL
-            = "http://www.cupassist.com/pamelding/vis_paamelding.php?order=rp";
+            = "https://profixio.com/pamelding/vis_paamelding.php?order=rp";
 
     private static final String STRING_ONLY_IN_REAL_TOURNAMENT_PAGE = "evenemang";
 
