@@ -12,7 +12,7 @@ public class SourceCodeRequester {
     private static Map<String, String> cookies = new HashMap<>();
 
     public String getSourceCode(String url) throws IOException {
-        Connection.Response response = Jsoup.connect(url).cookies(cookies).method(Connection.Method.GET).execute();
+        Connection.Response response = Jsoup.connect(url).cookies(cookies).method(Connection.Method.GET).timeout(20000).execute();
         cookies.putAll(response.cookies());
         return response.body();
     }
