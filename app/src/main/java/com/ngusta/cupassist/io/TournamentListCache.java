@@ -17,7 +17,7 @@ import java.util.Map;
 public class TournamentListCache extends Cache<Tournament> {
 
     private static final String CUP_ASSIST_TOURNAMENT_LIST_URL
-            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=47";
+            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=47&vis_gamle_arr=true";
 
     private static final String CUP_ASSIST_BASE_URL = "http://profixio.com/";
 
