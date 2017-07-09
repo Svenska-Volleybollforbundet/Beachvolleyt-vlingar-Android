@@ -37,10 +37,13 @@ public enum Clazz {
         }
         switch (clazzString) {
             case "H":
+            case "Herr":
                 return MEN;
             case "D":
+            case "Dam":
                 return WOMEN;
             case "M":
+            case "Mixed":
                 return MIXED;
             case "D98":
                 return D98;

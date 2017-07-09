@@ -127,7 +127,7 @@ public class TournamentParser {
 
             if (maxNumberOfTeamsElem != null) {
                 Clazz clazz = Clazz.parse(clazzElem.text());
-                if (clazz != Clazz.UNKNOWN) {
+                if (clazz != Clazz.UNKNOWN && !maxNumberOfTeamsElem.text().isEmpty()) {
                     int maxNumberOfTeams = Integer.parseInt(maxNumberOfTeamsElem.text());
                     maxNumberOfTeamsMap.put(clazz, maxNumberOfTeams);
                 }

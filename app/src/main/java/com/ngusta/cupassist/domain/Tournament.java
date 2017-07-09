@@ -11,8 +11,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static java.lang.Math.min;
 
@@ -103,14 +105,14 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     private List<TournamentClazz> parseClazzes(String clazzes) {
-        ArrayList<TournamentClazz> parsedClazzes = new ArrayList<>();
+        Set<TournamentClazz> parsedClazzes = new HashSet<>();
         if (clazzes != null) {
             String[] clazzArray = clazzes.split(", ");
             for (String clazzString : clazzArray) {
                 parsedClazzes.add(new TournamentClazz(Clazz.parse(clazzString)));
             }
         }
-        return parsedClazzes;
+        return new ArrayList<>(parsedClazzes);
     }
 
     public CompetitionPeriod getCompetitionPeriod() {
@@ -379,6 +381,26 @@ public class Tournament implements Serializable, Comparable<Tournament> {
                         clazz, guess));
                 return guess;
             }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            TournamentClazz that = (TournamentClazz) o;
+
+            return clazz == that.clazz;
+
+        }
+
+        @Override
+        public int hashCode() {
+            return clazz.hashCode();
         }
 
         @Override
