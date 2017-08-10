@@ -129,18 +129,14 @@ public class TournamentParser {
                 Clazz clazz = Clazz.parse(clazzElem.text());
                 if (clazz != Clazz.UNKNOWN) {
                     if (maxNumberOfTeamsElem.text().isEmpty()) {
-                        maxNumberOfTeamsMap.put(clazz, 0);
+                        if (!maxNumberOfTeamsMap.containsKey(clazz)) {
+                            maxNumberOfTeamsMap.put(clazz, 1000);
+                        }
                     } else {
                         int maxNumberOfTeams = Integer.parseInt(maxNumberOfTeamsElem.text());
                         maxNumberOfTeamsMap.put(clazz, maxNumberOfTeams);
                     }
                 }
-            }
-        }
-        //Add 12 as default number of teams if not defined
-        for (Map.Entry<Clazz, Integer> entry : maxNumberOfTeamsMap.entrySet()) {
-            if (entry.getValue() == 0) {
-                maxNumberOfTeamsMap.put(entry.getKey(), 12);
             }
         }
         return maxNumberOfTeamsMap;

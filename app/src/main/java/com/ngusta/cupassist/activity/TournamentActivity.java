@@ -158,9 +158,10 @@ public class TournamentActivity extends Activity {
     }
 
     private void setTeamsInfo(Tournament.TournamentClazz clazz) {
+        Integer maxNumberOfTeams = clazz.getMaxNumberOfTeams();
         ((TextView) findViewById(R.id.teams_info)).setText(
-                getResources().getString(R.string.registered) + " " + tournament.getNumberOfCompleteTeamsForClazz(clazz) + "/" + clazz
-                        .getMaxNumberOfTeams());
+                getResources().getString(R.string.registered) + " " + tournament.getNumberOfCompleteTeamsForClazz(clazz) + "/" + (
+                        maxNumberOfTeams == 1000 ? "?" : maxNumberOfTeams));
     }
 
     private void updateTeams(Tournament.TournamentClazz clazz) {
