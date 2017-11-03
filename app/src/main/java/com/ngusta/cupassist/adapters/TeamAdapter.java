@@ -64,7 +64,7 @@ public class TeamAdapter extends ArrayAdapter<Tournament.TeamGroupPosition> {
         }
         holder.playerAName.setText(team.team.getPlayerA().getName());
         holder.playerBName.setText(team.team.getPlayerB().getName());
-        holder.entryPoints.setText(team.team.getEntryPoints() + " pts");
+        holder.entryPoints.setText(((int) Math.round(team.team.getEntryPoints())) + " pts");
         return row;
     }
 

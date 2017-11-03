@@ -53,18 +53,18 @@ public class Team implements Serializable, Comparable<Team> {
         return playerA.getClub() + "/" + playerB.getClub();
     }
 
-    public int getEntryPoints() {
+    public double getEntryPoints() {
         if (clazz == Clazz.MIXED) {
-            return (int) (Math.round(playerA.getEntryPoints() * 0.1) + playerA.getMixEntryPoints() + Math.round(playerB.getEntryPoints() * 0.1)
-                    + playerB.getMixEntryPoints());
+            return playerA.getEntryPoints() * 0.1 + playerA.getMixEntryPoints() +
+                    playerB.getEntryPoints() * 0.1 + playerB.getMixEntryPoints();
         }
         return playerA.getEntryPoints() + playerB.getEntryPoints();
     }
 
-    public int getRankingPoints() {
+    public double getRankingPoints() {
         if (clazz == Clazz.MIXED) {
-            return (int) (Math.round(playerA.getRankingPoints() * 0.1) + playerA.getMixRankingPoints() + Math
-                    .round(playerB.getRankingPoints() * 0.1) + playerB.getMixRankingPoints());
+            return playerA.getRankingPoints() * 0.1 + playerA.getMixRankingPoints() +
+                    playerB.getRankingPoints() * 0.1 + playerB.getMixRankingPoints();
         }
         return playerA.getRankingPoints() + playerB.getRankingPoints();
     }
