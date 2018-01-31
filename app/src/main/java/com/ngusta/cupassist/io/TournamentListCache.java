@@ -17,15 +17,15 @@ import java.util.Map;
 public class TournamentListCache extends Cache<Tournament> {
 
     private static final String CUP_ASSIST_TOURNAMENT_LIST_URL
-            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=47&vis_gamle_arr=true";
+            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=51&vis_gamle_arr=true";
 
-    private static final String CUP_ASSIST_BASE_URL = "http://profixio.com/";
+    private static final String CUP_ASSIST_BASE_URL = "https://www.profixio.com/";
 
     public static final String CUP_ASSIST_TOURNAMENT_URL
             = "https://profixio.com/pamelding/redirect.php?tknavn=";
 
     private static final String CUP_ASSIST_TOURNAMENT_PLAYERS_URL
-            = "https://profixio.com/pamelding/vis_paamelding.php?order=rp";
+            = "https://www.profixio.com/pamelding/vis_paamelding.php?order=ep";
 
     private static final String STRING_ONLY_IN_REAL_TOURNAMENT_PAGE = "evenemang";
 
@@ -81,10 +81,10 @@ public class TournamentListCache extends Cache<Tournament> {
     }
 
     public void getTournamentDetails(Tournament tournament, Map<String, Player> allPlayers) throws IOException {
-        String source = sourceCodeRequester.getSourceCode(CUP_ASSIST_BASE_URL + "pa/" + tournament.getUrl());
+        String source = sourceCodeRequester.getSourceCode(CUP_ASSIST_BASE_URL + "fx/" + tournament.getUrl());
         if (cookieHasExpired(source)) {
             sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL);
-            source = sourceCodeRequester.getSourceCode(CUP_ASSIST_BASE_URL + "pa/" + tournament.getUrl());
+            source = sourceCodeRequester.getSourceCode(CUP_ASSIST_BASE_URL + "fx/" + tournament.getUrl());
         }
         tournament.setRegistrationUrl(tournamentParser.parseRegistrationUrl(source));
         tournament.setMaxNumberOfTeams(tournamentParser.parseMaxNumberOfTeams(source));
