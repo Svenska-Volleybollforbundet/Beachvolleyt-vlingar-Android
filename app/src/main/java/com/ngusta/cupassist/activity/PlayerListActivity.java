@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 
@@ -36,8 +35,6 @@ public class PlayerListActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
 
-    private View mRecyclerView;
-
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, PlayerListActivity.class);
         context.startActivity(intent);
@@ -53,10 +50,6 @@ public class PlayerListActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         setListShown(false, true);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setLogo(R.drawable.beachvolleyicon);
-        setSupportActionBar(toolbar);
-
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
         womenFragment = new PlayerListFragment();
         menFragment = new PlayerListFragment();
@@ -68,8 +61,6 @@ public class PlayerListActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
-        mRecyclerView = findViewById(R.id.player_list);
     }
 
     private class RequestPlayersTask extends AsyncTask<Void, String, Map<String, Player>> {
