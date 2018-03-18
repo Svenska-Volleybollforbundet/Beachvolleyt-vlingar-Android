@@ -3,7 +3,7 @@ package com.ngusta.cupassist.activity;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Team;
 import com.ngusta.cupassist.domain.Tournament;
-import com.ngusta.cupassist.io.PlayerListCache;
+import com.ngusta.cupassist.io.PlayerListDownloader;
 import com.ngusta.cupassist.io.TournamentListCache;
 import com.ngusta.cupassist.service.PlayerService;
 import com.ngusta.cupassist.service.TournamentService;
@@ -47,8 +47,8 @@ public class MyApplication extends Application {
 
     private static void desktopRun() throws IOException {
         long start = System.currentTimeMillis();
-        PlayerListCache playerListCache = new PlayerListCache();
-        Map<String, Player> players = playerListCache.getPlayers();
+        PlayerListDownloader playerListDownloader = new PlayerListDownloader();
+        Map<String, Player> players = playerListDownloader.getPlayers();
         System.out.println("Players loaded, took " + (System.currentTimeMillis() - start) + " ms");
 
         start = System.currentTimeMillis();

@@ -110,6 +110,8 @@ public class TournamentListActivity extends ListActivity {
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         menu.add(Menu.NONE, R.id.menu_item_regions, Menu.NONE, R.string.show_regions)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        menu.add(Menu.NONE, R.id.menu_item_players, Menu.NONE, "Visa spelare")
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         //Add when Feedback fran Samuel: Mojlighet att dolja passerade tavlingar is done
         //menu.add(Menu.NONE, R.id.menu_item_old_tournaments, Menu.NONE, R.string.show_old_tournaments)
         //        .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
@@ -136,6 +138,9 @@ public class TournamentListActivity extends ListActivity {
             case R.id.menu_item_old_tournaments:
                 mShowOldTournaments = true;
                 updateList();
+                return true;
+            case R.id.menu_item_players:
+                PlayerListActivity.startActivity(this);
                 return true;
         }
         return false;

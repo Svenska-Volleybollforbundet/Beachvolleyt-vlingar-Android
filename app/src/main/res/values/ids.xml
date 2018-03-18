@@ -7,4 +7,5 @@
     <item name="menu_item_old_tournaments" type="id" />
     <item name="menu_item_see_result" type="id" />
     <item name="menu_item_register_result" type="id" />
+    <item name="menu_item_players" type="id" />
 </resources>

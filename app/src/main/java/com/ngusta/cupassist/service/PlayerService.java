@@ -1,7 +1,7 @@
 package com.ngusta.cupassist.service;
 
 import com.ngusta.cupassist.domain.Player;
-import com.ngusta.cupassist.io.PlayerListCache;
+import com.ngusta.cupassist.io.PlayerListDownloader;
 
 import android.content.Context;
 
@@ -9,17 +9,17 @@ import java.util.Map;
 
 public class PlayerService {
 
-    private PlayerListCache playerListCache;
+    private PlayerListDownloader playerListDownloader;
 
     public PlayerService() {
-        playerListCache = new PlayerListCache();
+        playerListDownloader = new PlayerListDownloader();
     }
 
     public PlayerService(Context context) {
-        playerListCache = new PlayerListCache(context);
+        playerListDownloader = new PlayerListDownloader(context);
     }
 
     public Map<String, Player> getPlayers() {
-        return playerListCache.getPlayers();
+        return playerListDownloader.getPlayers();
     }
 }

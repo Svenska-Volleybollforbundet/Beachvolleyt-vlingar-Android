@@ -24,5 +24,10 @@
             android:name=".activity.TournamentActivity"
             android:parentActivityName=".activity.TournamentListActivity"
             android:screenOrientation="nosensor" />
+        <activity
+            android:name=".activity.PlayerListActivity"
+            android:parentActivityName=".activity.TournamentListActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 </manifest>
