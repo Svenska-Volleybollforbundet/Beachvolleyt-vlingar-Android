@@ -18,4 +18,6 @@
     <string name="show_regions">Visa regioner</string>
     <string name="show_old_tournaments">Visa/dölj tidigare tävlingsperioder</string>
     <string name="registered">Anmälda</string>
+    <string name="see_result">Se resultat</string>
+    <string name="register_result">Registrera resultat</string>
 </resources>

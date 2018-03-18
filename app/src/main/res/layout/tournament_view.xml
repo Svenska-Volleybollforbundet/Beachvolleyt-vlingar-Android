@@ -17,17 +17,6 @@
             android:layout_marginLeft="5dp"
             android:textSize="10pt" />
 
-        <ImageButton
-            android:id="@+id/open_cupassist"
-            android:src="@drawable/external_link_disabled"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/club"
-            android:text="@string/open_cupassist"
-            android:background="@null"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="3dp" />
-
         <TextView
             android:id="@+id/start_date"
             android:layout_width="wrap_content"
@@ -40,7 +29,8 @@
             android:id="@+id/clazz_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/club" />
+            android:layout_below="@id/club"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/teams_info"

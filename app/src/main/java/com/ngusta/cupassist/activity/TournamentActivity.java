@@ -13,17 +13,20 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 
 public class TournamentActivity extends Activity {
@@ -53,6 +56,7 @@ public class TournamentActivity extends Activity {
         mTeamList = findViewById(R.id.teamList);
         setListShown(false, false);
         initInfo();
+        makeActionOverflowMenuShown();
         new RequestTournamentDetailsTask().execute();
     }
 
@@ -96,6 +100,18 @@ public class TournamentActivity extends Activity {
         ((TextView) findViewById(R.id.start_date)).setText(tournament.getFormattedStartDate());
     }
 
+    private void makeActionOverflowMenuShown() {
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception e) {
+        }
+    }
+
     private class RequestTournamentDetailsTask extends AsyncTask<Void, String, Exception> {
 
         @Override
@@ -112,7 +128,6 @@ public class TournamentActivity extends Activity {
         protected void onPostExecute(Exception exception) {
             if (exception == null && tournament.isRegistrationOpen()) {
                 initClazzSpinner();
-                initCALink();
                 Tournament.TournamentClazz clazz = tournament.getClazzes().get(0);
                 setTeamsInfo(clazz);
                 updateTeams(clazz);
@@ -126,7 +141,11 @@ public class TournamentActivity extends Activity {
     }
 
     private void initClazzSpinner() {
+        if (tournament.getClazzes().size() <= 1) {
+            return;
+        }
         Spinner clazzSpinner = (Spinner) findViewById(R.id.clazz_spinner);
+        clazzSpinner.setVisibility(View.VISIBLE);
         ArrayAdapter<Tournament.TournamentClazz> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapter.addAll(tournament.getClazzes());
@@ -145,18 +164,6 @@ public class TournamentActivity extends Activity {
         });
     }
 
-    private void initCALink() {
-        final ImageButton button = (ImageButton) findViewById(R.id.open_cupassist);
-        button.setImageResource(R.drawable.external_link_enabled);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Uri cupAssistUri = Uri.parse(TournamentListCache.CUP_ASSIST_TOURNAMENT_URL + tournament.getRegistrationUrl());
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, cupAssistUri);
-                startActivity(browserIntent);
-            }
-        });
-    }
-
     private void setTeamsInfo(Tournament.TournamentClazz clazz) {
         Integer maxNumberOfTeams = clazz.getMaxNumberOfTeams();
         ((TextView) findViewById(R.id.teams_info)).setText(
@@ -169,5 +176,36 @@ public class TournamentActivity extends Activity {
         List<Tournament.TeamGroupPosition> teams = tournament.getTeamGroupPositionsForClazz(clazz);
         final ArrayAdapter<Tournament.TeamGroupPosition> adapter = new TeamAdapter(this, R.layout.team_list_item, teams, clazz.getMaxNumberOfTeams());
         teamListView.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        menu.add(Menu.NONE, R.id.menu_item_see_result, Menu.NONE, R.string.see_result)
+                .setIcon(R.drawable.external_link_enabled)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        menu.add(Menu.NONE, R.id.menu_item_register_result, Menu.NONE, R.string.register_result)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.menu_item_see_result:
+                openBrowser(TournamentListCache.PROFIXIO_BASE_RESULT_URL + TournamentActivity.this.tournament.getUrlName());
+                return true;
+            case R.id.menu_item_register_result:
+                openBrowser(TournamentListCache.PROFIXIO_BASE_RESULT_REPORTING_URL + TournamentActivity.this.tournament.getUrlName());
+                return true;
+        }
+        return false;
+    }
+
+    private void openBrowser(String uriString) {
+        Uri cupAssistUri = Uri.parse(uriString);
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, cupAssistUri);
+        startActivity(browserIntent);
     }
 }

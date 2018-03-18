@@ -44,7 +44,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
 
     private List<TournamentClazz> clazzes;
 
-    private String registrationUrl;
+    private String urlName;
 
     private Map<Clazz, List<Team>> teams;
 
@@ -143,15 +143,15 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         return clazzes != null ? clazzes : Collections.<TournamentClazz>emptyList();
     }
 
-    public String getRegistrationUrl() {
-        return registrationUrl;
+    public String getUrlName() {
+        return urlName;
     }
 
-    public void setRegistrationUrl(String registrationUrl) {
+    public void setUrlName(String urlName) {
         if (MyApplication.RUN_AS_ANDROID_APP) {
-            Log.i(TAG, "Trying to set reg url to: " + registrationUrl + " Old value: " + this.registrationUrl);
+            Log.i(TAG, "Trying to set reg url to: " + urlName + " Old value: " + this.urlName);
         }
-        this.registrationUrl = registrationUrl;
+        this.urlName = urlName;
     }
 
     public Map<Clazz, List<Team>> getTeams() {
@@ -248,9 +248,9 @@ public class Tournament implements Serializable, Comparable<Tournament> {
 
     public boolean isRegistrationOpen() {
         if (MyApplication.RUN_AS_ANDROID_APP) {
-            Log.i(TAG, "isRegistrationOpen: " + (registrationUrl != null) + " Reg url: " + registrationUrl);
+            Log.i(TAG, "isRegistrationOpen: " + (urlName != null) + " Reg url: " + urlName);
         }
-        return registrationUrl != null;
+        return urlName != null;
     }
 
     public int getId() {
@@ -271,7 +271,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
                 ", url='" + url + '\'' +
                 ", level='" + level + '\'' +
                 ", classes='" + clazzes + '\'' +
-                ", redirectUrl='" + registrationUrl + '\'' +
+                ", redirectUrl='" + urlName + '\'' +
                 '}';
     }
 

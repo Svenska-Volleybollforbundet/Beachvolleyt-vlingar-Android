@@ -29,6 +29,10 @@ public class TournamentListCache extends Cache<Tournament> {
 
     private static final String STRING_ONLY_IN_REAL_TOURNAMENT_PAGE = "evenemang";
 
+    public static final String PROFIXIO_BASE_RESULT_REPORTING_URL = "https://www.profixio.com/res/";
+
+    public static final String PROFIXIO_BASE_RESULT_URL = "https://www.profixio.com/matches/";
+
     public TournamentList tournamentList;
 
     private static final String FILE_NAME = "tournamentList";
@@ -86,12 +90,12 @@ public class TournamentListCache extends Cache<Tournament> {
             sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL);
             source = sourceCodeRequester.getSourceCode(CUP_ASSIST_BASE_URL + "fx/" + tournament.getUrl());
         }
-        tournament.setRegistrationUrl(tournamentParser.parseRegistrationUrl(source));
+        tournament.setUrlName(tournamentParser.parseRegistrationUrl(source));
         tournament.setMaxNumberOfTeams(tournamentParser.parseMaxNumberOfTeams(source));
 
         if (tournament.isRegistrationOpen()) {
             sourceCodeRequester.getSourceCode(
-                    CUP_ASSIST_TOURNAMENT_URL + tournament.getRegistrationUrl());
+                    CUP_ASSIST_TOURNAMENT_URL + tournament.getUrlName());
             source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL);
             tournament.setTeams(tournamentParser.parseTeams(source, allPlayers));
         }
