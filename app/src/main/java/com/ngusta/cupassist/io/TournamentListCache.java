@@ -19,6 +19,9 @@ public class TournamentListCache extends Cache<Tournament> {
     private static final String CUP_ASSIST_TOURNAMENT_LIST_URL
             = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=51&vis_gamle_arr=true";
 
+    public static final String CUP_ASSIST_TOURNAMENT_LIST_URL_WITHOUT_OLD_TOURNAMENTS
+            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=51&vis_gamle_arr=false";
+
     private static final String CUP_ASSIST_BASE_URL = "https://www.profixio.com/";
 
     public static final String CUP_ASSIST_TOURNAMENT_URL
@@ -33,7 +36,11 @@ public class TournamentListCache extends Cache<Tournament> {
 
     public static final String PROFIXIO_BASE_RESULT_URL = "https://www.profixio.com/matches/";
 
-    public TournamentList tournamentList;
+    public static final String PROFIXIO_SIGN_UP_URL = "https://www.profixio.com/pamelding/index.php";
+
+    public static final String COMPETITION_REGULATIONS_URL = "http://www.volleyboll.se/Omoss/Dokument/tavlingsbestammelserbeachvolley2018";
+
+    private TournamentList tournamentList;
 
     private static final String FILE_NAME = "tournamentList";
 

@@ -82,8 +82,8 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     private Level guessLevel(String name) {
         Level guessedLevel = Level.UNKNOWN;
         name = name.toLowerCase();
-        if (name.contains("open") || name.contains("mix") || name.contains("svart") || name
-                .contains("midnight")) {
+        if (name.contains("open") || name.contains("mix") || name.contains("svart") ||
+                name.contains("midnight") || name.contains("mästerskap")) {
             guessedLevel = Level.OPEN;
         }
         if (name.contains("grön")) {
@@ -95,10 +95,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         if (name.contains("ungdom") || name.contains("junior")) {
             guessedLevel = Level.YOUTH;
         }
-        if (name.contains("mixed-sm")) {
-            guessedLevel = Level.SWEDISH_BEACH_TOUR;
-        }
-        if (name.contains("senior-sm")) {
+        if (name.contains("mixed sm") || name.contains("senior-sm") || name.contains("swedish beach tour") || name.contains("sbt")) {
             guessedLevel = Level.SWEDISH_BEACH_TOUR;
         }
         return guessedLevel;
@@ -281,7 +278,17 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     public enum Level implements Serializable {
-        OPEN, OPEN_GREEN, CHALLENGER, SWEDISH_BEACH_TOUR, YOUTH, VETERAN, UNKNOWN;
+        OPEN(2), OPEN_GREEN(1), CHALLENGER(3), SWEDISH_BEACH_TOUR(5), SWEDISH_BEACH_TOUR_FINAL(6), SM(7), YOUTH(1), VETERAN(1), UNKNOWN(0);
+
+        private int stars;
+
+        Level(int stars) {
+            this.stars = stars;
+        }
+
+        public int getStars() {
+            return stars;
+        }
 
         private static final Comparator<Team> REGISTRATION_TIME_COMPARATOR
                 = new Comparator<Team>() {
@@ -313,18 +320,20 @@ public class Tournament implements Serializable, Comparable<Tournament> {
             if (levelString == null) {
                 return UNKNOWN;
             }
-            if (levelString.contains("Open (Svart)")) {
+            if (levelString.contains("Open Svart") || levelString.contains("Distriktsmästerskap")) {
                 return OPEN;
-            } else if (levelString.contains("Open (Grön)")) {
+            } else if (levelString.contains("Open Grön")) {
                 return OPEN_GREEN;
             } else if (levelString.contains("Challenger")) {
                 return CHALLENGER;
             } else if (levelString.contains("Swedish Beach Tour")) {
                 return SWEDISH_BEACH_TOUR;
+            } else if (levelString.contains("SM-slutspel") || levelString.contains("Mixed-SM")) {
+                return SM;
             } else if (levelString.contains("Veteran")) {
                 return VETERAN;
             } else if (levelString.contains("Ungdom") || levelString.contains("3-beach")
-                    || levelString.contains("Kidsvolley")) {
+                    || levelString.contains("Kidsvolley") || levelString.contains("Mini")) {
                 return YOUTH;
             }
             return UNKNOWN;

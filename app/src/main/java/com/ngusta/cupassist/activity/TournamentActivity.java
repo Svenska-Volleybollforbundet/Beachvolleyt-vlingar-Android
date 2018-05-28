@@ -184,7 +184,13 @@ public class TournamentActivity extends Activity {
         menu.add(Menu.NONE, R.id.menu_item_see_result, Menu.NONE, R.string.see_result)
                 .setIcon(R.drawable.external_link_enabled)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        menu.add(Menu.NONE, R.id.menu_item_see_result, Menu.NONE, R.string.see_result)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        menu.add(Menu.NONE, R.id.menu_item_sign_up, Menu.NONE, R.string.sign_up)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         menu.add(Menu.NONE, R.id.menu_item_register_result, Menu.NONE, R.string.register_result)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        menu.add(Menu.NONE, R.id.menu_item_ranking_points, Menu.NONE, R.string.see_ranking_points)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         return true;
     }
@@ -194,10 +200,32 @@ public class TournamentActivity extends Activity {
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.menu_item_see_result:
-                openBrowser(TournamentListCache.PROFIXIO_BASE_RESULT_URL + TournamentActivity.this.tournament.getUrlName());
+                openBrowser(TournamentListCache.PROFIXIO_BASE_RESULT_URL + tournament.getUrlName());
                 return true;
             case R.id.menu_item_register_result:
-                openBrowser(TournamentListCache.PROFIXIO_BASE_RESULT_REPORTING_URL + TournamentActivity.this.tournament.getUrlName());
+                openBrowser(TournamentListCache.PROFIXIO_BASE_RESULT_REPORTING_URL + tournament.getUrlName());
+                return true;
+            case R.id.menu_item_sign_up:
+                openBrowser(TournamentListCache.CUP_ASSIST_TOURNAMENT_URL + tournament.getUrlName());
+                return true;
+            case R.id.menu_item_ranking_points:
+                Intent intent = new Intent(this, RankingTableActivity.class);
+
+                intent.putExtra(RankingTableActivity.INTENT_PARAM_ACTIVITY_TITLE, tournament.getName());
+                intent.putExtra(RankingTableActivity.INTENT_PARAM_ACITVITY_TITLE_COLOR,
+                        getResources().getColor(TournamentListAdapter.getLevelIndicatorResource(tournament)));
+                intent.putExtra(RankingTableActivity.INTENT_PARAM_STARS, tournament.getLevel().getStars());
+                int teams = Math.min(tournament.getClazzes().get(0).getMaxNumberOfTeams(),
+                        tournament.getNumberOfCompleteTeamsForClazz(tournament.getClazzes().get(0)));
+                intent.putExtra(RankingTableActivity.INTENT_PARAM_CLAZZ_ONE_TEAMS, teams);
+                intent.putExtra(RankingTableActivity.INTENT_PARAM_CLAZZ_ONE_NAME, tournament.getClazzes().get(0).getClazz().toString());
+                if (tournament.getClazzes().size() > 1) {
+                    teams = Math.min(tournament.getClazzes().get(1).getMaxNumberOfTeams(),
+                            tournament.getNumberOfCompleteTeamsForClazz(tournament.getClazzes().get(1)));
+                    intent.putExtra(RankingTableActivity.INTENT_PARAM_CLAZZ_TWO_TEAMS, teams);
+                    intent.putExtra(RankingTableActivity.INTENT_PARAM_CLAZZ_TWO_NAME, tournament.getClazzes().get(1).getClazz().toString());
+                }
+                startActivity(intent);
                 return true;
         }
         return false;

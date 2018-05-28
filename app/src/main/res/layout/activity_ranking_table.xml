@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TableLayout
+        android:id="@+id/top_table"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:longClickable="false"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/top_table_title"
+                android:padding="6dip"
+                android:layout_span="2"
+                android:gravity="center_horizontal"
+                android:textSize="40sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:text="@string/position"
+                android:padding="6dip"
+                android:gravity="center_horizontal"
+                android:textSize="30sp" />
+
+            <TextView
+                android:text="@string/points"
+                android:padding="6dip"
+                android:gravity="center_horizontal"
+                android:textSize="30sp" />
+        </TableRow>
+    </TableLayout>
+
+    <TableLayout
+        android:id="@+id/bottom_table"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="40dip"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:longClickable="false"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/bottom_table_title"
+                android:padding="6dip"
+                android:layout_span="2"
+                android:gravity="center_horizontal"
+                android:textSize="40sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:text="@string/position"
+                android:padding="6dip"
+                android:gravity="center_horizontal"
+                android:textSize="30sp" />
+
+            <TextView
+                android:text="@string/points"
+                android:padding="6dip"
+                android:gravity="center_horizontal"
+                android:textSize="30sp" />
+        </TableRow>
+
+    </TableLayout>
+</LinearLayout>

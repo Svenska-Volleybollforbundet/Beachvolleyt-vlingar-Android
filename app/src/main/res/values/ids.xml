@@ -8,4 +8,8 @@
     <item name="menu_item_see_result" type="id" />
     <item name="menu_item_register_result" type="id" />
     <item name="menu_item_players" type="id" />
+    <item name="menu_item_sign_up" type="id" />
+    <item name="menu_item_competition_regulations" type="id" />
+    <item name="menu_item_competition_calendar" type="id" />
+    <item name="menu_item_ranking_points" type="id" />
 </resources>

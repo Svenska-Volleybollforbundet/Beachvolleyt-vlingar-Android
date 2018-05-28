@@ -278,6 +278,8 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
             case VETERAN:
                 return R.color.level_veteran;
             case SWEDISH_BEACH_TOUR:
+            case SWEDISH_BEACH_TOUR_FINAL:
+            case SM:
                 return R.color.level_sbt;
             case UNKNOWN:
             default:

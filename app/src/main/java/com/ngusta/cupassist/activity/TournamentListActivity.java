@@ -6,10 +6,13 @@ import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.CompetitionPeriod;
 import com.ngusta.cupassist.domain.Region;
 import com.ngusta.cupassist.domain.Tournament;
+import com.ngusta.cupassist.io.TournamentListCache;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -110,7 +113,11 @@ public class TournamentListActivity extends ListActivity {
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         menu.add(Menu.NONE, R.id.menu_item_regions, Menu.NONE, R.string.show_regions)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-        menu.add(Menu.NONE, R.id.menu_item_players, Menu.NONE, "Visa spelare")
+        menu.add(Menu.NONE, R.id.menu_item_players, Menu.NONE, R.string.show_players)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        menu.add(Menu.NONE, R.id.menu_item_competition_regulations, Menu.NONE, R.string.competition_regulations)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        menu.add(Menu.NONE, R.id.menu_item_competition_calendar, Menu.NONE, R.string.competition_calendar)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         //Add when Feedback fran Samuel: Mojlighet att dolja passerade tavlingar is done
         //menu.add(Menu.NONE, R.id.menu_item_old_tournaments, Menu.NONE, R.string.show_old_tournaments)
@@ -142,8 +149,20 @@ public class TournamentListActivity extends ListActivity {
             case R.id.menu_item_players:
                 PlayerListActivity.startActivity(this);
                 return true;
+            case R.id.menu_item_competition_regulations:
+                openBrowser(TournamentListCache.COMPETITION_REGULATIONS_URL);
+                return true;
+            case R.id.menu_item_competition_calendar:
+                openBrowser(TournamentListCache.CUP_ASSIST_TOURNAMENT_LIST_URL_WITHOUT_OLD_TOURNAMENTS);
+                return true;
         }
         return false;
+    }
+
+    private void openBrowser(String uriString) {
+        Uri cupAssistUri = Uri.parse(uriString);
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, cupAssistUri);
+        startActivity(browserIntent);
     }
 
     @Override

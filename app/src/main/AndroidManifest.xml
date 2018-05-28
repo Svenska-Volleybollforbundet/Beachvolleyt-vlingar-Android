@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.ngusta.cupassist"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ngusta.cupassist">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -29,5 +28,9 @@
             android:parentActivityName=".activity.TournamentListActivity"
             android:screenOrientation="nosensor"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activity.RankingTableActivity"
+            android:label="@string/title_activity_ranking_table" />
     </application>
+
 </manifest>

@@ -164,6 +164,8 @@ public class TournamentListDialogs {
                 break;
             case SBT_INDEX:
                 levelsToFilter.add(Tournament.Level.SWEDISH_BEACH_TOUR);
+                levelsToFilter.add(Tournament.Level.SWEDISH_BEACH_TOUR_FINAL);
+                levelsToFilter.add(Tournament.Level.SM);
                 break;
             case YOUTH_LEVEL_INDEX:
                 levelsToFilter.add(Tournament.Level.YOUTH);
