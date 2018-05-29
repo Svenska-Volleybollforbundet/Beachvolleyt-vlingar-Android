@@ -5,6 +5,10 @@ import java.util.Comparator;
 
 public class Player implements Serializable {
     private Integer rank;
+
+    private int entryRank;
+
+    private int mixedEntryRank;
     private String firstName;
     private String lastName;
     private String club;
@@ -102,6 +106,22 @@ public class Player implements Serializable {
 
     public Clazz getClazz() {
         return clazz;
+    }
+
+    public void setEntryRank(int entryRank) {
+        this.entryRank = entryRank;
+    }
+
+    public int getEntryRank() {
+        return entryRank;
+    }
+
+    public void setMixedEntryRank(int mixedEntryRank) {
+        this.mixedEntryRank = mixedEntryRank;
+    }
+
+    public int getMixedEntryRank() {
+        return mixedEntryRank;
     }
 
     public String uniqueIdentifier() {

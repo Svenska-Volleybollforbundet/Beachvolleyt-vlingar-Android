@@ -76,6 +76,9 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         if ("Föreningen Beachvolley-Aid".equals(club)) {
             return "Beachvolley-Aid";
         }
+        if ("Svenska Volleybollförbundet".equals(club)) {
+            return "SVBF";
+        }
         return club;
     }
 

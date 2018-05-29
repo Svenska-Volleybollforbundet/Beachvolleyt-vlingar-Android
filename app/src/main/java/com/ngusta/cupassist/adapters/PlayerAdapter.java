@@ -11,19 +11,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerHolder> {
+public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerHolder> implements Filterable {
 
+    private List<Player> originalPlayers;
     private List<Player> players;
 
     private Clazz clazz;
 
     public PlayerAdapter(List<Player> players, Clazz clazz) {
         Collections.sort(players, new Player.PlayerComparator(clazz));
+        originalPlayers = new ArrayList<>(players);
         this.players = players;
         this.clazz = clazz;
     }
@@ -42,9 +47,37 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerHold
 
     @Override
     public void onBindViewHolder(PlayerHolder holder, int position) {
-        String text = (position + 1) + " " + players.get(position).getName();
+        Player player = players.get(position);
+        int rank = clazz == Clazz.MIXED ? player.getMixedEntryRank() : player.getEntryRank();
+        String text = rank + " " + player.getName();
         holder.playerName.setText(text);
-        holder.entryPoints.setText(String.valueOf(players.get(position).getEntryPoints(clazz)));
+        holder.entryPoints.setText(String.valueOf(player.getEntryPoints(clazz)));
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String filterText = charSequence.toString().toLowerCase();
+                List<Player> filteredPlayers = new ArrayList<>();
+                for (Player player : originalPlayers) {
+                    if (player.getName().toLowerCase().contains(filterText)) {
+                        filteredPlayers.add(player);
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filteredPlayers;
+                results.count = filteredPlayers.size();
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                players = (List<Player>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class PlayerHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -58,8 +91,8 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerHold
         public PlayerHolder(View itemView, Context context) {
             super(itemView);
             this.context = context;
-            playerName = (TextView) itemView.findViewById(R.id.player_name);
-            entryPoints = (TextView) itemView.findViewById(R.id.entry_points);
+            playerName = itemView.findViewById(R.id.player_name);
+            entryPoints = itemView.findViewById(R.id.entry_points);
             itemView.setOnClickListener(this);
         }
 
@@ -77,8 +110,10 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerHold
             alertDialog.setTitle(player.getName());
             alertDialog.setMessage(
                     "Klubb: " + player.getClub() +
+                            "\nEntryranking: " + player.getEntryRank() +
                             "\nEntrypoäng: " + player.getEntryPoints(player.getClazz()) +
                             "\nRankingpoäng: " + player.getRankingPoints(player.getClazz()) +
+                            "\nMixedentryranking: " + player.getMixedEntryRank() +
                             "\nMixentrypoäng: " + player.getEntryPoints(Clazz.MIXED) +
                             "\nMixrankingpoäng: " + player.getRankingPoints(Clazz.MIXED));
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",

@@ -14,8 +14,11 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +38,8 @@ public class PlayerListActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
 
+    private EditText filterTextView;
+
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, PlayerListActivity.class);
         context.startActivity(intent);
@@ -50,7 +55,7 @@ public class PlayerListActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         setListShown(false, true);
 
-        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
+        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
         womenFragment = new PlayerListFragment();
         menFragment = new PlayerListFragment();
         mixedFragment = new PlayerListFragment();
@@ -59,8 +64,28 @@ public class PlayerListActivity extends AppCompatActivity {
         adapter.addFragment(mixedFragment, "Mixed");
         mViewPager.setAdapter(adapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        filterTextView = findViewById(R.id.player_name_filter);
+        filterTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                womenFragment.getAdapter().getFilter().filter(charSequence);
+                menFragment.getAdapter().getFilter().filter(charSequence);
+                mixedFragment.getAdapter().getFilter().filter(charSequence);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     private class RequestPlayersTask extends AsyncTask<Void, String, Map<String, Player>> {

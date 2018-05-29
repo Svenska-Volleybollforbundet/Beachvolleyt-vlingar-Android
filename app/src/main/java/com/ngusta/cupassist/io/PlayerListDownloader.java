@@ -9,6 +9,8 @@ import com.ngusta.cupassist.parser.PlayerListParser;
 import android.content.Context;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,11 +81,36 @@ public class PlayerListDownloader {
                     players.put(mixPlayer.uniqueIdentifier(), mixPlayer);
                 }
             }
+            ArrayList<Player> sortedPlayers = new ArrayList<>(players.values());
+            calculateEntryRankInClazz(sortedPlayers, Clazz.MEN);
+            calculateEntryRankInClazz(sortedPlayers, Clazz.WOMEN);
+            calculateEntryRankInMixed(sortedPlayers);
+
             playerList.setPlayers(players);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return playerList.getPlayers();
+    }
+
+    private void calculateEntryRankInClazz(ArrayList<Player> sortedPlayers, Clazz clazz) {
+        Collections.sort(sortedPlayers, new Player.PlayerComparator(clazz));
+        int entryRanking = 1;
+        for (Player player : sortedPlayers) {
+            if (player.getClazz() == clazz) {
+                player.setEntryRank(entryRanking++);
+            }
+        }
+    }
+
+    private void calculateEntryRankInMixed(ArrayList<Player> sortedPlayers) {
+        Collections.sort(sortedPlayers, new Player.PlayerComparator(Clazz.MIXED));
+        int entryRanking = 1;
+        for (Player player : sortedPlayers) {
+            if (player.getMixRankingPoints() > 0) {
+                player.setMixedEntryRank(entryRanking++);
+            }
+        }
     }
 }

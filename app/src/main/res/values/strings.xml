@@ -26,6 +26,6 @@
     <string name="competition_calendar">Säsongskalendern</string>
     <string name="see_ranking_points">Se rankingpoäng</string>
     <string name="title_activity_ranking_table">RankingTableActivity</string>
-    <string name="position">Position</string>
+    <string name="position">Placering</string>
     <string name="points">Poäng</string>
 </resources>

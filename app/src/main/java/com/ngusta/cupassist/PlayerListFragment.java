@@ -37,4 +37,8 @@ public class PlayerListFragment extends Fragment {
             recyclerView.setAdapter(adapter);
         }
     }
+
+    public PlayerAdapter getAdapter() {
+        return adapter;
+    }
 }
