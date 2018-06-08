@@ -308,22 +308,22 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
         final TextView dates;
 
         private TournamentViewHolder(View view) {
-            name = (TextView) view.findViewById(R.id.name);
-            club = (TextView) view.findViewById(R.id.club);
-            dates = (TextView) view.findViewById(R.id.dates);
-            levelClazzIndicator = (LinearLayout) view.findViewById(R.id.level_clazz_indicator);
-            clazzIndicatorWomen = (TextView) levelClazzIndicator
+            name = view.findViewById(R.id.name);
+            club = view.findViewById(R.id.club);
+            dates = view.findViewById(R.id.dates);
+            levelClazzIndicator = view.findViewById(R.id.level_clazz_indicator);
+            clazzIndicatorWomen = levelClazzIndicator
                     .findViewById(R.id.clazz_indicator_women);
-            clazzIndicatorMen = (TextView) levelClazzIndicator
+            clazzIndicatorMen = levelClazzIndicator
                     .findViewById(R.id.clazz_indicator_men);
-            clazzIndicatorYouth = (TextView) levelClazzIndicator
+            clazzIndicatorYouth = levelClazzIndicator
                     .findViewById(R.id.clazz_indicator_youth);
-            clazzIndicatorMixed = (TextView) levelClazzIndicator
+            clazzIndicatorMixed = levelClazzIndicator
                     .findViewById(R.id.clazz_indicator_mixed);
-            clazzIndicatorVeteran = (TextView) levelClazzIndicator
+            clazzIndicatorVeteran = levelClazzIndicator
                     .findViewById(R.id.clazz_indicator_veteran);
             clazzIndicatorWomen.setText("D");
-            clazzIndicatorMen.setText("M");
+            clazzIndicatorMen.setText("H");
             clazzIndicatorYouth.setText("U");
             clazzIndicatorMixed.setText("M");
             clazzIndicatorVeteran.setText("V");
@@ -339,9 +339,9 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
         final TextView smFlag;
 
         private SectionHeaderViewHolder(View view) {
-            competitionPeriod = (TextView) view.findViewById(R.id.competition_period);
-            startDate = (TextView) view.findViewById(R.id.start_date);
-            smFlag = (TextView) view.findViewById(R.id.sm_flag);
+            competitionPeriod = view.findViewById(R.id.competition_period);
+            startDate = view.findViewById(R.id.start_date);
+            smFlag = view.findViewById(R.id.sm_flag);
         }
     }
 }

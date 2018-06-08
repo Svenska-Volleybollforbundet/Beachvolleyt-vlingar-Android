@@ -114,8 +114,8 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerHold
                             "\nEntrypoäng: " + player.getEntryPoints(player.getClazz()) +
                             "\nRankingpoäng: " + player.getRankingPoints(player.getClazz()) +
                             "\nMixedentryranking: " + player.getMixedEntryRank() +
-                            "\nMixentrypoäng: " + player.getEntryPoints(Clazz.MIXED) +
-                            "\nMixrankingpoäng: " + player.getRankingPoints(Clazz.MIXED));
+                            "\nMixedentrypoäng: " + player.getEntryPoints(Clazz.MIXED) +
+                            "\nMixedrankingpoäng: " + player.getRankingPoints(Clazz.MIXED));
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
