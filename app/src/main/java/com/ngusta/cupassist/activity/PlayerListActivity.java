@@ -40,6 +40,8 @@ public class PlayerListActivity extends AppCompatActivity {
 
     private EditText filterTextView;
 
+    private boolean loadedPlayers = false;
+
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, PlayerListActivity.class);
         context.startActivity(intent);
@@ -76,9 +78,11 @@ public class PlayerListActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                womenFragment.getAdapter().getFilter().filter(charSequence);
-                menFragment.getAdapter().getFilter().filter(charSequence);
-                mixedFragment.getAdapter().getFilter().filter(charSequence);
+                if (loadedPlayers) {
+                    womenFragment.getAdapter().getFilter().filter(charSequence);
+                    menFragment.getAdapter().getFilter().filter(charSequence);
+                    mixedFragment.getAdapter().getFilter().filter(charSequence);
+                }
             }
 
             @Override
@@ -99,6 +103,7 @@ public class PlayerListActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Map<String, Player> players) {
             updatePlayers(players);
+            loadedPlayers = true;
         }
     }
 

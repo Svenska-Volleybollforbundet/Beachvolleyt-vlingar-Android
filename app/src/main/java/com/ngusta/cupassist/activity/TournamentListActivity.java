@@ -205,9 +205,13 @@ public class TournamentListActivity extends ListActivity {
 
     private void selectCurrentCompetitionPeriod() {
         SectionIndexer listAdapter = (SectionIndexer) getListAdapter();
+        if (listAdapter == null) {
+            return;
+        }
         CompetitionPeriod period = CompetitionPeriod.findPeriodByDate(new Date());
         int position = listAdapter.getPositionForSection(period.getPeriodNumber() - 1);
         setSelection(position);
+
     }
 
     private class RequestTournamentsTask extends AsyncTask<Void, String, List<Tournament>> {

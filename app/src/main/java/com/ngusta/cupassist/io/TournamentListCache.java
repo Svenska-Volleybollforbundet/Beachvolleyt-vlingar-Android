@@ -82,6 +82,7 @@ public class TournamentListCache extends Cache<Tournament> {
                 save(tournamentList, FILE_NAME, context);
             } catch (IOException e) {
                 e.printStackTrace();
+                return Collections.emptyList();
             }
         }
         return tournamentList.getTournaments();

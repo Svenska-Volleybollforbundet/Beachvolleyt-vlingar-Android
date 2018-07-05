@@ -87,11 +87,11 @@ public class PlayerListDownloader {
             calculateEntryRankInMixed(sortedPlayers);
 
             playerList.setPlayers(players);
+            return playerList.getPlayers();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return playerList.getPlayers();
+        return Collections.emptyMap();
     }
 
     private void calculateEntryRankInClazz(ArrayList<Player> sortedPlayers, Clazz clazz) {
