@@ -172,7 +172,7 @@ public class TournamentActivity extends Activity {
     }
 
     private void updateTeams(Tournament.TournamentClazz clazz) {
-        ListView teamListView = (ListView) findViewById(R.id.teamList);
+        ListView teamListView = findViewById(R.id.teamList);
         List<Tournament.TeamGroupPosition> teams = tournament.getTeamGroupPositionsForClazz(clazz);
         final ArrayAdapter<Tournament.TeamGroupPosition> adapter = new TeamAdapter(this, R.layout.team_list_item, teams, clazz.getMaxNumberOfTeams());
         teamListView.setAdapter(adapter);

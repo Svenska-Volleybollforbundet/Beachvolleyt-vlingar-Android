@@ -154,7 +154,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         this.urlName = urlName;
     }
 
-    public Map<Clazz, List<Team>> getTeams() {
+    private Map<Clazz, List<Team>> getTeams() {
         return teams;
     }
 
@@ -178,14 +178,15 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     private int getNumberOfGroupsForClazz(TournamentClazz clazz) {
-        if (clazz.getMaxNumberOfTeams() == 12) {
+        int numberOfTeams = Math.min(getSeededTeamsForClazz(clazz).size(), clazz.getMaxNumberOfTeams());
+        if (numberOfTeams == 12) {
             return 4;
         } else {
-            return (int) Math.round((clazz.getMaxNumberOfTeams() + 1.0) / 4);
+            return (int) Math.round((numberOfTeams + 1.0) / 4);
         }
     }
 
-    public List<Team> getSeededTeamsForClazz(TournamentClazz clazz) {
+    private List<Team> getSeededTeamsForClazz(TournamentClazz clazz) {
         if (getTeams() == null || getTeams().get(clazz.getClazz()) == null) {
             return Collections.emptyList();
         }
@@ -359,7 +360,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
 
         public final Team team;
 
-        public TeamGroupPosition(int group, Team team) {
+        TeamGroupPosition(int group, Team team) {
             this.group = group;
             this.team = team;
         }
@@ -375,7 +376,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
             this.clazz = clazz;
         }
 
-        public TournamentClazz(Clazz clazz, Integer maxNumberOfTeams) {
+        TournamentClazz(Clazz clazz, Integer maxNumberOfTeams) {
             this.clazz = clazz;
             this.maxNumberOfTeams = maxNumberOfTeams;
         }
@@ -417,8 +418,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
 
         @Override
         public String toString() {
-            String clazzString = clazz.toString();
-            return clazzString;
+            return clazz.toString();
         }
     }
 }
