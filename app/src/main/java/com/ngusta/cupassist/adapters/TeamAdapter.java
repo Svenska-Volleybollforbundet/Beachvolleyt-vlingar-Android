@@ -40,11 +40,12 @@ public class TeamAdapter extends ArrayAdapter<Tournament.TeamGroupPosition> {
             row = inflater.inflate(resource, parent, false);
 
             holder = new TeamHolder();
-            holder.team = (RelativeLayout) row.findViewById(R.id.team);
-            holder.group = (TextView) row.findViewById(R.id.group);
-            holder.playerAName = (TextView) row.findViewById(R.id.playerA_name);
-            holder.playerBName = (TextView) row.findViewById(R.id.playerB_name);
-            holder.entryPoints = (TextView) row.findViewById(R.id.entry_points);
+            holder.team = row.findViewById(R.id.team);
+            holder.group = row.findViewById(R.id.group);
+            holder.playerAName = row.findViewById(R.id.playerA_name);
+            holder.playerBName = row.findViewById(R.id.playerB_name);
+            holder.playersPoints = row.findViewById(R.id.player_entry_points);
+            holder.entryPoints = row.findViewById(R.id.team_entry_points);
 
             row.setTag(holder);
         } else {
@@ -64,6 +65,9 @@ public class TeamAdapter extends ArrayAdapter<Tournament.TeamGroupPosition> {
         }
         holder.playerAName.setText(team.team.getPlayerA().getName());
         holder.playerBName.setText(team.team.getPlayerB().getName());
+        int playerAEntryPoints = team.team.getPlayerA().getEntryPoints(team.team.getClazz());
+        int playerBEntryPoints = team.team.getPlayerB().getEntryPoints(team.team.getClazz());
+        holder.playersPoints.setText("(" + playerAEntryPoints + "/" + playerBEntryPoints + ")");
         holder.entryPoints.setText(((int) Math.round(team.team.getEntryPoints())) + " pts");
         return row;
     }
@@ -77,6 +81,8 @@ public class TeamAdapter extends ArrayAdapter<Tournament.TeamGroupPosition> {
         TextView playerAName;
 
         TextView playerBName;
+
+        TextView playersPoints;
 
         TextView entryPoints;
     }

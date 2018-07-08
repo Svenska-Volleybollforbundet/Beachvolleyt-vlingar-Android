@@ -20,4 +20,15 @@ public class SourceCodeRequester {
         cookies.putAll(response.cookies());
         return response.body();
     }
+
+    public String getSourceCodePost(String url, Map<String, String> data) throws IOException {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        Connection.Response response = Jsoup.connect(url)
+                .cookies(cookies)
+                .method(Connection.Method.POST)
+                .data(data)
+                .execute();
+        return response.body();
+    }
 }

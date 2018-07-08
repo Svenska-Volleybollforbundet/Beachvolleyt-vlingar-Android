@@ -22,4 +22,12 @@ public class PlayerService {
     public Map<String, Player> getPlayers() {
         return playerListDownloader.getPlayers();
     }
+
+    public void clearPlayers() {
+        playerListDownloader.clearPayers();
+    }
+
+    public void updatePlayerWithDetailsAndResults(Player player) {
+        playerListDownloader.updatePlayerWithDetailsAndResults(player);
+    }
 }

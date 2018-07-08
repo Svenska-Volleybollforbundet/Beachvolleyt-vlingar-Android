@@ -4,10 +4,9 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 public class Player implements Serializable {
+
     private Integer rank;
-
     private int entryRank;
-
     private int mixedEntryRank;
     private String firstName;
     private String lastName;
@@ -17,6 +16,14 @@ public class Player implements Serializable {
     private int mixRankingPoints;
     private int mixEntryPoints;
 
+    private String playerId;
+
+    private String age;
+
+    private PlayerResults results;
+
+    private PlayerResults mixedResults;
+
     private Clazz clazz;
 
     public Player(String firstName, String lastName, String playerClub) {
@@ -25,13 +32,14 @@ public class Player implements Serializable {
         this.club = playerClub;
     }
 
-    public Player(Integer rank, String firstName, String lastName, String club, int rankingPoints, int entryPoints) {
+    public Player(Integer rank, String firstName, String lastName, String club, int rankingPoints, int entryPoints, String playerId) {
         this.rank = rank;
         this.firstName = firstName;
         this.lastName = lastName;
         this.club = club;
         this.rankingPoints = rankingPoints;
         this.entryPoints = entryPoints;
+        this.playerId = playerId;
     }
 
     public String getName() {
@@ -122,6 +130,39 @@ public class Player implements Serializable {
 
     public int getMixedEntryRank() {
         return mixedEntryRank;
+    }
+
+    public String getPlayerId() {
+        return playerId;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public PlayerResults getResults() {
+        return results;
+    }
+
+    public void setResults(PlayerResults results) {
+        results.markEntryResults();
+        this.results = results;
+    }
+
+    public PlayerResults getMixedResults() {
+        return mixedResults;
+    }
+
+    public void setMixedResults(PlayerResults mixedResults) {
+        this.mixedResults = mixedResults;
+    }
+
+    public boolean isOnlyMixedPlayer() {
+        return clazz == Clazz.MIXED;
     }
 
     public String uniqueIdentifier() {

@@ -3,6 +3,7 @@ package com.ngusta.cupassist;
 import com.ngusta.cupassist.adapters.PlayerAdapter;
 import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.Player;
+import com.ngusta.cupassist.service.PlayerService;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,8 @@ public class PlayerListFragment extends Fragment {
 
     private PlayerAdapter adapter;
 
+    private PlayerService playerService;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         recyclerView = (RecyclerView) inflater.inflate(
@@ -32,10 +35,14 @@ public class PlayerListFragment extends Fragment {
     }
 
     public void addPlayers(List<Player> players, Clazz clazz) {
-        adapter = new PlayerAdapter(players, clazz);
+        adapter = new PlayerAdapter(players, clazz, playerService);
         if (recyclerView != null) {
             recyclerView.setAdapter(adapter);
         }
+    }
+
+    public void setPlayerService(PlayerService playerService) {
+        this.playerService = playerService;
     }
 
     public PlayerAdapter getAdapter() {

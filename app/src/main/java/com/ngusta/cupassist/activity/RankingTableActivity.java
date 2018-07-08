@@ -47,11 +47,11 @@ public class RankingTableActivity extends Activity {
         int numberOfTeamsClazzTwo = intent.getIntExtra(INTENT_PARAM_CLAZZ_TWO_TEAMS, 0);
         String nameClazzTwo = intent.getStringExtra(INTENT_PARAM_CLAZZ_TWO_NAME);
 
-        TableLayout topTable = (TableLayout) findViewById(R.id.top_table);
+        TableLayout topTable = findViewById(R.id.top_table);
         createTable(topTable, RankingScale.getRankingScale(stars, numberOfTeamsClazzOne));
         ((TextView) findViewById(R.id.top_table_title)).setText(nameClazzOne + " - " + numberOfTeamsClazzOne + " lag");
 
-        TableLayout bottomTable = (TableLayout) findViewById(R.id.bottom_table);
+        TableLayout bottomTable = findViewById(R.id.bottom_table);
         if (onlyOneClazz(numberOfTeamsClazzTwo)) {
             bottomTable.setVisibility(View.GONE);
         } else {

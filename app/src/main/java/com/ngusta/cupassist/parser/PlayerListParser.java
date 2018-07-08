@@ -37,6 +37,11 @@ public class PlayerListParser {
         }
         String rankString = tableRow.child(0).text();
         Integer rank = !hasRanking(rankString) ? Integer.parseInt(rankString) : null;
+
+        String onclickValue = tableRow.child(1).child(0).attr("onclick");
+        int startIndex = onclickValue.indexOf("'") + 1;
+        int endIndex = onclickValue.indexOf("'", startIndex);
+        String playerId = onclickValue.substring(startIndex, endIndex);
         String[] name = tableRow.child(1).text().split(",");
 
         String firstName = "";
@@ -50,7 +55,7 @@ public class PlayerListParser {
         String club = tableRow.child(2).text();
         int rankPoints = Integer.parseInt(tableRow.child(3).text());
         int entryPoints = Integer.parseInt(tableRow.child(4).text());
-        return new Player(rank, firstName, lastName, club, rankPoints, entryPoints);
+        return new Player(rank, firstName, lastName, club, rankPoints, entryPoints, playerId);
     }
 
     private boolean isHeaderForPlayersWithoutLicense(Element tableRow) {

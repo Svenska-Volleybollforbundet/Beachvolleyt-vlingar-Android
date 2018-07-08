@@ -2,7 +2,10 @@ package com.ngusta.cupassist.adapters;
 
 import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.domain.Clazz;
+import com.ngusta.cupassist.domain.CompetitionPeriod;
 import com.ngusta.cupassist.domain.Player;
+import com.ngusta.cupassist.domain.PlayerResults;
+import com.ngusta.cupassist.service.PlayerService;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,20 +20,25 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerHolder> implements Filterable {
 
     private List<Player> originalPlayers;
+
     private List<Player> players;
 
     private Clazz clazz;
 
-    public PlayerAdapter(List<Player> players, Clazz clazz) {
+    private PlayerService playerService;
+
+    public PlayerAdapter(List<Player> players, Clazz clazz, PlayerService playerService) {
         Collections.sort(players, new Player.PlayerComparator(clazz));
         originalPlayers = new ArrayList<>(players);
         this.players = players;
         this.clazz = clazz;
+        this.playerService = playerService;
     }
 
     @Override
@@ -106,16 +114,31 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerHold
         }
 
         private void showPlayerInfoDialog(Player player) {
+            playerService.updatePlayerWithDetailsAndResults(player);
             AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-            alertDialog.setTitle(player.getName());
+            if (player.getAge() != null) {
+                alertDialog.setTitle(player.getName() + " (" + player.getAge() + " år, " + player.getClub() + ")");
+            } else {
+                alertDialog.setTitle(player.getName() + " (" + player.getClub() + ")");
+            }
+            int calculatedEntryForCurrentPeriod = player.getResults().getEntryForPeriod(CompetitionPeriod.findPeriodByDate(new Date()));
             alertDialog.setMessage(
-                    "Klubb: " + player.getClub() +
+                    "Entry: " + player.getEntryPoints() +
+                            (player.getEntryPoints() != calculatedEntryForCurrentPeriod ? " (" + calculatedEntryForCurrentPeriod + " calculated)\n"
+                                    : "\n") +
+                            "SM-entry: " + player.getResults().getEntryForPeriod(CompetitionPeriod.COMPETITION_PERIODS[10]) + "\n\n" +
+                            "Resultat:\n" +
+                            PlayerResults.print(player.getResults().getTournamentResults()) + "\n\n" +
+                            "Mixedresultat:\n" +
+                            PlayerResults.print(player.getMixedResults().getTournamentResults()));
+            /*"Klubb: " + player.getClub() +
                             "\nEntryranking: " + player.getEntryRank() +
                             "\nEntrypoäng: " + player.getEntryPoints(player.getClazz()) +
                             "\nRankingpoäng: " + player.getRankingPoints(player.getClazz()) +
                             "\nMixedentryranking: " + player.getMixedEntryRank() +
                             "\nMixedentrypoäng: " + player.getEntryPoints(Clazz.MIXED) +
                             "\nMixedrankingpoäng: " + player.getRankingPoints(Clazz.MIXED));
+                            */
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {

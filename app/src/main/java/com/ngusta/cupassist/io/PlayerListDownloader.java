@@ -4,6 +4,8 @@ import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.CompetitionPeriod;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.PlayerList;
+import com.ngusta.cupassist.domain.PlayerResults;
+import com.ngusta.cupassist.parser.PlayerDetailsParser;
 import com.ngusta.cupassist.parser.PlayerListParser;
 
 import android.content.Context;
@@ -25,6 +27,8 @@ public class PlayerListDownloader {
     private static final String CUP_ASSIST_PLAYERS_RANKING_WOMEN_URL = "https://www.profixio.com/fx/ranking_beach/visrank.php?k=D";
 
     private static final String CUP_ASSIST_PLAYERS_RANKING_MIXED_URL = "https://www.profixio.com/fx/ranking_beach/visrank.php?k=M";
+
+    private static final String CUP_ASSIST_PLAYER_DETAILS_URL = "https://www.profixio.com/fx/ranking_beach/visrank_detaljer.php";
 
     private PlayerListParser playerListParser;
 
@@ -112,5 +116,35 @@ public class PlayerListDownloader {
                 player.setMixedEntryRank(entryRanking++);
             }
         }
+    }
+
+    public void updatePlayerWithDetailsAndResults(Player player) {
+        try {
+            Map<String, String> data = new HashMap<>();
+            data.put("spid", player.getPlayerId());
+            data.put("klasse", player.getClazz().toString());
+            data.put("rand", "0.5");
+
+            PlayerDetailsParser playerDetailsParser = new PlayerDetailsParser();
+
+            PlayerResults playerResults = new PlayerResults();
+            if (!player.isOnlyMixedPlayer()) {
+                String source = sourceCodeRequester.getSourceCodePost(CUP_ASSIST_PLAYER_DETAILS_URL, data);
+                player.setAge(playerDetailsParser.parseAge(source));
+                playerResults = playerDetailsParser.parseResults(source);
+            }
+            player.setResults(playerResults);
+
+            data.put("klasse", "M");
+            String source = sourceCodeRequester.getSourceCodePost(CUP_ASSIST_PLAYER_DETAILS_URL, data);
+            player.setMixedResults(playerDetailsParser.parseResults(source));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clearPayers() {
+        playerList = null;
     }
 }

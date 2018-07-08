@@ -5,7 +5,7 @@ import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.adapters.PagerAdapter;
 import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.Player;
-import com.ngusta.cupassist.io.PlayerListDownloader;
+import com.ngusta.cupassist.service.PlayerService;
 
 import android.content.Context;
 import android.content.Intent;
@@ -42,6 +42,8 @@ public class PlayerListActivity extends AppCompatActivity {
 
     private boolean loadedPlayers = false;
 
+    private PlayerService playerService;
+
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, PlayerListActivity.class);
         context.startActivity(intent);
@@ -51,6 +53,7 @@ public class PlayerListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_view);
+        playerService = ((MyApplication) getApplicationContext()).getPlayerService();
         new RequestPlayersTask().execute();
 
         mProgressContainer = findViewById(R.id.progressContainer);
@@ -61,6 +64,9 @@ public class PlayerListActivity extends AppCompatActivity {
         womenFragment = new PlayerListFragment();
         menFragment = new PlayerListFragment();
         mixedFragment = new PlayerListFragment();
+        womenFragment.setPlayerService(playerService);
+        menFragment.setPlayerService(playerService);
+        mixedFragment.setPlayerService(playerService);
         adapter.addFragment(womenFragment, "Damer");
         adapter.addFragment(menFragment, "Herrar");
         adapter.addFragment(mixedFragment, "Mixed");
@@ -96,8 +102,8 @@ public class PlayerListActivity extends AppCompatActivity {
 
         @Override
         protected Map<String, Player> doInBackground(Void... voids) {
-            PlayerListDownloader playerListDownloader = new PlayerListDownloader();
-            return playerListDownloader.getPlayers();
+            playerService.clearPlayers();
+            return playerService.getPlayers();
         }
 
         @Override

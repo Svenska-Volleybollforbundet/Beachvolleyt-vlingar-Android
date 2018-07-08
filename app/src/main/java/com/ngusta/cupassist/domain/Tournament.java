@@ -57,7 +57,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         this.startDate = startDate;
         this.endDate = endDate;
         this.competitionPeriod = CompetitionPeriod.findByName(period);
-        this.club = shortenName(club);
+        this.club = shortenClubName(club);
         this.name = name;
         this.url = url;
         this.levelString = level;
@@ -69,7 +69,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         this.region = Region.findRegionByClub(this.club);
     }
 
-    private String shortenName(String club) {
+    private String shortenClubName(String club) {
         if ("KFUM Gymnastik & IA Karskrona".equals(club)) {
             return "KFUM Karlskrona";
         }
@@ -178,7 +178,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     private int getNumberOfGroupsForClazz(TournamentClazz clazz) {
-        int numberOfTeams = Math.min(getSeededTeamsForClazz(clazz).size(), clazz.getMaxNumberOfTeams());
+        int numberOfTeams = Math.min(getNumberOfCompleteTeamsForClazz(clazz), clazz.getMaxNumberOfTeams());
         if (numberOfTeams == 12) {
             return 4;
         } else {

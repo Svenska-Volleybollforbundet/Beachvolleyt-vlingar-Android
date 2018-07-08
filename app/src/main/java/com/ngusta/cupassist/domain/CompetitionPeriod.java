@@ -9,6 +9,26 @@ import java.util.GregorianCalendar;
 
 public class CompetitionPeriod implements Serializable {
 
+
+    private static final CompetitionPeriod[] COMPETITION_PERIODS_LAST_YEAR = {
+            new CompetitionPeriod(1, "TP 01", "2017-01-01", "2017-04-02"),
+            new CompetitionPeriod(2, "TP 02", "2017-04-03", "2017-05-21"),
+            new CompetitionPeriod(3, "TP 03", "2017-05-22", "2017-06-04"),
+            new CompetitionPeriod(4, "TP 04", "2017-06-05", "2017-06-11"),
+            new CompetitionPeriod(5, "TP 05", "2017-06-12", "2017-06-25"),
+            new CompetitionPeriod(6, "TP 06", "2017-06-26", "2017-07-02"),
+            new CompetitionPeriod(7, "TP 07", "2017-07-03", "2017-07-09"),
+            new CompetitionPeriod(8, "TP 08", "2017-07-10", "2017-07-16"),
+            new CompetitionPeriod(9, "TP 09", "2017-07-17", "2017-07-23"),
+            new CompetitionPeriod(10, "TP 10", "2017-07-24", "2017-07-30"),
+            new CompetitionPeriod(11, "TP 11", "2017-07-31", "2017-08-06"),
+            new CompetitionPeriod(12, "TP 12", "2017-08-07", "2017-08-13"),
+            new CompetitionPeriod(13, "TP 13", "2017-08-14", "2017-08-20"),
+            new CompetitionPeriod(14, "TP 14", "2017-08-21", "2017-09-03"),
+            new CompetitionPeriod(15, "TP 15", "2017-09-04", "2017-10-15"),
+            new CompetitionPeriod(16, "TP 16", "2017-10-16", "2017-12-31")
+    };
+
     public static final CompetitionPeriod[] COMPETITION_PERIODS = {
             new CompetitionPeriod(1, "TP 01", "2018-01-01", "2018-04-02"),
             new CompetitionPeriod(2, "TP 02", "2018-04-03", "2018-05-20"),
@@ -54,9 +74,24 @@ public class CompetitionPeriod implements Serializable {
     }
 
     static CompetitionPeriod findByName(String name) {
-        for (CompetitionPeriod competitionPeriod : COMPETITION_PERIODS) {
-            if (competitionPeriod.getName().equalsIgnoreCase(name)) {
-                return competitionPeriod;
+        return findByName(name, 2018);
+    }
+
+    static CompetitionPeriod findByName(String name, int year) {
+        for (CompetitionPeriod cp : COMPETITION_PERIODS) {
+            if (cp.getName().equalsIgnoreCase(name) ||
+                    cp.getName().replace(" ", "").replace("0", "").equalsIgnoreCase(name)) {
+                if (getYear(cp.getStartDate()) == year) {
+                    return cp;
+                }
+            }
+        }
+        for (CompetitionPeriod cp : COMPETITION_PERIODS_LAST_YEAR) {
+            if (cp.getName().equalsIgnoreCase(name) ||
+                    cp.getName().replace(" 0", "").replace(" ", "").equalsIgnoreCase(name)) {
+                if (getYear(cp.getStartDate()) == year) {
+                    return cp;
+                }
             }
         }
         throw new IllegalArgumentException("Not a valid competition period.");
@@ -78,7 +113,19 @@ public class CompetitionPeriod implements Serializable {
     }
 
     public static boolean qualifiesForSm(CompetitionPeriod period) {
-        return period.getPeriodNumber() >= 1 && period.getPeriodNumber() <= 10;
+        return getYear(new Date()) == getYear(period.getStartDate()) && period.getPeriodNumber() >= 1 && period.getPeriodNumber() <= 10;
+    }
+
+    private static int getYear(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.YEAR);
+    }
+
+    public boolean isValidAsEntryForPeriod(CompetitionPeriod period) {
+        int yearDiff = getYear(period.getStartDate()) - getYear(getStartDate());
+        int diff = (yearDiff * 16 + period.getPeriodNumber()) - getPeriodNumber();
+        return diff > 0 && diff <= 10;
     }
 
     public int getPeriodNumber() {
@@ -118,5 +165,92 @@ public class CompetitionPeriod implements Serializable {
     @Override
     public String toString() {
         return getName();
+    }
+
+    public static void main(String[] args) {
+        CompetitionPeriod current = COMPETITION_PERIODS[10];
+        CompetitionPeriod test = COMPETITION_PERIODS[9];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == true));
+
+        current = COMPETITION_PERIODS[10];
+        test = COMPETITION_PERIODS[0];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == true));
+
+        current = COMPETITION_PERIODS[11];
+        test = COMPETITION_PERIODS[0];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == false));
+
+        current = COMPETITION_PERIODS[10];
+        test = COMPETITION_PERIODS_LAST_YEAR[15];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == false));
+
+        current = COMPETITION_PERIODS[9];
+        test = COMPETITION_PERIODS_LAST_YEAR[15];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == true));
+
+        current = COMPETITION_PERIODS[9];
+        test = COMPETITION_PERIODS_LAST_YEAR[14];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == false));
+
+        current = COMPETITION_PERIODS[6];
+        test = COMPETITION_PERIODS_LAST_YEAR[12];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == true));
+
+        current = COMPETITION_PERIODS[6];
+        test = COMPETITION_PERIODS_LAST_YEAR[11];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == false));
+
+        current = COMPETITION_PERIODS[6];
+        test = COMPETITION_PERIODS[7];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == false));
+
+        current = COMPETITION_PERIODS[6];
+        test = COMPETITION_PERIODS[6];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == false));
+
+        current = COMPETITION_PERIODS_LAST_YEAR[15];
+        test = COMPETITION_PERIODS[0];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == false));
+
+        current = COMPETITION_PERIODS[0];
+        test = COMPETITION_PERIODS_LAST_YEAR[15];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == true));
+
+        current = COMPETITION_PERIODS[15];
+        test = COMPETITION_PERIODS[5];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == true));
+
+        current = COMPETITION_PERIODS[15];
+        test = COMPETITION_PERIODS[4];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == false));
+
+        current = COMPETITION_PERIODS[15];
+        test = COMPETITION_PERIODS[3];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == false));
+
+        current = COMPETITION_PERIODS[14];
+        test = COMPETITION_PERIODS[4];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == true));
+
+        current = COMPETITION_PERIODS[14];
+        test = COMPETITION_PERIODS[3];
+        System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
+                test.isValidAsEntryForPeriod(current) == false));
     }
 }
