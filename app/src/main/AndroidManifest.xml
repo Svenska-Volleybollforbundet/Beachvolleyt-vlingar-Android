@@ -31,6 +31,10 @@
         <activity
             android:name=".activity.RankingTableActivity"
             android:label="@string/title_activity_ranking_table" />
+        <!--<activity
+            android:name=".activity.PlayerActivity"
+            android:parentActivityName=".activity.PlayerListActivity"
+            android:screenOrientation="nosensor"/>-->
     </application>
 
 </manifest>
