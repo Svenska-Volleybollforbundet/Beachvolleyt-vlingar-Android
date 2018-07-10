@@ -28,4 +28,6 @@
     <string name="title_activity_ranking_table">RankingTableActivity</string>
     <string name="position">Placering</string>
     <string name="points">Poäng</string>
+    <string name="player_results">Resultat</string>
+    <string name="player_results_mixed">Mixedresultat</string>
 </resources>

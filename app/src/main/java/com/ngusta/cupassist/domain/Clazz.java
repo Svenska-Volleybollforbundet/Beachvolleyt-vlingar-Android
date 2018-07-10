@@ -10,21 +10,18 @@ public enum Clazz {
     F16("U16 F"), P16("U16 P"), M16("U16 M"),
     MiniFGronBla("Mini F GrönBlå"), MiniFRod("Mini F Röd"), MiniFSvart("Mini F Svart"),
     MiniOGronBla("Mini Ö GrönBlå"), MiniORod("Mini O Röd"), MiniOSvart("Mini O Svart"),
-    JuniorD("Junior D"), JuniorH("Junior H"),
+    JuniorD("Junior D"), JuniorH("Junior H"), JuniorM("Junior M"),
     V35D("V35+ D"), V35H("V35+ H"),
     V40D("V40+ D"), V40H("V40+ H"),
     V45D("V45+ D"), V45H("V45+ H"),
+    V50D("V50+ D"), V50H("V50+ H"),
     V55D("V55+ D"), V55H("V55+ H"),
     UNKNOWN("Unknown");
 
     private final String clazzString;
 
-    private Clazz(String clazzString) {
+    Clazz(String clazzString) {
         this.clazzString = clazzString;
-    }
-
-    public String getInitialLetter() {
-        return clazzString.substring(0, 1);
     }
 
     @Override
@@ -33,6 +30,10 @@ public enum Clazz {
     }
 
     public static Clazz parse(String clazzString) {
+        return parse(clazzString, null);
+    }
+
+    public static Clazz parse(String clazzString, String tournamentName) {
         int leftParenthesisIndex = clazzString.indexOf("(");
         if (leftParenthesisIndex > -1) {
             clazzString = clazzString.substring(0, leftParenthesisIndex).trim();
@@ -79,6 +80,8 @@ public enum Clazz {
                 return JuniorD;
             case "Junior H":
                 return JuniorH;
+            case "Junior M":
+                return JuniorM;
             case "V35+ D":
                 return V35D;
             case "V35+ H":
@@ -91,17 +94,31 @@ public enum Clazz {
                 return V45D;
             case "V45+ H":
                 return V45H;
+            case "V50+ D":
+                return V50D;
+            case "V50+ H":
+                return V50H;
             case "V55+ D":
                 return V55D;
             case "V55+ H":
                 return V55H;
+        }
+        return guessClazz(tournamentName);
+    }
+
+    private static Clazz guessClazz(String tournamentName) {
+        if (tournamentName == null) {
+            return UNKNOWN;
+        }
+        if (tournamentName.contains("Mixed")) {
+            return MIXED;
         }
         return UNKNOWN;
     }
 
     public static List<Clazz> getYouthClazzes() {
         Clazz[] youthClazzes = {D23, H23, F18, P18, M18, F16, P16, M16, MiniFGronBla, MiniFRod, MiniFSvart, MiniOGronBla, MiniORod, MiniOSvart,
-                JuniorD, JuniorH, UNKNOWN};
+                JuniorD, JuniorH, JuniorM, UNKNOWN};
         return Arrays.asList(youthClazzes);
     }
 

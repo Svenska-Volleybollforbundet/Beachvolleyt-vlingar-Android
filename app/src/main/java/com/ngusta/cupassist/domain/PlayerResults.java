@@ -1,12 +1,13 @@
 package com.ngusta.cupassist.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class PlayerResults {
+public class PlayerResults implements Serializable {
 
     private List<TournamentResult> results;
 
@@ -62,7 +63,7 @@ public class PlayerResults {
         return results;
     }
 
-    private class TournamentResult {
+    private class TournamentResult implements Serializable {
 
         private CompetitionPeriod period;
 
@@ -80,7 +81,7 @@ public class PlayerResults {
 
         @Override
         public String toString() {
-            return period.toString() + ": " + points + (partOfEntry ? "*\n" : "\n");
+            return period.toString() + ": " + points + (partOfEntry ? "*" : "") + "\n";
         }
 
         void setPartOfEntry(boolean partOfEntry) {

@@ -14,7 +14,8 @@ public class Player implements Serializable {
     private int rankingPoints;
     private int entryPoints;
     private int mixRankingPoints;
-    private int mixEntryPoints;
+
+    private int mixedEntryPoints;
 
     private String playerId;
 
@@ -66,12 +67,12 @@ public class Player implements Serializable {
         this.mixRankingPoints = mixRankingPoints;
     }
 
-    public int getMixEntryPoints() {
-        return mixEntryPoints;
+    public int getMixedEntryPoints() {
+        return mixedEntryPoints;
     }
 
-    public void setMixEntryPoints(int mixEntryPoints) {
-        this.mixEntryPoints = mixEntryPoints;
+    public void setMixedEntryPoints(int mixedEntryPoints) {
+        this.mixedEntryPoints = mixedEntryPoints;
     }
 
     public int getEntryPoints() {
@@ -92,7 +93,7 @@ public class Player implements Serializable {
 
     public int getEntryPoints(Clazz clazz) {
         if (clazz == Clazz.MIXED) {
-            return (int) Math.round(entryPoints * 0.1) + mixEntryPoints;
+            return (int) Math.round(entryPoints * 0.1) + mixedEntryPoints;
         }
         return entryPoints;
     }

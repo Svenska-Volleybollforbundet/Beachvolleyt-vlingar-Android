@@ -1,6 +1,7 @@
 package com.ngusta.cupassist.adapters;
 
 import com.ngusta.cupassist.R;
+import com.ngusta.cupassist.activity.PlayerActivity;
 import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.CompetitionPeriod;
 import com.ngusta.cupassist.domain.Player;
@@ -109,12 +110,13 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerHold
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 Player player = players.get(position);
-                showPlayerInfoDialog(player);
+                playerService.updatePlayerWithDetailsAndResults(player);
+                PlayerActivity.startActivity(context, player);
+                //showPlayerInfoDialog(player);
             }
         }
 
         private void showPlayerInfoDialog(Player player) {
-            playerService.updatePlayerWithDetailsAndResults(player);
             AlertDialog alertDialog = new AlertDialog.Builder(context).create();
             if (player.getAge() != null) {
                 alertDialog.setTitle(player.getName() + " (" + player.getAge() + " år, " + player.getClub() + ")");

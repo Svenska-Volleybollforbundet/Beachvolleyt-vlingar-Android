@@ -74,11 +74,11 @@ public class PlayerListDownloader {
             for (Player mixPlayer : mix) {
                 Player player = players.get(mixPlayer.uniqueIdentifier());
                 if (player != null) {
-                    player.setMixEntryPoints(mixPlayer.getEntryPoints());
+                    player.setMixedEntryPoints(mixPlayer.getEntryPoints());
                     player.setMixRankingPoints(mixPlayer.getRankingPoints());
                 } else {
                     mixPlayer.setClazz(Clazz.MIXED);
-                    mixPlayer.setMixEntryPoints(mixPlayer.getEntryPoints());
+                    mixPlayer.setMixedEntryPoints(mixPlayer.getEntryPoints());
                     mixPlayer.setMixRankingPoints(mixPlayer.getRankingPoints());
                     mixPlayer.setEntryPoints(0);
                     mixPlayer.setRankingPoints(0);

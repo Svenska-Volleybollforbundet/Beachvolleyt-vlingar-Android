@@ -65,7 +65,12 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         if (this.level == Level.UNKNOWN) {
             this.level = guessLevel(name);
         }
-        this.clazzes = parseClazzes(clazzes);
+        this.clazzes = parseClazzes(clazzes, this.name);
+        for (TournamentClazz tc : this.clazzes) {
+            if (tc.clazz == Clazz.UNKNOWN) {
+                System.err.println("Unknown clazz for tournament " + this.name + ". Clazz string: " + clazzes);
+            }
+        }
         this.region = Region.findRegionByClub(this.club);
     }
 
@@ -104,12 +109,12 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         return guessedLevel;
     }
 
-    private List<TournamentClazz> parseClazzes(String clazzes) {
+    private List<TournamentClazz> parseClazzes(String clazzes, String tournamentName) {
         Set<TournamentClazz> parsedClazzes = new HashSet<>();
         if (clazzes != null) {
             String[] clazzArray = clazzes.split(", ");
             for (String clazzString : clazzArray) {
-                parsedClazzes.add(new TournamentClazz(Clazz.parse(clazzString)));
+                parsedClazzes.add(new TournamentClazz(Clazz.parse(clazzString, tournamentName)));
             }
         }
         return new ArrayList<>(parsedClazzes);
@@ -337,7 +342,8 @@ public class Tournament implements Serializable, Comparable<Tournament> {
             } else if (levelString.contains("Veteran")) {
                 return VETERAN;
             } else if (levelString.contains("Ungdom") || levelString.contains("3-beach")
-                    || levelString.contains("Kidsvolley") || levelString.contains("Mini")) {
+                    || levelString.contains("Kidsvolley") || levelString.contains("Mini")
+                    || levelString.contains("U23") || levelString.contains("Öppen")) {
                 return YOUTH;
             }
             return UNKNOWN;
@@ -390,8 +396,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
                 return maxNumberOfTeams;
             } else {
                 int guess = level == Level.OPEN ? 16 : 12;
-                Log.i(TAG, String.format("Guessing number of teams in '%s' for clazz %s: %d", name,
-                        clazz, guess));
+                Log.i(TAG, String.format("Guessing number of teams in '%s' for clazz %s: %d", name, clazz, guess));
                 return guess;
             }
         }

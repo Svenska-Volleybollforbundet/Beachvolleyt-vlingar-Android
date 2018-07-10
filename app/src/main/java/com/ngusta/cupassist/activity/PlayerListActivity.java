@@ -52,7 +52,7 @@ public class PlayerListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.player_view);
+        setContentView(R.layout.player_list_view);
         playerService = ((MyApplication) getApplicationContext()).getPlayerService();
         new RequestPlayersTask().execute();
 
