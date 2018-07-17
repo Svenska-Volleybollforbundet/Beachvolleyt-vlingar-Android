@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -55,6 +56,9 @@ public class PlayerListActivity extends AppCompatActivity {
         setContentView(R.layout.player_list_view);
         playerService = ((MyApplication) getApplicationContext()).getPlayerService();
         new RequestPlayersTask().execute();
+
+        Toolbar toolbar = findViewById(R.id.app_toolbar);
+        setSupportActionBar(toolbar);
 
         mProgressContainer = findViewById(R.id.progressContainer);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);

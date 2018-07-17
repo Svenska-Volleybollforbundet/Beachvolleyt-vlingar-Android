@@ -52,6 +52,16 @@ public class PlayerResults implements Serializable {
         return entry;
     }
 
+    public int getRankingPointsForPeriod(CompetitionPeriod period) {
+        int points = 0;
+        for (TournamentResult result : results) {
+            if (result.getPeriod().isValidAsRankingForPeriod(period)) {
+                points += result.getPoints();
+            }
+        }
+        return points;
+    }
+
     private static final Comparator<TournamentResult> ENTRY_POINTS_COMPARATOR = new Comparator<TournamentResult>() {
         @Override
         public int compare(TournamentResult lhs, TournamentResult rhs) {
@@ -81,7 +91,7 @@ public class PlayerResults implements Serializable {
 
         @Override
         public String toString() {
-            return period.toString() + ": " + points + (partOfEntry ? "*" : "") + "\n";
+            return period.toString() + " " + period.getYear() + ": " + points + (partOfEntry ? "*" : "") + "\n";
         }
 
         void setPartOfEntry(boolean partOfEntry) {

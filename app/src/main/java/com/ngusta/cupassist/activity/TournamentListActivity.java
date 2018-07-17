@@ -59,6 +59,7 @@ public class TournamentListActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         new RequestTournamentsTask().execute();
         setContentView(R.layout.activity_tournament_list);
+
         mProgressContainer = findViewById(R.id.progressContainer);
         mListContainer = findViewById(R.id.listContainer);
         setListShown(false, false);

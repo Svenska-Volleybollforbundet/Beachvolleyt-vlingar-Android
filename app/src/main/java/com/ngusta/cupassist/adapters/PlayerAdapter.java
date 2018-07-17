@@ -35,7 +35,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerHold
     private PlayerService playerService;
 
     public PlayerAdapter(List<Player> players, Clazz clazz, PlayerService playerService) {
-        Collections.sort(players, new Player.PlayerComparator(clazz));
+        Collections.sort(players, new Player.CurrentEntryPlayerComparator(clazz));
         originalPlayers = new ArrayList<>(players);
         this.players = players;
         this.clazz = clazz;

@@ -145,6 +145,13 @@ public class Player implements Serializable {
         this.age = age;
     }
 
+    public PlayerResults getResults(Clazz clazz) {
+        if (clazz == Clazz.MIXED) {
+            return mixedResults;
+        }
+        return results;
+    }
+
     public PlayerResults getResults() {
         return results;
     }
@@ -159,6 +166,7 @@ public class Player implements Serializable {
     }
 
     public void setMixedResults(PlayerResults mixedResults) {
+        mixedResults.markEntryResults();
         this.mixedResults = mixedResults;
     }
 
@@ -180,11 +188,11 @@ public class Player implements Serializable {
                 entryPoints;
     }
 
-    public static class PlayerComparator implements Comparator<Player> {
+    public static class CurrentEntryPlayerComparator implements Comparator<Player> {
 
         private final Clazz clazz;
 
-        public PlayerComparator(Clazz clazz) {
+        public CurrentEntryPlayerComparator(Clazz clazz) {
             this.clazz = clazz;
         }
 
@@ -195,6 +203,30 @@ public class Player implements Serializable {
                 return cmp;
             }
             cmp = Double.compare(p2.getRankingPoints(clazz), p1.getRankingPoints(clazz));
+            return cmp != 0 ? cmp : p1.getName().compareTo(p2.getName());
+        }
+    }
+
+    public static class CompetitionPeriodPlayerComparator implements Comparator<Player> {
+
+        private final Clazz clazz;
+
+        private final CompetitionPeriod competitionPeriod;
+
+        public CompetitionPeriodPlayerComparator(Clazz clazz, CompetitionPeriod period) {
+            this.clazz = clazz;
+            this.competitionPeriod = period;
+        }
+
+        @Override
+        public int compare(Player p1, Player p2) {
+            int cmp = Double
+                    .compare(p2.getResults(clazz).getEntryForPeriod(competitionPeriod), p1.getResults(clazz).getEntryForPeriod(competitionPeriod));
+            if (cmp != 0) {
+                return cmp;
+            }
+            cmp = Double.compare(p2.getResults(clazz).getRankingPointsForPeriod(competitionPeriod),
+                    p1.getResults(clazz).getRankingPointsForPeriod(competitionPeriod));
             return cmp != 0 ? cmp : p1.getName().compareTo(p2.getName());
         }
     }

@@ -99,7 +99,7 @@ public class PlayerListDownloader {
     }
 
     private void calculateEntryRankInClazz(ArrayList<Player> sortedPlayers, Clazz clazz) {
-        Collections.sort(sortedPlayers, new Player.PlayerComparator(clazz));
+        Collections.sort(sortedPlayers, new Player.CurrentEntryPlayerComparator(clazz));
         int entryRanking = 1;
         for (Player player : sortedPlayers) {
             if (player.getClazz() == clazz) {
@@ -109,7 +109,7 @@ public class PlayerListDownloader {
     }
 
     private void calculateEntryRankInMixed(ArrayList<Player> sortedPlayers) {
-        Collections.sort(sortedPlayers, new Player.PlayerComparator(Clazz.MIXED));
+        Collections.sort(sortedPlayers, new Player.CurrentEntryPlayerComparator(Clazz.MIXED));
         int entryRanking = 1;
         for (Player player : sortedPlayers) {
             if (player.getMixRankingPoints() > 0) {

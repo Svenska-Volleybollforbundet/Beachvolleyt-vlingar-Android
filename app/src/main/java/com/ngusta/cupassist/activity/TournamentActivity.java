@@ -3,16 +3,20 @@ package com.ngusta.cupassist.activity;
 import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.adapters.TeamAdapter;
 import com.ngusta.cupassist.adapters.TournamentListAdapter;
+import com.ngusta.cupassist.domain.Player;
+import com.ngusta.cupassist.domain.Team;
 import com.ngusta.cupassist.domain.Tournament;
 import com.ngusta.cupassist.io.TournamentListCache;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -176,6 +180,7 @@ public class TournamentActivity extends Activity {
         List<Tournament.TeamGroupPosition> teams = tournament.getTeamGroupPositionsForClazz(clazz);
         final ArrayAdapter<Tournament.TeamGroupPosition> adapter = new TeamAdapter(this, R.layout.team_list_item, teams, clazz.getMaxNumberOfTeams());
         teamListView.setAdapter(adapter);
+        teamListView.setOnItemClickListener(new OnTeamClickListener(this, teams));
     }
 
     @Override
@@ -236,4 +241,40 @@ public class TournamentActivity extends Activity {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, cupAssistUri);
         startActivity(browserIntent);
     }
+
+    private class OnTeamClickListener implements AdapterView.OnItemClickListener {
+
+        private final Context context;
+
+        private final List<Tournament.TeamGroupPosition> teams;
+
+        OnTeamClickListener(Context context, List<Tournament.TeamGroupPosition> teams) {
+            this.context = context;
+            this.teams = teams;
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Team team = teams.get(position).team;
+            final Player[] players = new Player[]{team.getPlayerA(), team.getPlayerB()};
+            String[] options = new String[]{team.getPlayerA().getName(), team.getPlayerB().getName()};
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(TournamentActivity.this, R.style.MyDialogTheme);
+            builder.setTitle("Välj spelare:");
+            builder.setItems(options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startPlayerActivity(players[which]);
+                }
+            });
+            builder.show();
+        }
+
+        private void startPlayerActivity(Player player) {
+            ((MyApplication) getApplication()).getPlayerService().updatePlayerWithDetailsAndResults(player);
+            PlayerActivity.startActivity(context, player);
+        }
+    }
+
+
 }

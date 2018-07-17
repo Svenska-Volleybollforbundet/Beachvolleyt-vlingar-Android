@@ -1,16 +1,17 @@
 package com.ngusta.cupassist.activity;
 
+import com.ngusta.cupassist.domain.Clazz;
+import com.ngusta.cupassist.domain.CompetitionPeriod;
 import com.ngusta.cupassist.domain.Player;
-import com.ngusta.cupassist.domain.Team;
-import com.ngusta.cupassist.domain.Tournament;
 import com.ngusta.cupassist.io.PlayerListDownloader;
-import com.ngusta.cupassist.io.TournamentListCache;
 import com.ngusta.cupassist.service.PlayerService;
 import com.ngusta.cupassist.service.TournamentService;
 
 import android.app.Application;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,10 @@ public class MyApplication extends Application {
         System.out.println("Players loaded, took " + (System.currentTimeMillis() - start) + " ms");
 
         start = System.currentTimeMillis();
+        printPlayersWithSmEntry(players, playerListDownloader);
+        System.out.println("Player results loaded, took " + (System.currentTimeMillis() - start) + " ms");
+/*
+        start = System.currentTimeMillis();
         TournamentListCache tournamentListCache = new TournamentListCache();
         List<Tournament> tournaments = tournamentListCache.getTournaments();
         System.out.println(
@@ -77,6 +82,44 @@ public class MyApplication extends Application {
                     System.out.println();
                 }
             }
+        }*/
+    }
+
+    private static void printPlayersWithSmEntry(Map<String, Player> players, PlayerListDownloader playerListDownloader) {
+        List<Player> women = new ArrayList<>();
+        List<Player> men = new ArrayList<>();
+        List<Player> mixed = new ArrayList<>();
+        for (Map.Entry<String, Player> entry : players.entrySet()) {
+            Player player = entry.getValue();
+            if (player.getClazz() == Clazz.MEN) {
+                men.add(player);
+            }
+            if (player.getClazz() == Clazz.WOMEN) {
+                women.add(player);
+            }
+            if (player.getMixRankingPoints() != 0) {
+                mixed.add(player);
+            }
+        }
+        System.out.println("\nRanking,Namn,Entry,Rankingpoäng");
+        printSmEntryForClazz(playerListDownloader, men, Clazz.MEN);
+        printSmEntryForClazz(playerListDownloader, women, Clazz.WOMEN);
+    }
+
+    private static void printSmEntryForClazz(PlayerListDownloader playerListDownloader, List<Player> men, Clazz clazz) {
+        List<Player> bestPlayers = new ArrayList<>();
+        Collections.sort(men, new Player.CurrentEntryPlayerComparator(clazz));
+        for (int i = 0; i < 100 && i < men.size(); i++) {
+            Player player = men.get(i);
+            playerListDownloader.updatePlayerWithDetailsAndResults(player);
+            bestPlayers.add(player);
+        }
+        Collections.sort(bestPlayers, new Player.CompetitionPeriodPlayerComparator(clazz, CompetitionPeriod.findPeriodByNumber(11)));
+        int rank = 1;
+        for (Player player : bestPlayers) {
+            System.out.println(rank++ + "," + player.getName() + "," +
+                    player.getResults().getEntryForPeriod(CompetitionPeriod.findPeriodByNumber(11)) + "," +
+                    player.getResults().getRankingPointsForPeriod(CompetitionPeriod.findPeriodByNumber(11)));
         }
     }
 

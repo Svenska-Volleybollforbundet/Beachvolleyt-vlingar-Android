@@ -144,6 +144,12 @@ public class CompetitionPeriod implements Serializable {
         return diff > 0 && diff <= 10;
     }
 
+    public boolean isValidAsRankingForPeriod(CompetitionPeriod period) {
+        int yearDiff = getYear(period.getStartDate()) - getYear(getStartDate());
+        int diff = (yearDiff * 16 + period.getPeriodNumber()) - getPeriodNumber();
+        return diff > 0 && diff <= 16;
+    }
+
     public int getPeriodNumber() {
         return periodNumber;
     }
@@ -158,6 +164,10 @@ public class CompetitionPeriod implements Serializable {
 
     public Date getEndDate() {
         return endDate;
+    }
+
+    public int getYear() {
+        return CompetitionPeriod.getYear(startDate);
     }
 
     public boolean isCurrent() {

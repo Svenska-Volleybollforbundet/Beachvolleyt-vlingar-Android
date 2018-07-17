@@ -4,4 +4,6 @@
     <style name="HeaderBar">
         <item name="android:textSize">10sp</item>
     </style>
+
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert" />
 </resources>
