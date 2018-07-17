@@ -11,7 +11,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:textSize="8pt"
-        android:minLines="5"
+        android:minLines="8"
         android:singleLine="false" />
 
 </LinearLayout>
