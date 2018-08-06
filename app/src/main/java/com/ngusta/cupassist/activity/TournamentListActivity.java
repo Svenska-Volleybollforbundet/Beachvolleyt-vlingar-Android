@@ -54,6 +54,10 @@ public class TournamentListActivity extends ListActivity {
 
     private boolean mShowOldTournaments;
 
+    private Menu menu;
+
+    private int clicksOnCurrentCP = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +109,7 @@ public class TournamentListActivity extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+        this.menu = menu;
         menu.add(Menu.NONE, R.id.menu_item_today, Menu.NONE, R.string.current_competition_period)
                 .setIcon(android.R.drawable.ic_menu_today)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
@@ -120,6 +125,7 @@ public class TournamentListActivity extends ListActivity {
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         menu.add(Menu.NONE, R.id.menu_item_competition_calendar, Menu.NONE, R.string.competition_calendar)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
         //Add when Feedback fran Samuel: Mojlighet att dolja passerade tavlingar is done
         //menu.add(Menu.NONE, R.id.menu_item_old_tournaments, Menu.NONE, R.string.show_old_tournaments)
         //        .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
@@ -130,6 +136,7 @@ public class TournamentListActivity extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
+        addCourtsMenuItem(item);
         switch (item.getItemId()) {
             case R.id.menu_item_today:
                 selectCurrentCompetitionPeriod();
@@ -156,8 +163,24 @@ public class TournamentListActivity extends ListActivity {
             case R.id.menu_item_competition_calendar:
                 openBrowser(TournamentListCache.CUP_ASSIST_TOURNAMENT_LIST_URL_WITHOUT_OLD_TOURNAMENTS);
                 return true;
+            case R.id.menu_item_courts:
+                CourtsActivity.startActivity(this);
+                return true;
+
         }
         return false;
+    }
+
+    private void addCourtsMenuItem(MenuItem item) {
+        if (item.getItemId() == R.id.menu_item_today) {
+            if (++clicksOnCurrentCP >= 7 && menu.findItem(R.id.menu_item_courts) == null) {
+                menu.add(Menu.NONE, R.id.menu_item_courts, Menu.NONE, R.string.courts)
+                        .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+                Toast.makeText(this, "Se banor upplåst!", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            clicksOnCurrentCP = 0;
+        }
     }
 
     private void openBrowser(String uriString) {

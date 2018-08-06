@@ -4,6 +4,7 @@ import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.CompetitionPeriod;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.io.PlayerListDownloader;
+import com.ngusta.cupassist.service.CourtService;
 import com.ngusta.cupassist.service.PlayerService;
 import com.ngusta.cupassist.service.TournamentService;
 
@@ -27,6 +28,8 @@ public class MyApplication extends Application {
 
     private TournamentService tournamentService;
 
+    private CourtService courtService;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -44,6 +47,13 @@ public class MyApplication extends Application {
             tournamentService = new TournamentService(getApplicationContext(), getPlayerService());
         }
         return tournamentService;
+    }
+
+    public CourtService getCourtService() {
+        if (courtService == null) {
+            courtService = new CourtService();
+        }
+        return courtService;
     }
 
     private static void desktopRun() throws IOException {

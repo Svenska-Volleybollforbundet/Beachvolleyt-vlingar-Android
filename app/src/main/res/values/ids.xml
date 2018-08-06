@@ -13,4 +13,5 @@
     <item name="menu_item_competition_calendar" type="id" />
     <item name="menu_item_ranking_points" type="id" />
     <item name="menu_item_see_result_icon" type="id" />
+    <item name="menu_item_courts" type="id" />
 </resources>

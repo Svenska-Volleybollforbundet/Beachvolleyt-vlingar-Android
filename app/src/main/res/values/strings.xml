@@ -36,5 +36,7 @@
     <string name="no_mixed_results">Inga mixedresultat hittades.</string>
     <string name="no_results">Inga resultat hittades.</string>
     <string name="player_future_entry">Framtidskollen</string>
+    <string name="title_activity_courts">Courts</string>
+    <string name="courts">Banor i Sverige</string>
 
 </resources>
