@@ -96,7 +96,7 @@ public class CompetitionPeriod implements Serializable {
     static CompetitionPeriod findByName(String name, int year) {
         for (CompetitionPeriod cp : COMPETITION_PERIODS) {
             if (cp.getName().equalsIgnoreCase(name) ||
-                    cp.getName().replace(" ", "").replace("0", "").equalsIgnoreCase(name)) {
+                    cp.getName().replace(" 0", "").replace(" ", "").equalsIgnoreCase(name)) {
                 if (getYear(cp.getStartDate()) == year) {
                     return cp;
                 }
@@ -110,7 +110,7 @@ public class CompetitionPeriod implements Serializable {
                 }
             }
         }
-        throw new IllegalArgumentException("Not a valid competition period.");
+        throw new IllegalArgumentException("Not a valid competition period: " + name);
     }
 
     public static CompetitionPeriod findPeriodByDate(Date date) {

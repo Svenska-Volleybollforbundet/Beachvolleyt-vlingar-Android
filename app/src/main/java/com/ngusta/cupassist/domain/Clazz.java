@@ -9,7 +9,7 @@ public enum Clazz {
     F18("U18 F"), P18("U18 P"), M18("U18 M"),
     F16("U16 F"), P16("U16 P"), M16("U16 M"),
     MiniFGronBla("Mini F GrönBlå"), MiniFRod("Mini F Röd"), MiniFSvart("Mini F Svart"),
-    MiniOGronBla("Mini Ö GrönBlå"), MiniORod("Mini O Röd"), MiniOSvart("Mini O Svart"),
+    MiniOGronBla("Mini Ö GrönBlå"), MiniORod("Mini Ö Röd"), MiniOSvart("Mini Ö Svart"),
     JuniorD("Junior D"), JuniorH("Junior H"), JuniorM("Junior M"),
     V35D("V35+ D"), V35H("V35+ H"),
     V40D("V40+ D"), V40H("V40+ H"),
@@ -65,16 +65,22 @@ public enum Clazz {
             case "U16 M":
                 return M16;
             case "Mini F GrönBlå":
+            case "Flickor GrönBlå":
                 return MiniFGronBla;
             case "Mini F Röd":
+            case "Flickor Röd":
                 return MiniFRod;
             case "Mini F Svart":
+            case "Flickor Svart":
                 return MiniFSvart;
             case "Mini Ö GrönBlå":
+            case "Mini Öppen GrönBlå":
                 return MiniOGronBla;
             case "Mini Ö Röd":
+            case "Mini Öppen Röd":
                 return MiniORod;
             case "Mini Ö Svart":
+            case "Mini Öppen Svart":
                 return MiniOSvart;
             case "Junior D":
                 return JuniorD;
@@ -123,7 +129,7 @@ public enum Clazz {
     }
 
     public static List<Clazz> getVeteranClazzes() {
-        Clazz[] youthClazzes = {V35D, V35H, V40D, V40H, V45D, V45H, V55D, V55H, UNKNOWN};
+        Clazz[] youthClazzes = {V35D, V35H, V40D, V40H, V45D, V45H, V50D, V50H, V55D, V55H, UNKNOWN};
         return Arrays.asList(youthClazzes);
     }
 }

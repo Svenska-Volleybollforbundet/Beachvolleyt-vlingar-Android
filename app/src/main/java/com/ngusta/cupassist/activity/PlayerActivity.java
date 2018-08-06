@@ -72,13 +72,17 @@ public class PlayerActivity extends AppCompatActivity {
     private void initResultCard() {
         TextView playerResultsText = findViewById(R.id.player_results_text);
         String introText = "* betyder att resultaten är en del av spelarens nuvarande entrypoäng.\n\n";
-        playerResultsText.setText(introText + PlayerResults.print(player.getResults().getTournamentResults()));
+        if (player.getResults() == null || player.getResults().getTournamentResults().isEmpty()) {
+            playerResultsText.setText(R.string.no_results);
+        } else {
+            playerResultsText.setText(introText + PlayerResults.print(player.getResults().getTournamentResults()));
+        }
     }
 
     private void initMixedResultCard() {
         String introText = "* betyder att resultaten är en del av spelarens nuvarande entrypoäng.\n\n";
         TextView playerMixedResultsText = findViewById(R.id.player_results_mixed_text);
-        if (player.getMixedResults().getTournamentResults().isEmpty()) {
+        if (player.getMixedResults() == null || player.getMixedResults().getTournamentResults().isEmpty()) {
             playerMixedResultsText.setText(R.string.no_mixed_results);
         } else {
             playerMixedResultsText.setText(introText + PlayerResults.print(player.getMixedResults().getTournamentResults()));
@@ -95,7 +99,7 @@ public class PlayerActivity extends AppCompatActivity {
         while (futureCP <= 16) {
             CompetitionPeriod period = CompetitionPeriod.findPeriodByNumber(futureCP++);
             int entryForPeriod = player.getResults().getEntryForPeriod(period);
-            int mixedEntryForPeriod = player.getMixedResults().getEntryForPeriod(period);
+            int mixedEntryForPeriod = player.getMixedResults() != null ? player.getMixedResults().getEntryForPeriod(period) : 0;
             text += period.getName() + ": " + entryForPeriod + " / " + mixedEntryForPeriod + "\n";
         }
         playerFutureEntryText.setText(text);

@@ -52,6 +52,23 @@ public class PlayerResults implements Serializable {
         return entry;
     }
 
+    public String getEntriesForPeriod(CompetitionPeriod period) {
+        List<TournamentResult> entryResults = new ArrayList<>(results);
+        Collections.sort(entryResults, ENTRY_POINTS_COMPARATOR);
+        String entries = "";
+        int numberOfValidResults = 0;
+        for (TournamentResult result : entryResults) {
+            if (result.getPeriod().isValidAsEntryForPeriod(period)) {
+                entries += result.getPoints() + ",";
+                numberOfValidResults++;
+            }
+            if (numberOfValidResults == 5) {
+                break;
+            }
+        }
+        return entries;
+    }
+
     public int getRankingPointsForPeriod(CompetitionPeriod period) {
         int points = 0;
         for (TournamentResult result : results) {

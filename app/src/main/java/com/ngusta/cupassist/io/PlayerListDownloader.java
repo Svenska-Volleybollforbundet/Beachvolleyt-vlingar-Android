@@ -118,8 +118,11 @@ public class PlayerListDownloader {
         }
     }
 
-    public void updatePlayerWithDetailsAndResults(Player player) {
+    public boolean updatePlayerWithDetailsAndResults(Player player) {
         try {
+            if (player.getClazz() == null) {
+                return false;
+            }
             Map<String, String> data = new HashMap<>();
             data.put("spid", player.getPlayerId());
             data.put("klasse", player.getClazz().toString());
@@ -138,10 +141,11 @@ public class PlayerListDownloader {
             data.put("klasse", "M");
             String source = sourceCodeRequester.getSourceCodePost(CUP_ASSIST_PLAYER_DETAILS_URL, data);
             player.setMixedResults(playerDetailsParser.parseResults(source));
-
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public void clearPayers() {

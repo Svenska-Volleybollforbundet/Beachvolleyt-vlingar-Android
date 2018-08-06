@@ -45,6 +45,8 @@ public class TournamentActivity extends Activity {
 
     private Tournament tournament;
 
+    private Menu menu;
+
     public static void startActivity(Context context, Tournament tournament) {
         Intent intent = new Intent(context, TournamentActivity.class);
         intent.putExtra(TOURNAMENT_INTENT, tournament.getId());
@@ -135,6 +137,7 @@ public class TournamentActivity extends Activity {
                 Tournament.TournamentClazz clazz = tournament.getClazzes().get(0);
                 setTeamsInfo(clazz);
                 updateTeams(clazz);
+                enableMenu();
             } else if (exception != null) {
                 Toast.makeText(TournamentActivity.this, "Kunde inte ladda lag. Kolla din internetanslutning.", Toast.LENGTH_LONG).show();
             } else {
@@ -142,6 +145,12 @@ public class TournamentActivity extends Activity {
             }
             setListShown(true, true);
         }
+    }
+
+    private void enableMenu() {
+        menu.findItem(R.id.menu_item_see_result_icon).setEnabled(true).getIcon().setAlpha(255);
+        menu.findItem(R.id.menu_item_see_result).setEnabled(true);
+        menu.findItem(R.id.menu_item_sign_up).setEnabled(true);
     }
 
     private void initClazzSpinner() {
@@ -186,17 +195,26 @@ public class TournamentActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        menu.add(Menu.NONE, R.id.menu_item_see_result, Menu.NONE, R.string.see_result)
+        MenuItem menuItem = menu.add(Menu.NONE, R.id.menu_item_see_result_icon, Menu.NONE, R.string.see_result)
                 .setIcon(R.drawable.external_link_enabled)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-        menu.add(Menu.NONE, R.id.menu_item_see_result, Menu.NONE, R.string.see_result)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-        menu.add(Menu.NONE, R.id.menu_item_sign_up, Menu.NONE, R.string.sign_up)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-        menu.add(Menu.NONE, R.id.menu_item_register_result, Menu.NONE, R.string.register_result)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-        menu.add(Menu.NONE, R.id.menu_item_ranking_points, Menu.NONE, R.string.see_ranking_points)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+                .setEnabled(false);
+        menuItem.getIcon().setAlpha(100);
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        menuItem = menu.add(Menu.NONE, R.id.menu_item_see_result, Menu.NONE, R.string.see_result)
+                .setEnabled(false);
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
+        menuItem = menu.add(Menu.NONE, R.id.menu_item_sign_up, Menu.NONE, R.string.sign_up)
+                .setEnabled(false);
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
+        menuItem = menu.add(Menu.NONE, R.id.menu_item_register_result, Menu.NONE, R.string.register_result);
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
+        menuItem = menu.add(Menu.NONE, R.id.menu_item_ranking_points, Menu.NONE, R.string.see_ranking_points);
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        this.menu = menu;
         return true;
     }
 
@@ -205,6 +223,7 @@ public class TournamentActivity extends Activity {
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.menu_item_see_result:
+            case R.id.menu_item_see_result_icon:
                 openBrowser(TournamentListCache.PROFIXIO_BASE_RESULT_URL + tournament.getUrlName());
                 return true;
             case R.id.menu_item_register_result:
@@ -271,10 +290,12 @@ public class TournamentActivity extends Activity {
         }
 
         private void startPlayerActivity(Player player) {
-            ((MyApplication) getApplication()).getPlayerService().updatePlayerWithDetailsAndResults(player);
-            PlayerActivity.startActivity(context, player);
+            boolean hasPlayerDetails = ((MyApplication) getApplication()).getPlayerService().updatePlayerWithDetailsAndResults(player);
+            if (!hasPlayerDetails) {
+                Toast.makeText(getBaseContext(), "Finns ingen mer data om den här spelaren.", Toast.LENGTH_SHORT).show();
+            } else {
+                PlayerActivity.startActivity(context, player);
+            }
         }
     }
-
-
 }
