@@ -1,17 +1,25 @@
 package com.ngusta.cupassist.activity;
 
+import com.google.gson.Gson;
+
 import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.CompetitionPeriod;
+import com.ngusta.cupassist.domain.Court;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.io.PlayerListDownloader;
 import com.ngusta.cupassist.service.CourtService;
 import com.ngusta.cupassist.service.PlayerService;
 import com.ngusta.cupassist.service.TournamentService;
+import com.opencsv.CSVReader;
 
 import android.app.Application;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +65,8 @@ public class MyApplication extends Application {
     }
 
     private static void desktopRun() throws IOException {
-        long start = System.currentTimeMillis();
+        readCourts();
+/*      long start = System.currentTimeMillis();
         PlayerListDownloader playerListDownloader = new PlayerListDownloader();
         Map<String, Player> players = playerListDownloader.getPlayers();
         System.out.println("Players loaded, took " + (System.currentTimeMillis() - start) + " ms");
@@ -65,7 +74,7 @@ public class MyApplication extends Application {
         start = System.currentTimeMillis();
         printPlayersWithSmEntry(players, playerListDownloader);
         System.out.println("Player results loaded, took " + (System.currentTimeMillis() - start) + " ms");
-/*
+
         start = System.currentTimeMillis();
         TournamentListCache tournamentListCache = new TournamentListCache();
         List<Tournament> tournaments = tournamentListCache.getTournaments();
@@ -93,6 +102,35 @@ public class MyApplication extends Application {
                 }
             }
         }*/
+    }
+
+    private static void readCourts() {
+
+        try {
+            InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream("courtsData.csv"), StandardCharsets.ISO_8859_1);
+            List<String[]> csvCourts = new CSVReader(inputStreamReader, ';').readAll();
+            boolean first = true;
+            ArrayList<Court> courts = new ArrayList<>();
+            for (String[] csvCourt : csvCourts) {
+                if (first) {
+                    System.out.println(Arrays.toString(csvCourt));
+                    first = false;
+                } else if (csvCourt[17].length() > 0 && csvCourt[18].length() > 0) {
+                    //System.out.println(csvCourt[8] + "," + csvCourt[9] + "," + csvCourt[11] + "," + csvCourt[17] + "     " + csvCourt[18]);
+                    double lat = Double.parseDouble(csvCourt[17]);
+                    double lng = Double.parseDouble(csvCourt[18]);
+                    String title = csvCourt[8];
+                    String description = csvCourt[11].startsWith("Nej") || csvCourt[11].startsWith("nej") ? "" : csvCourt[11];
+                    int numCourts = csvCourt[9].isEmpty() ? 1 : Integer.parseInt(csvCourt[9]);
+                    boolean hasNet = csvCourt[13].equalsIgnoreCase("ja");
+                    boolean hasLines = csvCourt[13].equalsIgnoreCase("ja");
+                    courts.add(new Court(lat, lng, title, description, null, numCourts, hasNet, hasLines, false));
+                }
+            }
+            System.out.println(new Gson().toJson(courts));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void printPlayersWithSmEntry(Map<String, Player> players, PlayerListDownloader playerListDownloader) {

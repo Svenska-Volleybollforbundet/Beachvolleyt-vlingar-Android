@@ -5,9 +5,11 @@ import com.google.android.gms.maps.model.Marker;
 
 import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.domain.Court;
+import com.ngusta.cupassist.domain.CourtWithKeyTag;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CourtMarkerAdapter implements GoogleMap.InfoWindowAdapter {
@@ -30,23 +32,33 @@ public class CourtMarkerAdapter implements GoogleMap.InfoWindowAdapter {
         if (popup == null) {
             popup = layoutInflater.inflate(R.layout.court_marker_popup, null);
         }
-        Court court = (Court) marker.getTag();
-        if (court == null) {
+        CourtWithKeyTag tag = (CourtWithKeyTag) marker.getTag();
+        if (tag == null) {
             return null;
         }
-        TextView tv = popup.findViewById(R.id.title);
-        tv.setText(court.getTitle());
+        Court court = tag.court;
+        setTextForId(R.id.title, court.getTitle() + " - " + court.getNumCourts() + (court.getNumCourts() == 1 ? " bana" : " banor"));
+        setTextForId(R.id.snippet, court.getDescription());
 
-        tv = popup.findViewById(R.id.snippet);
-        tv.setText(court.getDescription());
+        ImageView iv = popup.findViewById(R.id.hasNet);
+        iv.setImageResource(court.getHasNet() ? R.drawable.beach_net_green : R.drawable.beach_net_red);
 
-        tv = popup.findViewById(R.id.link);
+        iv = popup.findViewById(R.id.hasLines);
+        iv.setImageResource(court.getHasLines() ? R.drawable.volleyball_lines_green : R.drawable.volleyball_lines_red);
+
+        iv = popup.findViewById(R.id.hasAntennas);
+        iv.setImageResource(court.getHasAntennas() ? R.drawable.antenna_green : R.drawable.antenna_red);
+
         if (court.hasLink()) {
-            tv.setVisibility(View.VISIBLE);
-            tv.setText(court.getLink());
+            setTextForId(R.id.link, court.getLink());
         } else {
-            tv.setVisibility(View.GONE);
+            popup.findViewById(R.id.link).setVisibility(View.GONE);
         }
         return popup;
+    }
+
+    private void setTextForId(int viewId, String text) {
+        TextView tv = popup.findViewById(viewId);
+        tv.setText(text);
     }
 }

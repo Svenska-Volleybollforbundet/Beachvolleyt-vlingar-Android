@@ -164,7 +164,7 @@ public class TournamentListActivity extends ListActivity {
                 openBrowser(TournamentListCache.CUP_ASSIST_TOURNAMENT_LIST_URL_WITHOUT_OLD_TOURNAMENTS);
                 return true;
             case R.id.menu_item_courts:
-                CourtsActivity.startActivity(this);
+                CourtActivity.startActivity(this);
                 return true;
 
         }

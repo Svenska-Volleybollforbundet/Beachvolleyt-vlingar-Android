@@ -14,4 +14,7 @@
     <item name="menu_item_ranking_points" type="id" />
     <item name="menu_item_see_result_icon" type="id" />
     <item name="menu_item_courts" type="id" />
+    <item name="menu_item_satellite" type="id" />
+    <item name="menu_item_normal_map" type="id" />
+    <item name="menu_item_edit_markers" type="id" />
 </resources>

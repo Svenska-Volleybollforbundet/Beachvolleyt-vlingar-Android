@@ -58,7 +58,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".activity.CourtsActivity"
+            android:name=".activity.CourtActivity"
             android:label="@string/title_activity_courts" />
     </application>
 

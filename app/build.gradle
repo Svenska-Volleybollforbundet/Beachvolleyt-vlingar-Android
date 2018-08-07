@@ -5,8 +5,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 36
-        versionName '1.35'
+        versionCode 37
+        versionName '1.36'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -34,6 +34,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-database:16.0.1'
+    implementation 'com.opencsv:opencsv:4.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
