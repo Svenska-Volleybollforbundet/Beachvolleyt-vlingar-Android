@@ -12,6 +12,9 @@ public class Court {
 
     private String link;
 
+    public Court() {
+    }
+
     public Court(double lat, double lng, String title, String description, String link) {
         this.lat = lat;
         this.lng = lng;

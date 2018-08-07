@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "91719521880",
+    "firebase_url": "https://beachvolleydb.firebaseio.com",
+    "project_id": "beachvolleydb",
+    "storage_bucket": "beachvolleydb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91719521880:android:0a7cac2e0e9c8804",
+        "android_client_info": {
+          "package_name": "com.ngusta.cupassist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91719521880-jov1cobo7tu91ie5cdqini2t79cq4fvt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ngusta.cupassist",
+            "certificate_hash": "4381b7154f946dd65a2af344a0ae43a89c2f965f"
+          }
+        },
+        {
+          "client_id": "91719521880-ekqsifsncgspc7onloeojbqv1uirp8br.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGkpXWx8BI-A_gC93rE2iy2uUX13i0UBM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91719521880-ekqsifsncgspc7onloeojbqv1uirp8br.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

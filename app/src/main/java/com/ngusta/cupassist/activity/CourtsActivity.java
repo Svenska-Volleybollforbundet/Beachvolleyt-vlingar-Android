@@ -28,6 +28,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 
+import java.util.List;
+
 public class CourtsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener, GoogleMap.OnInfoWindowClickListener {
 
     public static final int PERMISSION_REQUEST_CODE = 1;
@@ -71,7 +73,7 @@ public class CourtsActivity extends FragmentActivity implements OnMapReadyCallba
         map.setInfoWindowAdapter(new CourtMarkerAdapter(getLayoutInflater()));
         map.setOnInfoWindowClickListener(this);
         initCamera();
-        addMarkersForCourts();
+        courtService.loadCourts(this);
     }
 
     private void initCamera() {
@@ -89,8 +91,9 @@ public class CourtsActivity extends FragmentActivity implements OnMapReadyCallba
         }
     }
 
-    private void addMarkersForCourts() {
-        for (Court court : courtService.getCourts()) {
+    public void addMarkersForCourts(List<Court> courts) {
+        map.clear();
+        for (Court court : courts) {
             LatLng position = new LatLng(court.getLat(), court.getLng());
             Marker marker = map.addMarker(new MarkerOptions().position(position));
             marker.setTag(court);
