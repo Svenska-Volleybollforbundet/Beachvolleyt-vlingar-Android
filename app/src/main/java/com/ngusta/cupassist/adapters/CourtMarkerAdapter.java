@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import static com.ngusta.cupassist.domain.CourtWithKeyTag.getTag;
+
 public class CourtMarkerAdapter implements GoogleMap.InfoWindowAdapter {
 
     private View popup;
@@ -32,10 +34,7 @@ public class CourtMarkerAdapter implements GoogleMap.InfoWindowAdapter {
         if (popup == null) {
             popup = layoutInflater.inflate(R.layout.court_marker_popup, null);
         }
-        CourtWithKeyTag tag = (CourtWithKeyTag) marker.getTag();
-        if (tag == null) {
-            return null;
-        }
+        CourtWithKeyTag tag = getTag(marker);
         Court court = tag.court;
         setTextForId(R.id.title, court.getTitle() + " - " + court.getNumCourts() + (court.getNumCourts() == 1 ? " bana" : " banor"));
         setTextForId(R.id.snippet, court.getDescription());
@@ -50,6 +49,7 @@ public class CourtMarkerAdapter implements GoogleMap.InfoWindowAdapter {
         iv.setImageResource(court.getHasAntennas() ? R.drawable.antenna_green : R.drawable.antenna_red);
 
         if (court.hasLink()) {
+            popup.findViewById(R.id.link).setVisibility(View.VISIBLE);
             setTextForId(R.id.link, court.getLink());
         } else {
             popup.findViewById(R.id.link).setVisibility(View.GONE);

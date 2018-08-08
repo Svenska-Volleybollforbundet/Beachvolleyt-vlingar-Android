@@ -7,9 +7,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import com.ngusta.cupassist.activity.CourtActivity;
 import com.ngusta.cupassist.domain.Court;
-import com.ngusta.cupassist.domain.CourtWithKeyTag;
+import com.ngusta.cupassist.domain.OnMarkerChangeListener;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,28 +20,23 @@ public class CourtService {
 
     private DatabaseReference courtsRef;
 
-    private Map<String, Court> courts;
-
     private boolean courtsInitiated = false;
-
-    private CourtActivity courtActivity;
 
     public CourtService() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         courtsRef = database.getReference("courts");
-        this.courts = new HashMap<>();
     }
 
-    public void loadCourts(final CourtActivity courtActivity) {
-        this.courtActivity = courtActivity;
+    public void loadCourts(final OnMarkerChangeListener courtActivity) {
         courtsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String, Court> courts = new HashMap<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Court court = snapshot.getValue(Court.class);
                     courts.put(snapshot.getKey(), court);
                 }
-                courtActivity.addMarkersForCourts(courts);
+                courtActivity.addMarkers(courts);
                 courtsInitiated = true;
             }
 
@@ -59,8 +53,7 @@ public class CourtService {
                 }
                 String key = dataSnapshot.getKey();
                 Court court = dataSnapshot.getValue(Court.class);
-                courts.put(key, court);
-                courtActivity.addMarkerForCourt(new CourtWithKeyTag(key, court));
+                courtActivity.addMarker(key, court);
             }
 
             @Override
@@ -72,7 +65,6 @@ public class CourtService {
                 if (changedCourt == null) {
                     return;
                 }
-                courts.put(dataSnapshot.getKey(), changedCourt);
                 courtActivity.updateMarker(dataSnapshot.getKey(), changedCourt);
             }
 
@@ -81,7 +73,6 @@ public class CourtService {
                 if (!courtsInitiated) {
                     return;
                 }
-                courts.remove(dataSnapshot.getKey());
                 courtActivity.removeMarker(dataSnapshot.getKey());
             }
 
@@ -106,9 +97,11 @@ public class CourtService {
         courtsRef.push().setValue(newCourt);
     }
 
-    public void updatePosition(String key, Court court, double lat, double lng) {
-        court.setLat(lat);
-        court.setLng(lng);
-        courtsRef.child(key).setValue(court);
+    public void updateCourt(String key, Court updatedCourt) {
+        courtsRef.child(key).setValue(updatedCourt);
+    }
+
+    public void removeCourt(String key) {
+        courtsRef.child(key).removeValue();
     }
 }

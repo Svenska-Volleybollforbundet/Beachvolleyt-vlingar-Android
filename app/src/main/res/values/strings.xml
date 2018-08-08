@@ -36,6 +36,19 @@
     <string name="enable_edit_markers">Redigera</string>
     <string name="disable_edit_markers">Sluta redigera</string>
     <string name="ok">Ok</string>
-    <string name="edit_help"><b>Observera att alla ändringar du gör sparas direkt för alla användare.</b>\n\nRedigera infon om eller ta bort en bana genom att långklicka på inforutan.\nFlytta en bana genom att hålla ned en markör och dra den till en ny plats.\nLägg till en ny bana genom att långklicka på karten, redigera sedan infon.</string>
+    <string name="edit_help"><b>Observera att alla ändringar du gör sparas direkt, för alla användare.</b>\n\nRedigera infon om eller ta bort en bana genom att långklicka på inforutan.\nFlytta en bana genom att hålla ned en markör och dra den till en ny plats.\nLägg till en ny bana genom att långklicka på kartan, redigera sedan infon.</string>
+    <string name="edit_help_title">Redigera banor</string>
+    <string name="edit_marker_info_title">Redigera bana</string>
+    <string name="save">Spara</string>
+    <string name="cancel">Avbryt</string>
+    <string name="move">Flytta</string>
+    <string name="confirm_move_title">Flytta bana</string>
+    <string name="confirm_move_message">Är du säker på att vill flytta banan hit?</string>
+    <string name="description_hint">Kort beskrivning av banan</string>
+    <string name="link_hint">Länk till t.ex. fb-grupp eller förening</string>
+    <string name="link_validation_message">Länken måste börja med http:// eller https://.</string>
+    <string name="delete_court">Ta bort bana</string>
+    <string name="confirm_delete_title">Ta bort bana</string>
+    <string name="confirm_delete_message">Är du säker på att du vill ta bort banan och all info om den?</string>
 
 </resources>

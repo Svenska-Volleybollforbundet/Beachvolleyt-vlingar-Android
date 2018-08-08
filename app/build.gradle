@@ -5,8 +5,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 38
-        versionName '1.37'
+        versionCode 39
+        versionName '1.38'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -21,6 +21,9 @@ android {
     }
     productFlavors {
     }
+    /*lintOptions {
+        checkReleaseBuilds false
+    }*/
 }
 
 dependencies {
