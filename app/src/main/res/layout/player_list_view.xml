@@ -40,6 +40,7 @@
             android:id="@+id/player_name_filter"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:hint="@string/search_player"
             android:inputType="text" />
 
     </android.support.design.widget.AppBarLayout>

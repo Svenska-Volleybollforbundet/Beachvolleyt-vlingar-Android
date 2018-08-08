@@ -15,7 +15,7 @@
     <string name="register_result">Resultatregistrering</string>
     <string name="sign_up">Anmälan</string>
     <string name="competition_regulations">Tävlingsbestämmelser</string>
-    <string name="show_players">Visa spelare</string>
+    <string name="show_players">Spelare</string>
     <string name="competition_calendar">Säsongskalendern</string>
     <string name="see_ranking_points">Se rankingpoäng</string>
     <string name="title_activity_ranking_table">RankingTableActivity</string>
@@ -29,8 +29,8 @@
     <string name="no_mixed_results">Inga mixedresultat hittades.</string>
     <string name="no_results">Inga resultat hittades.</string>
     <string name="player_future_entry">Framtidskollen</string>
-    <string name="title_activity_courts">Courts</string>
-    <string name="courts">Banor i Sverige</string>
+    <string name="title_activity_courts">Banor</string>
+    <string name="courts">Banor</string>
     <string name="satellite">Satellit</string>
     <string name="normal_map">Karta</string>
     <string name="enable_edit_markers">Redigera</string>
@@ -50,5 +50,17 @@
     <string name="delete_court">Ta bort bana</string>
     <string name="confirm_delete_title">Ta bort bana</string>
     <string name="confirm_delete_message">Är du säker på att du vill ta bort banan och all info om den?</string>
+    <string name="court_title_hint">Namn på banan</string>
+    <string name="court_number_hint">Antal banor</string>
+    <string name="court_title_label">Namn: </string>
+    <string name="link_label">Länk: </string>
+    <string name="description_label">Besk.: </string>
+    <string name="court_number_label">Antal:</string>
+    <string name="num_courts_validation_message">Antal banor måste vara mellan 1 och 99.</string>
+    <string name="confirm_create_court_title">Skapa bana</string>
+    <string name="confirm_create_message">Vill du skapa en bana här?</string>
+    <string name="create_court">Skapa bana</string>
+    <string name="search_player">Sök spelare</string>
+    <string name="menu_courts_unlocked">Ny meny \"Banor\" tillagd</string>
 
 </resources>

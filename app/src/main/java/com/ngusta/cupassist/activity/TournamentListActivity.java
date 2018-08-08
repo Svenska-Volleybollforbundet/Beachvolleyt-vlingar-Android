@@ -176,7 +176,7 @@ public class TournamentListActivity extends ListActivity {
             if (++clicksOnCurrentCP >= 7 && menu.findItem(R.id.menu_item_courts) == null) {
                 menu.add(Menu.NONE, R.id.menu_item_courts, Menu.NONE, R.string.courts)
                         .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-                Toast.makeText(this, "Se banor upplåst!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.menu_courts_unlocked, Toast.LENGTH_SHORT).show();
             }
         } else {
             clicksOnCurrentCP = 0;

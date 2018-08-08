@@ -40,7 +40,7 @@ import java.util.Map;
 import static com.ngusta.cupassist.domain.CourtWithKeyTag.getTag;
 
 public class CourtActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener, GoogleMap.OnInfoWindowClickListener,
-        GoogleMap.OnInfoWindowLongClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerDragListener, OnMarkerChangeListener {
+        GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerDragListener, OnMarkerChangeListener, GoogleMap.OnMarkerClickListener {
 
     public static final int PERMISSION_REQUEST_CODE = 1;
 
@@ -54,6 +54,7 @@ public class CourtActivity extends FragmentActivity implements OnMapReadyCallbac
 
     private boolean editEnabled = false;
 
+    private Marker lastSelectedMarker;
 
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, CourtActivity.class);
@@ -109,6 +110,9 @@ public class CourtActivity extends FragmentActivity implements OnMapReadyCallbac
                 } else {
                     item.setTitle(R.string.enable_edit_markers);
                 }
+                if (lastSelectedMarker != null && lastSelectedMarker.isInfoWindowShown()) {
+                    lastSelectedMarker.showInfoWindow();
+                }
                 return true;
             case R.id.menu_item_normal_map:
                 map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -134,11 +138,11 @@ public class CourtActivity extends FragmentActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        map.setInfoWindowAdapter(new CourtMarkerAdapter(getLayoutInflater()));
+        map.setInfoWindowAdapter(new CourtMarkerAdapter(getLayoutInflater(), this));
         map.setOnInfoWindowClickListener(this);
-        map.setOnInfoWindowLongClickListener(this);
         map.setOnMapLongClickListener(this);
         map.setOnMarkerDragListener(this);
+        map.setOnMarkerClickListener(this);
         initCamera();
         markers = new HashMap<>();
         courtService.loadCourts(this);
@@ -159,21 +163,27 @@ public class CourtActivity extends FragmentActivity implements OnMapReadyCallbac
         }
     }
 
+    public boolean isEditEnabled() {
+        return editEnabled;
+    }
+
     @Override
     public void addMarkers(Map<String, Court> courts) {
         map.clear();
+        markers.clear();
         for (Map.Entry<String, Court> entry : courts.entrySet()) {
-            addMarker(entry.getKey(), entry.getValue());
             addMarker(entry.getKey(), entry.getValue());
         }
     }
 
     @Override
     public void addMarker(String key, Court court) {
-        LatLng position = new LatLng(court.getLat(), court.getLng());
-        Marker marker = map.addMarker(new MarkerOptions().position(position).draggable(true));
-        marker.setTag(new CourtWithKeyTag(key, court));
-        markers.put(key, marker);
+        if (!markers.containsKey(key)) {
+            LatLng position = new LatLng(court.getLat(), court.getLng());
+            Marker marker = map.addMarker(new MarkerOptions().position(position).draggable(true));
+            marker.setTag(new CourtWithKeyTag(key, court));
+            markers.put(key, marker);
+        }
     }
 
     @Override
@@ -204,26 +214,22 @@ public class CourtActivity extends FragmentActivity implements OnMapReadyCallbac
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        CourtWithKeyTag tag = getTag(marker);
-        if (tag.court.hasLink()) {
-            Uri uri = Uri.parse(tag.court.getLink());
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(browserIntent);
+        if (editEnabled) {
+            CourtDialogs.showEditCourtInfoDialog(this, courtService, marker);
+        } else {
+            CourtWithKeyTag tag = getTag(marker);
+            if (tag.court.hasValidLink()) {
+                Uri uri = Uri.parse(tag.court.getLink());
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(browserIntent);
+            }
         }
-    }
-
-    @Override
-    public void onInfoWindowLongClick(Marker marker) {
-        if (!editEnabled) {
-            return;
-        }
-        CourtDialogs.showEditCourtInfoDialog(this, courtService, marker);
     }
 
     @Override
     public void onMapLongClick(LatLng latLng) {
         if (editEnabled) {
-            courtService.addCourt(latLng.latitude, latLng.longitude);
+            CourtDialogs.showConfirmCreateMarkerDialog(this, courtService, latLng.latitude, latLng.longitude);
         }
     }
 
@@ -265,5 +271,11 @@ public class CourtActivity extends FragmentActivity implements OnMapReadyCallbac
         } else {
             CourtDialogs.showConfirmMoveMarkerDialog(this, courtService, tag, marker);
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        lastSelectedMarker = marker;
+        return false;
     }
 }

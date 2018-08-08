@@ -4,6 +4,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
 import com.ngusta.cupassist.R;
+import com.ngusta.cupassist.activity.CourtActivity;
 import com.ngusta.cupassist.domain.Court;
 import com.ngusta.cupassist.domain.CourtWithKeyTag;
 
@@ -16,12 +17,15 @@ import static com.ngusta.cupassist.domain.CourtWithKeyTag.getTag;
 
 public class CourtMarkerAdapter implements GoogleMap.InfoWindowAdapter {
 
+    private final CourtActivity courtActivity;
+
     private View popup;
 
     private final LayoutInflater layoutInflater;
 
-    public CourtMarkerAdapter(LayoutInflater layoutInflater) {
+    public CourtMarkerAdapter(LayoutInflater layoutInflater, CourtActivity courtActivity) {
         this.layoutInflater = layoutInflater;
+        this.courtActivity = courtActivity;
     }
 
     @Override
@@ -53,6 +57,17 @@ public class CourtMarkerAdapter implements GoogleMap.InfoWindowAdapter {
             setTextForId(R.id.link, court.getLink());
         } else {
             popup.findViewById(R.id.link).setVisibility(View.GONE);
+        }
+
+        ImageView actionIndicatorImg = popup.findViewById(R.id.popup_click_indicator);
+        if (courtActivity.isEditEnabled()) {
+            actionIndicatorImg.setVisibility(View.VISIBLE);
+            actionIndicatorImg.setImageResource(android.R.drawable.ic_menu_edit);
+        } else if (court.hasValidLink()) {
+            actionIndicatorImg.setVisibility(View.VISIBLE);
+            actionIndicatorImg.setImageResource(R.drawable.external_link_enabled);
+        } else {
+            actionIndicatorImg.setVisibility(View.INVISIBLE);
         }
         return popup;
     }

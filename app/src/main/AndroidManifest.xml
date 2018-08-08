@@ -59,6 +59,7 @@
 
         <activity
             android:name=".activity.CourtActivity"
+            android:parentActivityName=".activity.TournamentListActivity"
             android:label="@string/title_activity_courts" />
     </application>
 

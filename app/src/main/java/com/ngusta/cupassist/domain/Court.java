@@ -62,7 +62,11 @@ public class Court {
     }
 
     public boolean hasLink() {
-        return link != null;
+        return link != null && !link.isEmpty();
+    }
+
+    public boolean hasValidLink() {
+        return link != null && (link.startsWith("http://") || link.startsWith("https://"));
     }
 
     public int getNumCourts() {
