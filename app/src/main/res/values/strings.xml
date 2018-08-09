@@ -36,7 +36,7 @@
     <string name="enable_edit_markers">Redigera</string>
     <string name="disable_edit_markers">Sluta redigera</string>
     <string name="ok">Ok</string>
-    <string name="edit_help"><b>Observera att alla ändringar du gör sparas direkt, för alla användare.</b>\n\nRedigera infon om eller ta bort en bana genom att långklicka på inforutan.\nFlytta en bana genom att hålla ned en markör och dra den till en ny plats.\nLägg till en ny bana genom att långklicka på kartan, redigera sedan infon.</string>
+    <string name="edit_help"><b>Observera att alla ändringar du gör sparas direkt, för alla användare.</b>\n\nRedigera infon om eller ta bort en bana genom att klicka på inforutan.\nFlytta en bana genom att hålla ned en markör och dra den till en ny plats.\nLägg till en ny bana genom att långklicka på kartan, redigera sedan infon.</string>
     <string name="edit_help_title">Redigera banor</string>
     <string name="edit_marker_info_title">Redigera bana</string>
     <string name="save">Spara</string>
@@ -62,5 +62,8 @@
     <string name="create_court">Skapa bana</string>
     <string name="search_player">Sök spelare</string>
     <string name="menu_courts_unlocked">Ny meny \"Banor\" tillagd</string>
+    <string name="courts_feature_description">Här kan du hitta banor i närheten tillsammans med info om bokning, spel, status etc för dem.\n\nKartan och info om banorna kan ändras av alla och du får mer än gärna uppdatera de banor du känner till med relevant och korrekt info.\nTryck på menynknappen och välj sedan \"Redigera\" för att göra detta.</string>
+    <string name="do_not_show_again">Visa inte igen</string>
+    <string name="courts_feature_title">Beachvolleybanor i Sverige</string>
 
 </resources>

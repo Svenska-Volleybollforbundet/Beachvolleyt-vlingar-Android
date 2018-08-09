@@ -105,7 +105,7 @@ public class CourtActivity extends FragmentActivity implements OnMapReadyCallbac
             case R.id.menu_item_edit_markers:
                 editEnabled = !editEnabled;
                 if (editEnabled) {
-                    CourtDialogs.showEditInfoDialog(this);
+                    CourtDialogs.showEditInfoDialog(this, getPreferences(MODE_PRIVATE));
                     item.setTitle(R.string.disable_edit_markers);
                 } else {
                     item.setTitle(R.string.enable_edit_markers);
@@ -143,6 +143,7 @@ public class CourtActivity extends FragmentActivity implements OnMapReadyCallbac
         map.setOnMapLongClickListener(this);
         map.setOnMarkerDragListener(this);
         map.setOnMarkerClickListener(this);
+        CourtDialogs.showWelcomeDialog(this, getPreferences(MODE_PRIVATE));
         initCamera();
         markers = new HashMap<>();
         courtService.loadCourts(this);
@@ -206,7 +207,7 @@ public class CourtActivity extends FragmentActivity implements OnMapReadyCallbac
             case PERMISSION_REQUEST_CODE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    onMapReady(map);
+                    initCamera();
                 }
             }
         }

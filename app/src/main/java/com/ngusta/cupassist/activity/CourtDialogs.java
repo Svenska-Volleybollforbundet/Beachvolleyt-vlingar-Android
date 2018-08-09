@@ -10,6 +10,7 @@ import com.ngusta.cupassist.service.CourtService;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.util.TypedValue;
@@ -25,10 +26,26 @@ import static com.ngusta.cupassist.domain.CourtWithKeyTag.getTag;
 
 public class CourtDialogs {
 
-    public static void showEditInfoDialog(Context context) {
+    private static final String PREFERENCES_SEEN_WELCOME_MESSAGE = "SEEN_WELCOME_MESSAGE";
+
+    private static final String PREFERENCES_SEEN_EDIT_INFO_MESSAGE = "SEEN_EDIT_INFO_MESSAGE";
+
+    public static void showEditInfoDialog(Context context, final SharedPreferences preferences) {
+        boolean seenEditInfo = preferences.getBoolean(PREFERENCES_SEEN_EDIT_INFO_MESSAGE, false);
+        if (seenEditInfo) {
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.edit_help_title)
                 .setMessage(R.string.edit_help)
+                .setNeutralButton(R.string.do_not_show_again, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putBoolean(PREFERENCES_SEEN_EDIT_INFO_MESSAGE, true);
+                        editor.apply();
+                    }
+                })
                 .setPositiveButton(R.string.ok, null)
                 .create()
                 .show();
@@ -181,6 +198,27 @@ public class CourtDialogs {
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)
+                .create()
+                .show();
+    }
+
+    public static void showWelcomeDialog(Context context, final SharedPreferences preferences) {
+        boolean seenWelcomeMessage = preferences.getBoolean(PREFERENCES_SEEN_WELCOME_MESSAGE, false);
+        if (seenWelcomeMessage) {
+            return;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.courts_feature_title)
+                .setMessage(R.string.courts_feature_description)
+                .setNeutralButton(R.string.do_not_show_again, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putBoolean(PREFERENCES_SEEN_WELCOME_MESSAGE, true);
+                        editor.apply();
+                    }
+                })
+                .setPositiveButton(R.string.ok, null)
                 .create()
                 .show();
     }
