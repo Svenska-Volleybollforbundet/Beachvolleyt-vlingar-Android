@@ -22,7 +22,7 @@ android {
     productFlavors {
     }
     lintOptions {
-        checkReleaseBuilds false
+        checkReleaseBuilds true
     }
 }
 
@@ -37,7 +37,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-database:16.0.1'
-    implementation 'com.opencsv:opencsv:4.2'
+    //implementation 'com.opencsv:opencsv:4.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

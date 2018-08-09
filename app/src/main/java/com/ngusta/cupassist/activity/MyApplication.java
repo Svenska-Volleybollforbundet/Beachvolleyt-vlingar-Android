@@ -1,25 +1,17 @@
 package com.ngusta.cupassist.activity;
 
-import com.google.gson.Gson;
-
 import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.CompetitionPeriod;
-import com.ngusta.cupassist.domain.Court;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.io.PlayerListDownloader;
 import com.ngusta.cupassist.service.CourtService;
 import com.ngusta.cupassist.service.PlayerService;
 import com.ngusta.cupassist.service.TournamentService;
-import com.opencsv.CSVReader;
 
 import android.app.Application;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -106,7 +98,7 @@ public class MyApplication extends Application {
 
     private static void readCourts() {
 
-        try {
+       /* try {
             InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream("courtsData.csv"), StandardCharsets.ISO_8859_1);
             List<String[]> csvCourts = new CSVReader(inputStreamReader, ';').readAll();
             boolean first = true;
@@ -130,7 +122,7 @@ public class MyApplication extends Application {
             System.out.println(new Gson().toJson(courts));
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     private static void printPlayersWithSmEntry(Map<String, Player> players, PlayerListDownloader playerListDownloader) {
