@@ -59,8 +59,6 @@ public class TournamentListActivity extends AppCompatActivity implements Adapter
 
     private Menu menu;
 
-    private int clicksOnCurrentCP = 0;
-
     private CommonActivityHelper commonActivityHelper;
 
     public static void startActivity(Context context) {
@@ -148,7 +146,6 @@ public class TournamentListActivity extends AppCompatActivity implements Adapter
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-        addCourtsMenuItem(item);
         switch (item.getItemId()) {
             case R.id.menu_item_today:
                 selectCurrentCompetitionPeriod();
@@ -165,18 +162,6 @@ public class TournamentListActivity extends AppCompatActivity implements Adapter
 
         }
         return false;
-    }
-
-    private void addCourtsMenuItem(MenuItem item) {
-        if (item.getItemId() == R.id.menu_item_today) {
-            if (++clicksOnCurrentCP >= 7 && menu.findItem(R.id.menu_item_courts) == null) {
-                menu.add(Menu.NONE, R.id.menu_item_courts, Menu.NONE, R.string.courts)
-                        .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-                Toast.makeText(this, R.string.menu_courts_unlocked, Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            clicksOnCurrentCP = 0;
-        }
     }
 
     private void setListShown(boolean shown, boolean animate) {
