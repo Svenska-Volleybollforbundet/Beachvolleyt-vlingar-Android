@@ -3,12 +3,6 @@
     package="com.ngusta.cupassist">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality. 
-    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -17,14 +11,13 @@
         android:allowBackup="true"
         android:icon="@drawable/beachvolleyicon"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Holo.Light">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
             android:name=".activity.TournamentListActivity"
             android:label="@string/app_name"
             android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -33,34 +26,23 @@
             android:parentActivityName=".activity.TournamentListActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".activity.PlayerListActivity"
-            android:parentActivityName=".activity.TournamentListActivity"
-            android:screenOrientation="nosensor"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
             android:name=".activity.RankingTableActivity"
+            android:parentActivityName=".activity.TournamentActivity"
             android:label="@string/title_activity_ranking_table" />
+        <activity
+            android:name=".activity.PlayerListActivity"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".activity.PlayerActivity"
             android:parentActivityName=".activity.PlayerListActivity"
-            android:screenOrientation="nosensor"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
-        -->
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".activity.CourtActivity"
+            android:label="@string/title_activity_courts" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <activity
-            android:name=".activity.CourtActivity"
-            android:parentActivityName=".activity.TournamentListActivity"
-            android:label="@string/title_activity_courts" />
     </application>
 
 </manifest>

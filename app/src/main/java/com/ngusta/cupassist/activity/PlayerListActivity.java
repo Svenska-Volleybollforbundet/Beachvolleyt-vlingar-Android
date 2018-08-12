@@ -11,10 +11,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -45,6 +45,8 @@ public class PlayerListActivity extends AppCompatActivity {
 
     private PlayerService playerService;
 
+    private CommonActivityHelper commonActivityHelper;
+
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, PlayerListActivity.class);
         context.startActivity(intent);
@@ -53,13 +55,13 @@ public class PlayerListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.player_list_view);
+        setContentView(R.layout.activity_player_list);
+
+        commonActivityHelper = new CommonActivityHelper(this);
+        commonActivityHelper.initToolbarAndNavigation();
+
         playerService = ((MyApplication) getApplicationContext()).getPlayerService();
         new RequestPlayersTask().execute();
-
-        Toolbar toolbar = findViewById(R.id.app_toolbar);
-        setSupportActionBar(toolbar);
-
         mProgressContainer = findViewById(R.id.progressContainer);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         setListShown(false, true);
@@ -100,6 +102,12 @@ public class PlayerListActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        commonActivityHelper.syncDrawerToggleState();
     }
 
     private class RequestPlayersTask extends AsyncTask<Void, String, Map<String, Player>> {

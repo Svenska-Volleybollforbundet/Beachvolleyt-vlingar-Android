@@ -27,8 +27,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewConfiguration;
@@ -39,7 +40,7 @@ import java.util.Map;
 
 import static com.ngusta.cupassist.domain.CourtWithKeyTag.getTag;
 
-public class CourtActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener, GoogleMap.OnInfoWindowClickListener,
+public class CourtActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, GoogleMap.OnInfoWindowClickListener,
         GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerDragListener, OnMarkerChangeListener, GoogleMap.OnMarkerClickListener {
 
     public static final int PERMISSION_REQUEST_CODE = 1;
@@ -56,6 +57,8 @@ public class CourtActivity extends FragmentActivity implements OnMapReadyCallbac
 
     private Marker lastSelectedMarker;
 
+    private CommonActivityHelper commonActivityHelper;
+
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, CourtActivity.class);
         context.startActivity(intent);
@@ -65,6 +68,10 @@ public class CourtActivity extends FragmentActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courts);
+
+        commonActivityHelper = new CommonActivityHelper(this);
+        commonActivityHelper.initToolbarAndNavigation();
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -72,6 +79,12 @@ public class CourtActivity extends FragmentActivity implements OnMapReadyCallbac
         courtService = ((MyApplication) getApplication()).getCourtService();
 
         makeActionOverflowMenuShown();
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        commonActivityHelper.syncDrawerToggleState();
     }
 
     private void makeActionOverflowMenuShown() {

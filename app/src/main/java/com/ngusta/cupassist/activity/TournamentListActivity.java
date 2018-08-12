@@ -1,27 +1,28 @@
 package com.ngusta.cupassist.activity;
 
+import com.hb.views.PinnedSectionListView;
 import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.adapters.TournamentListAdapter;
 import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.CompetitionPeriod;
 import com.ngusta.cupassist.domain.Region;
 import com.ngusta.cupassist.domain.Tournament;
-import com.ngusta.cupassist.io.TournamentListCache;
 
 import android.app.AlertDialog;
-import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.Toast;
 
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TournamentListActivity extends ListActivity {
+public class TournamentListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private View mProgressContainer;
 
@@ -54,9 +55,18 @@ public class TournamentListActivity extends ListActivity {
 
     private boolean mShowOldTournaments;
 
+    private PinnedSectionListView mListView;
+
     private Menu menu;
 
     private int clicksOnCurrentCP = 0;
+
+    private CommonActivityHelper commonActivityHelper;
+
+    public static void startActivity(Context context) {
+        Intent intent = new Intent(context, TournamentListActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +74,15 @@ public class TournamentListActivity extends ListActivity {
         new RequestTournamentsTask().execute();
         setContentView(R.layout.activity_tournament_list);
 
+        commonActivityHelper = new CommonActivityHelper(this);
+        commonActivityHelper.initToolbarAndNavigation();
+
         mProgressContainer = findViewById(R.id.progressContainer);
         mListContainer = findViewById(R.id.listContainer);
         setListShown(false, false);
+
+        mListView = findViewById(android.R.id.list);
+        mListView.setOnItemClickListener(this);
 
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         mClazzesToFilter = TournamentListDialogs.getDefaultClazzes(preferences);
@@ -78,6 +94,12 @@ public class TournamentListActivity extends ListActivity {
         mShowOldTournaments = true; //Should be false when Feedback fran Samuel: Mojlighet att dolja passerade tavlingar is done
 
         makeActionOverflowMenuShown();
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        commonActivityHelper.syncDrawerToggleState();
     }
 
     private void makeActionOverflowMenuShown() {
@@ -92,9 +114,10 @@ public class TournamentListActivity extends ListActivity {
         }
     }
 
+
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        ListAdapter adapter = l.getAdapter();
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        ListAdapter adapter = mListView.getAdapter();
         if (adapter.getItemViewType(position) != TournamentListAdapter.VIEW_TYPE_TOURNAMENT) {
             return;
         }
@@ -119,17 +142,6 @@ public class TournamentListActivity extends ListActivity {
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         menu.add(Menu.NONE, R.id.menu_item_regions, Menu.NONE, R.string.show_regions)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-        menu.add(Menu.NONE, R.id.menu_item_players, Menu.NONE, R.string.show_players)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-        menu.add(Menu.NONE, R.id.menu_item_competition_regulations, Menu.NONE, R.string.competition_regulations)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-        menu.add(Menu.NONE, R.id.menu_item_competition_calendar, Menu.NONE, R.string.competition_calendar)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-
-        //Add when Feedback fran Samuel: Mojlighet att dolja passerade tavlingar is done
-        //menu.add(Menu.NONE, R.id.menu_item_old_tournaments, Menu.NONE, R.string.show_old_tournaments)
-        //        .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-
         return true;
     }
 
@@ -150,22 +162,6 @@ public class TournamentListActivity extends ListActivity {
             case R.id.menu_item_regions:
                 mRegionDialog.show();
                 return true;
-            case R.id.menu_item_old_tournaments:
-                mShowOldTournaments = true;
-                updateList();
-                return true;
-            case R.id.menu_item_players:
-                PlayerListActivity.startActivity(this);
-                return true;
-            case R.id.menu_item_competition_regulations:
-                openBrowser(TournamentListCache.COMPETITION_REGULATIONS_URL);
-                return true;
-            case R.id.menu_item_competition_calendar:
-                openBrowser(TournamentListCache.CUP_ASSIST_TOURNAMENT_LIST_URL_WITHOUT_OLD_TOURNAMENTS);
-                return true;
-            case R.id.menu_item_courts:
-                CourtActivity.startActivity(this);
-                return true;
 
         }
         return false;
@@ -181,18 +177,6 @@ public class TournamentListActivity extends ListActivity {
         } else {
             clicksOnCurrentCP = 0;
         }
-    }
-
-    private void openBrowser(String uriString) {
-        Uri cupAssistUri = Uri.parse(uriString);
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, cupAssistUri);
-        startActivity(browserIntent);
-    }
-
-    @Override
-    public void setListAdapter(ListAdapter adapter) {
-        super.setListAdapter(adapter);
-        selectCurrentCompetitionPeriod();
     }
 
     private void setListShown(boolean shown, boolean animate) {
@@ -228,13 +212,13 @@ public class TournamentListActivity extends ListActivity {
     }
 
     private void selectCurrentCompetitionPeriod() {
-        SectionIndexer listAdapter = (SectionIndexer) getListAdapter();
+        SectionIndexer listAdapter = (SectionIndexer) mListView.getAdapter();
         if (listAdapter == null) {
             return;
         }
         CompetitionPeriod period = CompetitionPeriod.findPeriodByDate(new Date());
         int position = listAdapter.getPositionForSection(period.getPeriodNumber() - 1);
-        setSelection(position);
+        mListView.setSelection(position);
 
     }
 
@@ -257,7 +241,8 @@ public class TournamentListActivity extends ListActivity {
         if (filteredTournaments.isEmpty()) {
             Toast.makeText(this, R.string.no_matching_tournaments, Toast.LENGTH_SHORT).show();
         }
-        setListAdapter(new TournamentListAdapter(this, filteredTournaments, mShowOldTournaments));
+        mListView.setAdapter(new TournamentListAdapter(this, filteredTournaments, mShowOldTournaments));
+        selectCurrentCompetitionPeriod();
         setListShown(true, true);
     }
 

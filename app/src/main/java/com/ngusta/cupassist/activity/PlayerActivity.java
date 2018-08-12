@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.widget.TextView;
 
@@ -24,6 +23,8 @@ public class PlayerActivity extends AppCompatActivity {
 
     private Player player;
 
+    private CommonActivityHelper commonActivityHelper;
+
     public static void startActivity(Context context, Player player) {
         Intent intent = new Intent(context, PlayerActivity.class);
         intent.putExtra("player", player);
@@ -33,23 +34,37 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.player_view);
+        setContentView(R.layout.activity_player);
+
+        commonActivityHelper = new CommonActivityHelper(this);
+        commonActivityHelper.initToolbarAndNavigation();
+
         player = (Player) getIntent().getSerializableExtra(INTENT_PLAYER);
-        initToolbar();
+        setTitle();
         initInfoCard();
         initResultCard();
         initMixedResultCard();
         initFutureEntryCard();
     }
 
-    private void initToolbar() {
-        Toolbar toolbar = findViewById(R.id.app_toolbar);
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        commonActivityHelper.syncDrawerToggleState();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    private void setTitle() {
         if (player.getAge() != null) {
-            toolbar.setTitle(player.getName() + ", " + player.getAge() + " år");
+            getSupportActionBar().setTitle(player.getName() + ", " + player.getAge() + " år");
         } else {
-            toolbar.setTitle(player.getName());
+            getSupportActionBar().setTitle(player.getName());
         }
-        setSupportActionBar(toolbar);
     }
 
     private void initInfoCard() {

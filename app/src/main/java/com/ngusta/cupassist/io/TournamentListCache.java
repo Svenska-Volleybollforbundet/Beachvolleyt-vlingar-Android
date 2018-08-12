@@ -40,6 +40,9 @@ public class TournamentListCache extends Cache<Tournament> {
 
     public static final String COMPETITION_REGULATIONS_URL = "http://www.volleyboll.se/Omoss/Dokument/tavlingsbestammelserbeachvolley2018";
 
+    public static final String RULES_URL
+            = "http://www.fivb.org/EN/BeachVolleyball/Document_Refereeing/FIVB-BeachVolleyball_Rules_2017-2020-EN-v05.pdf";
+
     private TournamentList tournamentList;
 
     private static final String FILE_NAME = "tournamentList";

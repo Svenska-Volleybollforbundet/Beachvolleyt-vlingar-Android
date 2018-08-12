@@ -3,10 +3,11 @@ package com.ngusta.cupassist.activity;
 import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.domain.RankingScale;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TableLayout;
@@ -15,7 +16,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class RankingTableActivity extends Activity {
+public class RankingTableActivity extends AppCompatActivity {
 
     public static final String INTENT_PARAM_STARS = "stars";
 
@@ -29,17 +30,22 @@ public class RankingTableActivity extends Activity {
 
     public static final String INTENT_PARAM_ACTIVITY_TITLE = "title";
 
-    public static final String INTENT_PARAM_ACITVITY_TITLE_COLOR = "color";
+    public static final String INTENT_PARAM_ACTIVITY_TITLE_COLOR = "color";
+
+    private CommonActivityHelper commonActivityHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking_table);
 
+        commonActivityHelper = new CommonActivityHelper(this);
+        commonActivityHelper.initToolbarAndNavigation();
+
         Intent intent = getIntent();
 
-        getActionBar().setTitle("Rankingtabell");
-        getActionBar().setBackgroundDrawable(new ColorDrawable(intent.getIntExtra(INTENT_PARAM_ACITVITY_TITLE_COLOR, 2)));
+        getSupportActionBar().setTitle("Rankingtabell");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(intent.getIntExtra(INTENT_PARAM_ACTIVITY_TITLE_COLOR, 2)));
 
         int stars = intent.getIntExtra(INTENT_PARAM_STARS, 0);
         int numberOfTeamsClazzOne = intent.getIntExtra(INTENT_PARAM_CLAZZ_ONE_TEAMS, 0);
@@ -58,6 +64,18 @@ public class RankingTableActivity extends Activity {
             createTable(bottomTable, RankingScale.getRankingScale(stars, numberOfTeamsClazzTwo));
             ((TextView) findViewById(R.id.bottom_table_title)).setText(nameClazzTwo + " - " + numberOfTeamsClazzTwo + " lag");
         }
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        commonActivityHelper.syncDrawerToggleState();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private boolean onlyOneClazz(int numberOfTeamsClazzTwo) {

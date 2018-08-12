@@ -8,7 +8,6 @@ import com.ngusta.cupassist.domain.Team;
 import com.ngusta.cupassist.domain.Tournament;
 import com.ngusta.cupassist.io.TournamentListCache;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +15,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +34,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class TournamentActivity extends Activity {
+public class TournamentActivity extends AppCompatActivity {
 
     public static final String TOURNAMENT_INTENT = "tournamentId";
 
@@ -47,6 +48,8 @@ public class TournamentActivity extends Activity {
 
     private Menu menu;
 
+    private CommonActivityHelper commonActivityHelper;
+
     public static void startActivity(Context context, Tournament tournament) {
         Intent intent = new Intent(context, TournamentActivity.class);
         intent.putExtra(TOURNAMENT_INTENT, tournament.getId());
@@ -56,7 +59,11 @@ public class TournamentActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tournament_view);
+        setContentView(R.layout.activity_tournament);
+
+        commonActivityHelper = new CommonActivityHelper(this);
+        commonActivityHelper.initToolbarAndNavigation();
+
         tournament = ((MyApplication) getApplication()).getTournamentService().getTournamentById(getIntent().getIntExtra(TOURNAMENT_INTENT, -1));
         mProgressContainer = findViewById(R.id.progressContainer);
         mTeamList = findViewById(R.id.teamList);
@@ -64,6 +71,18 @@ public class TournamentActivity extends Activity {
         initInfo();
         makeActionOverflowMenuShown();
         new RequestTournamentDetailsTask().execute();
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        commonActivityHelper.syncDrawerToggleState();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void setListShown(boolean shown, boolean animate) {
@@ -99,8 +118,8 @@ public class TournamentActivity extends Activity {
     }
 
     private void initInfo() {
-        getActionBar().setTitle(tournament.getName());
-        getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(
+        getSupportActionBar().setTitle(tournament.getName());
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(
                 TournamentListAdapter.getLevelIndicatorResource(tournament))));
         ((TextView) findViewById(R.id.club)).setText(tournament.getClub());
         ((TextView) findViewById(R.id.start_date)).setText(tournament.getFormattedStartDate());
@@ -236,7 +255,7 @@ public class TournamentActivity extends Activity {
                 Intent intent = new Intent(this, RankingTableActivity.class);
 
                 intent.putExtra(RankingTableActivity.INTENT_PARAM_ACTIVITY_TITLE, tournament.getName());
-                intent.putExtra(RankingTableActivity.INTENT_PARAM_ACITVITY_TITLE_COLOR,
+                intent.putExtra(RankingTableActivity.INTENT_PARAM_ACTIVITY_TITLE_COLOR,
                         getResources().getColor(TournamentListAdapter.getLevelIndicatorResource(tournament)));
                 intent.putExtra(RankingTableActivity.INTENT_PARAM_STARS, tournament.getLevel().getStars());
                 int teams = Math.min(tournament.getClazzes().get(0).getMaxNumberOfTeams(),

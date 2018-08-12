@@ -65,5 +65,9 @@
     <string name="courts_feature_description">Här kan du hitta banor i närheten tillsammans med info om bokning, spel, status etc för dem.\n\nKartan och info om banorna kan ändras av alla och du får mer än gärna uppdatera de banor du känner till med relevant och korrekt info.\nTryck på menynknappen och välj sedan \"Redigera\" för att göra detta.</string>
     <string name="do_not_show_again">Visa inte igen</string>
     <string name="courts_feature_title">Beachvolleybanor i Sverige</string>
+    <string name="competitions">Tävlingar</string>
+    <string name="close">Stäng</string>
+    <string name="open">Öppna</string>
+    <string name="rules">Beachvolleyregler</string>
 
 </resources>

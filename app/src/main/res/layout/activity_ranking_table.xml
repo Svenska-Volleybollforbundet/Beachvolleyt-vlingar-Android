@@ -1,83 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
-    <TableLayout
-        android:id="@+id/top_table"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:longClickable="false"
-        android:gravity="center_horizontal"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TableRow>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/app_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="0dp"
+            app:logo="@drawable/beachvolleyicon_small"
+            app:titleMarginStart="20dp" />
 
-            <TextView
-                android:id="@+id/top_table_title"
-                android:padding="6dip"
-                android:layout_span="2"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TableLayout
+                android:id="@+id/top_table"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:longClickable="false"
                 android:gravity="center_horizontal"
-                android:textSize="40sp" />
-        </TableRow>
+                android:orientation="vertical">
 
-        <TableRow>
+                <TableRow>
 
-            <TextView
-                android:text="@string/position"
-                android:padding="6dip"
+                    <TextView
+                        android:id="@+id/top_table_title"
+                        android:padding="6dip"
+                        android:layout_span="2"
+                        android:gravity="center_horizontal"
+                        android:textSize="40sp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:text="@string/position"
+                        android:padding="6dip"
+                        android:gravity="center_horizontal"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:text="@string/points"
+                        android:padding="6dip"
+                        android:gravity="center_horizontal"
+                        android:textSize="30sp" />
+                </TableRow>
+            </TableLayout>
+
+            <TableLayout
+                android:id="@+id/bottom_table"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="40dip"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:longClickable="false"
                 android:gravity="center_horizontal"
-                android:textSize="30sp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:text="@string/points"
-                android:padding="6dip"
-                android:gravity="center_horizontal"
-                android:textSize="30sp" />
-        </TableRow>
-    </TableLayout>
+                <TableRow>
 
-    <TableLayout
-        android:id="@+id/bottom_table"
+                    <TextView
+                        android:id="@+id/bottom_table_title"
+                        android:padding="6dip"
+                        android:layout_span="2"
+                        android:gravity="center_horizontal"
+                        android:textSize="40sp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:text="@string/position"
+                        android:padding="6dip"
+                        android:gravity="center_horizontal"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:text="@string/points"
+                        android:padding="6dip"
+                        android:gravity="center_horizontal"
+                        android:textSize="30sp" />
+                </TableRow>
+
+            </TableLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="40dip"
-        android:clickable="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:longClickable="false"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/navigation_header"
+        app:menu="@menu/drawer_view" />
 
-        <TableRow>
-
-            <TextView
-                android:id="@+id/bottom_table_title"
-                android:padding="6dip"
-                android:layout_span="2"
-                android:gravity="center_horizontal"
-                android:textSize="40sp" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:text="@string/position"
-                android:padding="6dip"
-                android:gravity="center_horizontal"
-                android:textSize="30sp" />
-
-            <TextView
-                android:text="@string/points"
-                android:padding="6dip"
-                android:gravity="center_horizontal"
-                android:textSize="30sp" />
-        </TableRow>
-
-    </TableLayout>
-</LinearLayout>
+</android.support.v4.widget.DrawerLayout>

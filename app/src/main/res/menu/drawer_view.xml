@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:checkableBehavior="single"
+        android:id="@+id/nav_main_items">
+        <item
+            android:id="@+id/nav_competitions"
+            android:icon="@drawable/trophy"
+            android:title="@string/competitions" />
+        <item
+            android:id="@+id/nav_players"
+            android:icon="@drawable/person"
+            android:title="@string/players" />
+        <item
+            android:id="@+id/nav_courts"
+            android:icon="@drawable/court"
+            android:title="@string/courts" />
+    </group>
+
+    <group
+        android:checkableBehavior="none"
+        android:id="@+id/nav_other_items">
+        <item
+            android:id="@+id/nav_competition_calendar"
+            android:title="@string/competition_calendar" />
+        <item
+            android:id="@+id/nav_competition_regulations"
+            android:title="@string/competition_regulations" />
+        <item
+            android:id="@+id/nav_rules"
+            android:title="@string/rules" />
+    </group>
+</menu>
