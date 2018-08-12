@@ -125,7 +125,7 @@ public class PlayerListDownloader {
             }
             Map<String, String> data = new HashMap<>();
             data.put("spid", player.getPlayerId());
-            data.put("klasse", player.getClazz().toString());
+            data.put("klasse", player.getClazz().toString().substring(0, 1));
             data.put("rand", "0.5");
 
             PlayerDetailsParser playerDetailsParser = new PlayerDetailsParser();

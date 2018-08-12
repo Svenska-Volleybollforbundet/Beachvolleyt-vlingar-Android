@@ -107,16 +107,14 @@ public class TournamentListAdapter extends ArrayAdapter<Tournament> implements
 
     private String getDates(Tournament tournament) {
         if (tournament.spansOverSeveralDays()) {
-            return formatDate(tournament.getStartDate()) + " - " + formatDate(
-                    tournament.getEndDate());
+            return formatDate(tournament.getStartDate()) + " - " + formatDate(tournament.getEndDate());
         }
         return formatDate(tournament.getStartDate());
     }
 
     private String formatDate(Date date) {
         return DateUtils.formatDateTime(getContext(), date.getTime(),
-                DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY
-                        | DateUtils.FORMAT_SHOW_DATE
+                DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_MONTH
         );
     }
 
