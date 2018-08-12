@@ -6,102 +6,107 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <android.support.v4.widget.NestedScrollView
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_width="match_parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/app_toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:elevation="0dp"
-            app:logo="@drawable/beachvolleyicon_small"
-            app:titleMarginStart="20dp" />
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TableLayout
-                android:id="@+id/top_table"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:longClickable="false"
-                android:gravity="center_horizontal"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/app_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="0dp"
+                app:logo="@drawable/beachvolleyicon_small"
+                app:titleMarginStart="20dp" />
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
                 android:orientation="vertical">
 
-                <TableRow>
+                <TableLayout
+                    android:id="@+id/top_table"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:longClickable="false"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/top_table_title"
-                        android:padding="6dip"
-                        android:layout_span="2"
-                        android:gravity="center_horizontal"
-                        android:textSize="40sp" />
-                </TableRow>
+                    <TableRow>
 
-                <TableRow>
+                        <TextView
+                            android:id="@+id/top_table_title"
+                            android:padding="6dip"
+                            android:layout_span="2"
+                            android:gravity="center_horizontal"
+                            android:textSize="40sp" />
+                    </TableRow>
 
-                    <TextView
-                        android:text="@string/position"
-                        android:padding="6dip"
-                        android:gravity="center_horizontal"
-                        android:textSize="30sp" />
+                    <TableRow>
 
-                    <TextView
-                        android:text="@string/points"
-                        android:padding="6dip"
-                        android:gravity="center_horizontal"
-                        android:textSize="30sp" />
-                </TableRow>
-            </TableLayout>
+                        <TextView
+                            android:text="@string/position"
+                            android:padding="6dip"
+                            android:gravity="center_horizontal"
+                            android:textSize="30sp" />
 
-            <TableLayout
-                android:id="@+id/bottom_table"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="40dip"
-                android:clickable="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:longClickable="false"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                        <TextView
+                            android:text="@string/points"
+                            android:padding="6dip"
+                            android:gravity="center_horizontal"
+                            android:textSize="30sp" />
+                    </TableRow>
+                </TableLayout>
 
-                <TableRow>
+                <TableLayout
+                    android:id="@+id/bottom_table"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="40dip"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:longClickable="false"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/bottom_table_title"
-                        android:padding="6dip"
-                        android:layout_span="2"
-                        android:gravity="center_horizontal"
-                        android:textSize="40sp" />
-                </TableRow>
+                    <TableRow>
 
-                <TableRow>
+                        <TextView
+                            android:id="@+id/bottom_table_title"
+                            android:padding="6dip"
+                            android:layout_span="2"
+                            android:gravity="center_horizontal"
+                            android:textSize="40sp" />
+                    </TableRow>
 
-                    <TextView
-                        android:text="@string/position"
-                        android:padding="6dip"
-                        android:gravity="center_horizontal"
-                        android:textSize="30sp" />
+                    <TableRow>
 
-                    <TextView
-                        android:text="@string/points"
-                        android:padding="6dip"
-                        android:gravity="center_horizontal"
-                        android:textSize="30sp" />
-                </TableRow>
+                        <TextView
+                            android:text="@string/position"
+                            android:padding="6dip"
+                            android:gravity="center_horizontal"
+                            android:textSize="30sp" />
 
-            </TableLayout>
+                        <TextView
+                            android:text="@string/points"
+                            android:padding="6dip"
+                            android:gravity="center_horizontal"
+                            android:textSize="30sp" />
+                    </TableRow>
+
+                </TableLayout>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
