@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum Clazz {
-    MEN("H"), WOMEN("D"), MIXED("M"),
+    MEN("Herr"), WOMEN("Dam"), MIXED("Mixed"),
     D23("U23 D"), H23("H23 H"),
     F18("U18 F"), P18("U18 P"), M18("U18 M"),
     F16("U16 F"), P16("U16 P"), M16("U16 M"),

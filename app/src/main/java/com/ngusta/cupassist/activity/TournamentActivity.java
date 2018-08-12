@@ -176,10 +176,10 @@ public class TournamentActivity extends AppCompatActivity {
         if (tournament.getClazzes().size() <= 1) {
             return;
         }
-        Spinner clazzSpinner = (Spinner) findViewById(R.id.clazz_spinner);
+        Spinner clazzSpinner = findViewById(R.id.clazz_spinner);
         clazzSpinner.setVisibility(View.VISIBLE);
-        ArrayAdapter<Tournament.TournamentClazz> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<Tournament.TournamentClazz> adapter = new ArrayAdapter<>(this, R.layout.clazz_spinner_item);
+        adapter.setDropDownViewResource(R.layout.clazz_spinner_dropdown_item);
         adapter.addAll(tournament.getClazzes());
         clazzSpinner.setAdapter(adapter);
         clazzSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
