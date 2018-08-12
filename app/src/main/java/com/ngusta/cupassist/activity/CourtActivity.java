@@ -203,15 +203,19 @@ public class CourtActivity extends AppCompatActivity implements OnMapReadyCallba
     @Override
     public void removeMarker(String key) {
         Marker marker = markers.get(key);
-        marker.remove();
-        markers.remove(key);
+        if (marker != null) {
+            marker.remove();
+            markers.remove(key);
+        }
     }
 
     @Override
     public void updateMarker(String key, Court court) {
         Marker marker = markers.get(key);
-        marker.setPosition(new LatLng(court.getLat(), court.getLng()));
-        marker.setTag(new CourtWithKeyTag(key, court));
+        if (marker != null) {
+            marker.setPosition(new LatLng(court.getLat(), court.getLng()));
+            marker.setTag(new CourtWithKeyTag(key, court));
+        }
     }
 
     @Override
