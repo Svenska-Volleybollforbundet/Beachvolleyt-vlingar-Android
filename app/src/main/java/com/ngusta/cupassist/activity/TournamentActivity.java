@@ -168,6 +168,7 @@ public class TournamentActivity extends AppCompatActivity {
 
     private void enableMenu() {
         menu.findItem(R.id.menu_item_see_result_icon).setEnabled(true).getIcon().setAlpha(255);
+        menu.findItem(R.id.menu_item_info).setEnabled(true);
         menu.findItem(R.id.menu_item_see_result).setEnabled(true);
         menu.findItem(R.id.menu_item_sign_up).setEnabled(true);
     }
@@ -220,11 +221,15 @@ public class TournamentActivity extends AppCompatActivity {
         menuItem.getIcon().setAlpha(100);
         menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-        menuItem = menu.add(Menu.NONE, R.id.menu_item_see_result, Menu.NONE, R.string.see_result)
+        menuItem = menu.add(Menu.NONE, R.id.menu_item_info, Menu.NONE, R.string.see_info)
                 .setEnabled(false);
         menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
         menuItem = menu.add(Menu.NONE, R.id.menu_item_sign_up, Menu.NONE, R.string.sign_up)
+                .setEnabled(false);
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
+        menuItem = menu.add(Menu.NONE, R.id.menu_item_see_result, Menu.NONE, R.string.see_result)
                 .setEnabled(false);
         menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
@@ -247,6 +252,9 @@ public class TournamentActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_item_register_result:
                 openBrowser(TournamentListCache.PROFIXIO_BASE_RESULT_REPORTING_URL + tournament.getUrlName());
+                return true;
+            case R.id.menu_item_info:
+                openBrowser(TournamentListCache.CUP_ASSIST_BASE_URL + "fx/" + tournament.getUrl());
                 return true;
             case R.id.menu_item_sign_up:
                 openBrowser(TournamentListCache.CUP_ASSIST_TOURNAMENT_URL + tournament.getUrlName());

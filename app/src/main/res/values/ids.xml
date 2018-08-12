@@ -17,4 +17,5 @@
     <item name="menu_item_satellite" type="id" />
     <item name="menu_item_normal_map" type="id" />
     <item name="menu_item_edit_markers" type="id" />
+    <item name="menu_item_info" type="id" />
 </resources>

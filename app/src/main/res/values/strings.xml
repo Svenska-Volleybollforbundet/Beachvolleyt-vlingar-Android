@@ -69,5 +69,6 @@
     <string name="close">Stäng</string>
     <string name="open">Öppna</string>
     <string name="rules">Beachvolleyregler</string>
+    <string name="see_info">Info</string>
 
 </resources>
