@@ -64,6 +64,25 @@ public class CompetitionPeriod implements Serializable {
             new CompetitionPeriod(16, "TP 16", "2018-10-15", "2018-12-31")
     };
 
+    public static final CompetitionPeriod[] COMPETITION_PERIODS_NEXT_YEAR = {
+            new CompetitionPeriod(1, "TP 01", "2019-01-01", "2019-03-31"),
+            new CompetitionPeriod(2, "TP 02", "2019-04-01", "2019-05-18"),
+            new CompetitionPeriod(3, "TP 03", "2019-05-19", "2019-06-02"),
+            new CompetitionPeriod(4, "TP 04", "2019-06-03", "2019-06-09"),
+            new CompetitionPeriod(5, "TP 05", "2019-06-10", "2019-06-23"),
+            new CompetitionPeriod(6, "TP 06", "2019-06-24", "2019-06-30"),
+            new CompetitionPeriod(7, "TP 07", "2019-07-01", "2019-07-07"),
+            new CompetitionPeriod(8, "TP 08", "2019-07-08", "2019-07-14"),
+            new CompetitionPeriod(9, "TP 09", "2019-07-15", "2019-07-21"),
+            new CompetitionPeriod(10, "TP 10", "2019-07-22", "2019-07-28"),
+            new CompetitionPeriod(11, "TP 11", "2019-07-29", "2019-08-04"),
+            new CompetitionPeriod(12, "TP 12", "2019-08-05", "2019-08-11"),
+            new CompetitionPeriod(13, "TP 13", "2019-08-12", "2019-08-18"),
+            new CompetitionPeriod(14, "TP 14", "2019-08-19", "2019-09-01"),
+            new CompetitionPeriod(15, "TP 15", "2019-09-02", "2019-10-13"),
+            new CompetitionPeriod(16, "TP 16", "2019-10-14", "2019-12-31")
+    };
+
     private int periodNumber;
 
     private String name;
@@ -110,6 +129,14 @@ public class CompetitionPeriod implements Serializable {
                 }
             }
         }
+        for (CompetitionPeriod cp : COMPETITION_PERIODS_NEXT_YEAR) {
+            if (cp.getName().equalsIgnoreCase(name) ||
+                    cp.getName().replace(" 0", "").replace(" ", "").equalsIgnoreCase(name)) {
+                if (getYear(cp.getStartDate()) == year) {
+                    return cp;
+                }
+            }
+        }
         throw new IllegalArgumentException("Not a valid competition period: " + name);
     }
 
@@ -122,6 +149,16 @@ public class CompetitionPeriod implements Serializable {
         }
         throw new IllegalArgumentException(
                 "There is no competition period for the given date " + date.toString());
+    }
+
+    public static CompetitionPeriod findPeriodByNumber(int periodNumber, int year) {
+        int thisYear = getYear(new Date());
+        if (year == thisYear) {
+            return COMPETITION_PERIODS[periodNumber - 1];
+        } else if (year == thisYear + 1) {
+            return COMPETITION_PERIODS_NEXT_YEAR[periodNumber - 1];
+        }
+        throw new IllegalArgumentException("This year must be either this year or next");
     }
 
     public static CompetitionPeriod findPeriodByNumber(int periodNumber) {

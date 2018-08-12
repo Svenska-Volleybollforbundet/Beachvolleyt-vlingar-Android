@@ -78,9 +78,8 @@ public class PlayerActivity extends AppCompatActivity {
         if (player.getMixedEntryRank() > 0) {
             playerInfoText += " " + getString(R.string.player_info_mixed_part, player.getFirstName(), player.getMixedEntryPoints(),
                     player.getEntryPoints(Clazz.MIXED), clazzString, player.getMixedEntryRank());
-        } else {
-            playerInfoText += ".";
         }
+        playerInfoText += "\n";
         playerInfo.setText(Html.fromHtml(playerInfoText));
     }
 
@@ -90,7 +89,7 @@ public class PlayerActivity extends AppCompatActivity {
         if (player.getResults() == null || player.getResults().getTournamentResults().isEmpty()) {
             playerResultsText.setText(R.string.no_results);
         } else {
-            playerResultsText.setText(introText + PlayerResults.print(player.getResults().getTournamentResults()));
+            playerResultsText.setText(introText + PlayerResults.print(player.getResults().getTournamentResults()) + "\n");
         }
     }
 
@@ -100,23 +99,30 @@ public class PlayerActivity extends AppCompatActivity {
         if (player.getMixedResults() == null || player.getMixedResults().getTournamentResults().isEmpty()) {
             playerMixedResultsText.setText(R.string.no_mixed_results);
         } else {
-            playerMixedResultsText.setText(introText + PlayerResults.print(player.getMixedResults().getTournamentResults()));
+            playerMixedResultsText.setText(introText + PlayerResults.print(player.getMixedResults().getTournamentResults()) + "\n");
         }
     }
 
     private void initFutureEntryCard() {
         TextView playerFutureEntryText = findViewById(R.id.player_future_entry_text);
         CompetitionPeriod currentCP = CompetitionPeriod.findPeriodByDate(new Date());
+        int futureCPYear = currentCP.getYear();
         int futureCP = currentCP.getPeriodNumber();
 
         String clazzString = player.getClazz() == Clazz.MEN ? "Herrentry" : "Damentry";
         String text = "Spelarens entrypoäng i kommande tävlingsperioder med nuvarande resultat.\n\n     " + clazzString + " / Mixedentry\n";
-        while (futureCP <= 16) {
-            CompetitionPeriod period = CompetitionPeriod.findPeriodByNumber(futureCP++);
+
+        for (int i = 0; i < 10; i++) {
+            CompetitionPeriod period = CompetitionPeriod.findPeriodByNumber(futureCP, futureCPYear);
             int entryForPeriod = player.getResults().getEntryForPeriod(period);
             int mixedEntryForPeriod = player.getMixedResults() != null ? player.getMixedResults().getEntryForPeriod(period) : 0;
             text += period.getName() + ": " + entryForPeriod + " / " + mixedEntryForPeriod + "\n";
+            if (++futureCP == 17) {
+                futureCP = 1;
+                futureCPYear++;
+            }
         }
+        text += "\n";
         playerFutureEntryText.setText(text);
 
     }
