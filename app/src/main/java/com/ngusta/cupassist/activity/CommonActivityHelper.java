@@ -118,6 +118,9 @@ public class CommonActivityHelper implements NavigationView.OnNavigationItemSele
             case R.id.nav_rules:
                 setTextColorToBlack(item);
                 openBrowser(TournamentListCache.RULES_URL);
+            case R.id.nav_privacy_policy:
+                setTextColorToBlack(item);
+                openBrowser("https://sites.google.com/view/beachvolleytavlingarpp/home");
         }
         return true;
     }
