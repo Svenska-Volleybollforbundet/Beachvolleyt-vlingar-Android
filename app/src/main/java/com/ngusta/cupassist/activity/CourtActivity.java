@@ -79,6 +79,7 @@ public class CourtActivity extends AppCompatActivity implements OnMapReadyCallba
         courtService = ((MyApplication) getApplication()).getCourtService();
 
         makeActionOverflowMenuShown();
+        //PolyUtil.containsLocation(userLocation, polyPointsList, false);
     }
 
     @Override
