@@ -17,10 +17,10 @@ import java.util.Map;
 public class TournamentListCache extends Cache<Tournament> {
 
     private static final String CUP_ASSIST_TOURNAMENT_LIST_URL
-            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=51&vis_gamle_arr=true";
+            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=55&vis_gamle_arr=true";
 
     public static final String CUP_ASSIST_TOURNAMENT_LIST_URL_WITHOUT_OLD_TOURNAMENTS
-            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=51&vis_gamle_arr=false";
+            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=55&vis_gamle_arr=false";
 
     public static final String CUP_ASSIST_BASE_URL = "https://www.profixio.com/";
 
@@ -41,6 +41,7 @@ public class TournamentListCache extends Cache<Tournament> {
     public static final String PROFIXIO_SIGN_UP_URL = "https://www.profixio.com/pamelding/index.php";
 
     public static final String COMPETITION_REGULATIONS_URL = "http://www.volleyboll.se/Omoss/Dokument/tavlingsbestammelserbeachvolley2018";
+            //TODO Update
 
     public static final String RULES_URL
             = "http://www.fivb.org/EN/BeachVolleyball/Document_Refereeing/FIVB-BeachVolleyball_Rules_2017-2020-EN-v05.pdf";
