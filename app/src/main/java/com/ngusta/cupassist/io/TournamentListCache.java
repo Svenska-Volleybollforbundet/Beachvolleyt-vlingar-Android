@@ -40,8 +40,8 @@ public class TournamentListCache extends Cache<Tournament> {
 
     public static final String PROFIXIO_SIGN_UP_URL = "https://www.profixio.com/pamelding/index.php";
 
-    public static final String COMPETITION_REGULATIONS_URL = "http://www.volleyboll.se/Omoss/Dokument/tavlingsbestammelserbeachvolley2018";
-            //TODO Update
+    public static final String COMPETITION_REGULATIONS_URL
+            = "http://www.volleyboll.se/globalassets/svenska-volleybollforbundet-svensk-volleyboll/dokumentbank/beachvolley/tb-bv-2019/tavlingsbestammelser-beachvolley-2019.pdf";
 
     public static final String RULES_URL
             = "http://www.fivb.org/EN/BeachVolleyball/Document_Refereeing/FIVB-BeachVolleyball_Rules_2017-2020-EN-v05.pdf";
