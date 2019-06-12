@@ -114,8 +114,7 @@ public class TournamentParser {
 
     public Map<Clazz, Integer> parseMaxNumberOfTeams(String source) {
         Document document = Jsoup.parse(source);
-        Elements elements = document
-                .select("tr:has(td:contains(Klassdetaljer)) > td:nth-child(2) tr:gt(0) td:lt(2)");
+        Elements elements = document.select("tr:has(td:contains(Klassdetaljer)) > td:nth-child(2) tr:gt(0) td:lt(2)");
 
         Map<Clazz, Integer> maxNumberOfTeamsMap = new HashMap<>(2);
         Iterator<Element> iterator = elements.iterator();
@@ -139,5 +138,26 @@ public class TournamentParser {
             }
         }
         return maxNumberOfTeamsMap;
+    }
+
+    public List<String> parseMatches(String source) {
+        Document document = Jsoup.parse(source);
+        Elements elements = document.select("div.g-kamper table tr:gt(0)");
+
+        List<String> matches = new ArrayList<>();
+
+        for (Element match : elements) {
+            Element matchNumber = match.child(0);
+            //Element time = match.child(1);
+            //Element clazz = match.child(2);
+            Element teamA = match.child(3);
+            Element teamB = match.child(5);
+            Element result = match.child(6);
+            //Element court = match.child(7);
+            //Element referee = match.child(8);
+
+            matches.add(teamA.text() + " - " + teamB.text() + " " + result.text());
+        }
+        return matches;
     }
 }

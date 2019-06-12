@@ -238,6 +238,10 @@ public class TournamentActivity extends AppCompatActivity {
 
         menuItem = menu.add(Menu.NONE, R.id.menu_item_ranking_points, Menu.NONE, R.string.see_ranking_points);
         menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
+        //TODO enable
+        //menuItem = menu.add(Menu.NONE, R.id.menu_item_see_result_in_app, Menu.NONE, R.string.see_result_in_app);
+        //menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         this.menu = menu;
         return true;
     }
@@ -278,6 +282,22 @@ public class TournamentActivity extends AppCompatActivity {
                 }
                 startActivity(intent);
                 return true;
+            case R.id.menu_item_see_result_in_app:
+                try {
+                    List<String> matches = ((MyApplication) getApplication()).getTournamentService().getResult(tournament);
+                    String tot = "";
+                    for (String res : matches) {
+                        tot += res + "\n";
+                    }
+                    new AlertDialog.Builder(this)
+                            .setMessage(tot)
+                            .show();
+                    return true;
+                } catch (IOException e) {
+                    new AlertDialog.Builder(this)
+                            .setMessage("Oops")
+                            .show();
+                }
         }
         return false;
     }

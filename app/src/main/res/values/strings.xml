@@ -71,5 +71,6 @@
     <string name="rules">Beachvolleyregler</string>
     <string name="see_info">Info</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="see_result_in_app">Se resultat (beta)</string>
 
 </resources>

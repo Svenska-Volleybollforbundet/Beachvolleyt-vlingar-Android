@@ -39,4 +39,8 @@ public class TournamentService {
     public void loadTournamentDetails(Tournament tournament) throws IOException {
         tournamentListCache.getTournamentDetails(tournament, playerService.getPlayers());
     }
+
+    public List<String> getResult(Tournament tournament) throws IOException {
+        return tournamentListCache.getTournamentResult(tournament);
+    }
 }

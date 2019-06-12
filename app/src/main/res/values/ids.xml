@@ -18,4 +18,5 @@
     <item name="menu_item_normal_map" type="id" />
     <item name="menu_item_edit_markers" type="id" />
     <item name="menu_item_info" type="id" />
+    <item name="menu_item_see_result_in_app" type="id" />
 </resources>

@@ -10,6 +10,7 @@ import com.ngusta.cupassist.parser.TournamentParser;
 import android.content.Context;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -117,5 +118,13 @@ public class TournamentListCache extends Cache<Tournament> {
 
     private boolean cookieHasExpired(String source) {
         return !source.contains(STRING_ONLY_IN_REAL_TOURNAMENT_PAGE);
+    }
+
+    public List<String> getTournamentResult(Tournament tournament) throws IOException {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(tournament.getStartDate());
+        String source = sourceCodeRequester.getSourceCode(PROFIXIO_BASE_RESULT_URL + tournament.getUrlName() + "/d/dag/" +
+                calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
+        return tournamentParser.parseMatches(source);
     }
 }
