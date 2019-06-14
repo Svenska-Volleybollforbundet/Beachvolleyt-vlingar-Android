@@ -6,16 +6,20 @@ import java.util.List;
 public enum Clazz {
     MEN("Herr"), WOMEN("Dam"), MIXED("Mixed"),
     D23("U23 D"), H23("H23 H"),
+    F19("U19 F"), P19("U19 P"),
     F18("U18 F"), P18("U18 P"), M18("U18 M"),
+    F17("U17 F"), P17("U17 P"), M17("U17 M"),
     F16("U16 F"), P16("U16 P"), M16("U16 M"),
-    MiniFGronBla("Mini F GrönBlå"), MiniFRod("Mini F Röd"), MiniFSvart("Mini F Svart"),
-    MiniOGronBla("Mini Ö GrönBlå"), MiniORod("Mini Ö Röd"), MiniOSvart("Mini Ö Svart"),
+    F15("U15 F"), O15("U15 Ö"), M15("U15 M"),
+    MiniFLevel5("Mini F Level 5"), MiniFLevel4("Mini F Level 4"),
+    MiniOLevel5("Mini Ö Level 5"), MiniOLevel4("Mini Ö Level 4"),
     JuniorD("Junior D"), JuniorH("Junior H"), JuniorM("Junior M"),
     V35D("V35+ D"), V35H("V35+ H"),
     V40D("V40+ D"), V40H("V40+ H"),
     V45D("V45+ D"), V45H("V45+ H"),
     V50D("V50+ D"), V50H("V50+ H"),
     V55D("V55+ D"), V55H("V55+ H"),
+    V60D("V60+ D"), V60H("V60+ H"),
     UNKNOWN("Unknown");
 
     private final String clazzString;
@@ -52,36 +56,55 @@ public enum Clazz {
                 return D23;
             case "U23 H":
                 return H23;
+            case "U19 F":
+            case "U19 F (01-)":
+                return F19;
+            case "U19 P":
+            case "U19 P (01-)":
+                return P19;
             case "U18 F":
                 return F18;
             case "U18 P":
                 return P18;
             case "U18 M":
                 return M18;
+            case "U17 F":
+            case "U17 F (03-)":
+                return F17;
+            case "U17 P":
+            case "U17 P (03-)":
+                return P17;
+            case "U17 M":
+                return M17;
             case "U16 F":
+            case "U16 F (04-)":
                 return F16;
             case "U16 P":
+            case "U16 P (04-)":
                 return P16;
             case "U16 M":
                 return M16;
-            case "Mini F GrönBlå":
-            case "Flickor GrönBlå":
-                return MiniFGronBla;
-            case "Mini F Röd":
-            case "Flickor Röd":
-                return MiniFRod;
-            case "Mini F Svart":
-            case "Flickor Svart":
-                return MiniFSvart;
-            case "Mini Ö GrönBlå":
-            case "Mini Öppen GrönBlå":
-                return MiniOGronBla;
-            case "Mini Ö Röd":
-            case "Mini Öppen Röd":
-                return MiniORod;
-            case "Mini Ö Svart":
-            case "Mini Öppen Svart":
-                return MiniOSvart;
+            case "U15 F":
+            case "U15 F (05-)":
+                return F15;
+            case "U15 Ö":
+            case "U15 Ö (05-)":
+                return O15;
+            case "U15 M":
+            case "U15 M (05-)":
+                return M15;
+            case "Mini Ö Level 5":
+            case "Mini Ö Level 5 (06-)":
+                return MiniOLevel5;
+            case "Mini Ö Level 4":
+            case "Mini Ö Level 4 (06-)":
+                return MiniOLevel4;
+            case "Mini F Level 5":
+            case "Mini F Level 5 (06-)":
+                return MiniFLevel5;
+            case "Mini F Level 4":
+            case "Mini F Level 4 (06-)":
+                return MiniFLevel4;
             case "Junior D":
                 return JuniorD;
             case "Junior H":
@@ -108,6 +131,12 @@ public enum Clazz {
                 return V55D;
             case "V55+ H":
                 return V55H;
+            case "V60+ D":
+            case "V60+ D (-58)":
+                return V60D;
+            case "V60+ H":
+            case "V60+ H (-58)":
+                return V60H;
         }
         return guessClazz(tournamentName);
     }
@@ -123,13 +152,14 @@ public enum Clazz {
     }
 
     public static List<Clazz> getYouthClazzes() {
-        Clazz[] youthClazzes = {D23, H23, F18, P18, M18, F16, P16, M16, MiniFGronBla, MiniFRod, MiniFSvart, MiniOGronBla, MiniORod, MiniOSvart,
+        Clazz[] youthClazzes = {D23, H23, F19, P19, F18, P18, M18, F17, P17, M17, F16, P16, M16, F15, O15, M15, MiniOLevel5, MiniOLevel4, MiniFLevel5,
+                MiniFLevel4,
                 JuniorD, JuniorH, JuniorM, UNKNOWN};
         return Arrays.asList(youthClazzes);
     }
 
     public static List<Clazz> getVeteranClazzes() {
-        Clazz[] youthClazzes = {V35D, V35H, V40D, V40H, V45D, V45H, V50D, V50H, V55D, V55H, UNKNOWN};
+        Clazz[] youthClazzes = {V35D, V35H, V40D, V40H, V45D, V45H, V50D, V50H, V55D, V55H, V60D, V60H, UNKNOWN};
         return Arrays.asList(youthClazzes);
     }
 }

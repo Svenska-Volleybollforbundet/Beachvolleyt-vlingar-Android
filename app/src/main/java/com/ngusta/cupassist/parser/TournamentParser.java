@@ -24,17 +24,18 @@ public class TournamentParser {
 
     private static final String REGEXP_PATTERN_FOR_REGISTRATION_URL = "pamelding/redirect.php\\?tknavn=(.*?)\", \"_blank\"";
 
-    public List<Team> parseTeams(String source, Map<String, Player> allPlayers) {
+    public List<Team> parseTeams(String source, Map<String, Player> allPlayers, boolean isNewProfixio) {
         ArrayList<Team> teams = new ArrayList<Team>();
         Document document = Jsoup.parse(source);
-        Elements tableRows = document.select("table:first-of-type tr:gt(0)");
+        Elements tableRows = isNewProfixio ? document.select("table.lag-table tbody tr") : document.select("table:first-of-type tr:gt(0)");
+        ;
 
         if (tableRows.isEmpty()) {
             return teams;
         }
 
         for (Element tableRow : tableRows) {
-            Team team = readTeamFromTableRow(tableRow, allPlayers);
+            Team team = readTeamFromTableRow(tableRow, allPlayers, isNewProfixio);
             if (team != null) {
                 teams.add(team);
             }
@@ -43,20 +44,20 @@ public class TournamentParser {
     }
 
     private Team readTeamFromTableRow(Element tableRow,
-            Map<String, Player> allPlayers) {
-        String[] names = tableRow.child(0).text().split("[,/]");
+            Map<String, Player> allPlayers, boolean isNewProfixio) {
+        String[] names = tableRow.child(isNewProfixio ? 1 : 0).text().split("[,/]");
 
         if (names.length < 2 || names.length > 4) {
             System.err.print("Skipping incomplete Team table row: " + tableRow.text());
             return null;
         }
 
-        String club = tableRow.child(1).text();
+        String club = tableRow.child(isNewProfixio ? 0 : 1).text();
         Clazz clazz = Clazz.parse(tableRow.child(2).text());
 
         Date registrationDate = null;
         try {
-            registrationDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(tableRow.child(3).text());
+            registrationDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(tableRow.child(isNewProfixio ? 5 : 3).text());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -74,7 +75,7 @@ public class TournamentParser {
         String playerALastName = names[0].trim();
         Player playerA = findPlayer(allPlayers, playerAFirstName, playerALastName, playerAClub);
 
-        boolean paid = "OK".equals(tableRow.child(6).text());
+        boolean paid = "OK".equalsIgnoreCase(tableRow.child(isNewProfixio ? 4 : 6).text());
         if (names.length == 4) {
             String playerBFirstName = names[3].trim();
             playerBFirstName = excludeParenthesisFromName(playerBFirstName);
