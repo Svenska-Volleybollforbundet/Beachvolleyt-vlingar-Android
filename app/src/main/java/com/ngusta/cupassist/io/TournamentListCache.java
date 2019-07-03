@@ -1,5 +1,7 @@
 package com.ngusta.cupassist.io;
 
+import com.google.common.collect.HashMultimap;
+
 import com.ngusta.cupassist.activity.MyApplication;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Tournament;
@@ -13,7 +15,6 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class TournamentListCache extends Cache<Tournament> {
 
@@ -103,7 +104,7 @@ public class TournamentListCache extends Cache<Tournament> {
         return !MyApplication.CACHE_TOURNAMENTS || tournamentList == null || !tournamentList.isValid();
     }
 
-    public void getTournamentDetails(Tournament tournament, Map<String, Player> allPlayers) throws IOException {
+    public void getTournamentDetails(Tournament tournament, HashMultimap<String, Player> allPlayers) throws IOException {
         String source = sourceCodeRequester.getSourceCode(CUP_ASSIST_BASE_URL + "fx/" + tournament.getUrl());
         if (cookieHasExpired(source)) {
             sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_LIST_URL);

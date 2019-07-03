@@ -1,5 +1,7 @@
 package com.ngusta.cupassist.domain;
 
+import com.google.common.base.Objects;
+
 import java.io.Serializable;
 import java.util.Comparator;
 
@@ -45,10 +47,6 @@ public class Player implements Serializable {
 
     public String getName() {
         return firstName + " " + lastName;
-    }
-
-    public String getNameAndClub() {
-        return firstName + " " + lastName + " " + club;
     }
 
     public String getFirstName() {
@@ -174,8 +172,31 @@ public class Player implements Serializable {
         return clazz == Clazz.MIXED;
     }
 
-    public String uniqueIdentifier() {
+    public String getNameAndClub() {
         return (firstName + " " + lastName + " " + club).replaceAll("/|\\.|#|\\$|\\[|\\]", "");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Player player = (Player) o;
+        return entryPoints == player.entryPoints &&
+                Objects.equal(rankingPoints, player.rankingPoints) &&
+                mixedEntryPoints == player.mixedEntryPoints &&
+                Objects.equal(mixRankingPoints, player.mixRankingPoints) &&
+                Objects.equal(firstName, player.firstName) &&
+                Objects.equal(lastName, player.lastName) &&
+                Objects.equal(club, player.club);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(rankingPoints, entryPoints, mixedEntryPoints, mixRankingPoints, firstName, lastName, club);
     }
 
     @Override

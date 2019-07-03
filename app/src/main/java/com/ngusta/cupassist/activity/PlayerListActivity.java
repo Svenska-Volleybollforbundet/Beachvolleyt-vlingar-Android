@@ -1,5 +1,7 @@
 package com.ngusta.cupassist.activity;
 
+import com.google.common.collect.HashMultimap;
+
 import com.ngusta.cupassist.PlayerListFragment;
 import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.adapters.PagerAdapter;
@@ -23,7 +25,6 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class PlayerListActivity extends AppCompatActivity {
 
@@ -110,27 +111,26 @@ public class PlayerListActivity extends AppCompatActivity {
         commonActivityHelper.syncDrawerToggleState();
     }
 
-    private class RequestPlayersTask extends AsyncTask<Void, String, Map<String, Player>> {
+    private class RequestPlayersTask extends AsyncTask<Void, String, HashMultimap<String, Player>> {
 
         @Override
-        protected Map<String, Player> doInBackground(Void... voids) {
+        protected HashMultimap<String, Player> doInBackground(Void... voids) {
             playerService.clearPlayers();
             return playerService.getPlayers();
         }
 
         @Override
-        protected void onPostExecute(Map<String, Player> players) {
+        protected void onPostExecute(HashMultimap<String, Player> players) {
             updatePlayers(players);
             loadedPlayers = true;
         }
     }
 
-    public void updatePlayers(Map<String, Player> players) {
+    public void updatePlayers(HashMultimap<String, Player> players) {
         List<Player> women = new ArrayList<>();
         List<Player> men = new ArrayList<>();
         List<Player> mixed = new ArrayList<>();
-        for (Map.Entry<String, Player> entry : players.entrySet()) {
-            Player player = entry.getValue();
+        for (Player player : players.values()) {
             if (player.getClazz() == Clazz.MEN) {
                 men.add(player);
             }

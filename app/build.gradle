@@ -5,8 +5,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 48
-        versionName '2.6'
+        versionCode 49
+        versionName '2.7'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -38,6 +38,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.google.guava:guava:27.0.1-android'
+
     //implementation 'com.opencsv:opencsv:4.2'
     //implementation 'com.google.maps.android:android-maps-utils:0.5'
 }

@@ -1,5 +1,7 @@
 package com.ngusta.cupassist.io;
 
+import com.google.common.collect.HashMultimap;
+
 import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.CompetitionPeriod;
 import com.ngusta.cupassist.domain.Player;
@@ -45,7 +47,7 @@ public class PlayerListDownloader {
         this();
     }
 
-    public Map<String, Player> getPlayers() {
+    public HashMultimap<String, Player> getPlayers() {
         if (playerList != null) {
             return playerList.getPlayers();
         }
@@ -57,45 +59,65 @@ public class PlayerListDownloader {
             Set<Player> women = playerListParser.parsePlayerList(sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_WOMEN_URL));
             Set<Player> mix = playerListParser.parsePlayerList(sourceCodeRequester.getSourceCode(CUP_ASSIST_PLAYERS_RANKING_MIXED_URL));
 
-            Map<String, Player> players = new HashMap<>();
+            HashMultimap<String, Player> players = HashMultimap.create();
             for (Player man : men) {
-                if (!players.containsKey(man.uniqueIdentifier())) {
+                boolean found = false;
+                for (Player p : players.get(man.getNameAndClub())) {
+                    if (p.getPlayerId().equals(man.getPlayerId())) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
                     man.setClazz(Clazz.MEN);
-                    players.put(man.uniqueIdentifier(), man);
+                    players.put(man.getNameAndClub(), man);
                 }
             }
             for (Player woman : women) {
-                if (!players.containsKey(woman.uniqueIdentifier())) {
+                boolean found = false;
+                for (Player p : players.get(woman.getNameAndClub())) {
+                    if (p.getPlayerId().equals(woman.getPlayerId())) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
                     woman.setClazz(Clazz.WOMEN);
-                    players.put(woman.uniqueIdentifier(), woman);
+                    players.put(woman.getNameAndClub(), woman);
                 }
             }
 
             for (Player mixPlayer : mix) {
-                Player player = players.get(mixPlayer.uniqueIdentifier());
-                if (player != null) {
-                    player.setMixedEntryPoints(mixPlayer.getEntryPoints());
-                    player.setMixRankingPoints(mixPlayer.getRankingPoints());
+                Player foundPlayer = null;
+                for (Player p : players.get(mixPlayer.getNameAndClub())) {
+                    if (p.getPlayerId().equals(mixPlayer.getPlayerId())) {
+                        foundPlayer = p;
+                        break;
+                    }
+                }
+                if (foundPlayer != null) {
+                    foundPlayer.setMixedEntryPoints(mixPlayer.getEntryPoints());
+                    foundPlayer.setMixRankingPoints(mixPlayer.getRankingPoints());
                 } else {
                     mixPlayer.setClazz(Clazz.MIXED);
                     mixPlayer.setMixedEntryPoints(mixPlayer.getEntryPoints());
                     mixPlayer.setMixRankingPoints(mixPlayer.getRankingPoints());
                     mixPlayer.setEntryPoints(0);
                     mixPlayer.setRankingPoints(0);
-                    players.put(mixPlayer.uniqueIdentifier(), mixPlayer);
+                    players.put(mixPlayer.getNameAndClub(), mixPlayer);
                 }
             }
-            ArrayList<Player> sortedPlayers = new ArrayList<>(players.values());
-            calculateEntryRankInClazz(sortedPlayers, Clazz.MEN);
-            calculateEntryRankInClazz(sortedPlayers, Clazz.WOMEN);
-            calculateEntryRankInMixed(sortedPlayers);
+            ArrayList<Player> sortedPlayers2 = new ArrayList<>(players.values());
+            calculateEntryRankInClazz(sortedPlayers2, Clazz.MEN);
+            calculateEntryRankInClazz(sortedPlayers2, Clazz.WOMEN);
+            calculateEntryRankInMixed(sortedPlayers2);
 
             playerList.setPlayers(players);
             return playerList.getPlayers();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return Collections.emptyMap();
+        return HashMultimap.create();
     }
 
     private void calculateEntryRankInClazz(ArrayList<Player> sortedPlayers, Clazz clazz) {
