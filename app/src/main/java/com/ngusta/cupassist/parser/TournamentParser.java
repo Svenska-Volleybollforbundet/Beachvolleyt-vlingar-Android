@@ -57,7 +57,12 @@ public class TournamentParser {
 
         String club = tableRow.child(isNewProfixio ? 0 : 1).text();
         Clazz clazz = Clazz.parse(tableRow.child(2).text());
-        int teamEntry = Integer.parseInt(tableRow.child(isNewProfixio ? 3 : 5).text());
+        int teamEntry;
+        try {
+            teamEntry = Integer.parseInt(tableRow.child(isNewProfixio ? 3 : 5).text());
+        } catch (NumberFormatException nfe) {
+            teamEntry = 0;
+        }
 
         Date registrationDate = null;
         try {
