@@ -1,6 +1,7 @@
 package com.ngusta.cupassist.adapters;
 
 import com.ngusta.cupassist.R;
+import com.ngusta.cupassist.domain.Clazz;
 import com.ngusta.cupassist.domain.Tournament;
 
 import android.app.Activity;
@@ -14,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class TeamAdapter extends ArrayAdapter<Tournament.TeamGroupPosition> {
 
@@ -58,7 +61,9 @@ public class TeamAdapter extends ArrayAdapter<Tournament.TeamGroupPosition> {
         } else {
             holder.team.setBackgroundColor(Color.WHITE);
         }
-        if (position < maxNumberOfTeams) {
+        Clazz[] clazzesToDisplayGroupAndPointsFor = {Clazz.MEN, Clazz.WOMEN, Clazz.MIXED};
+        boolean displayGroupAndPoints = asList(clazzesToDisplayGroupAndPointsFor).contains(team.team.getClazz());
+        if (position < maxNumberOfTeams && displayGroupAndPoints) {
             holder.group.setText("" + team.group);
         } else {
             holder.group.setText("");
@@ -67,8 +72,13 @@ public class TeamAdapter extends ArrayAdapter<Tournament.TeamGroupPosition> {
         holder.playerBName.setText(team.team.getPlayerB().getName());
         int playerAEntryPoints = team.team.getPlayerA().getEntryPoints(team.team.getClazz());
         int playerBEntryPoints = team.team.getPlayerB().getEntryPoints(team.team.getClazz());
-        holder.playersPoints.setText("(" + playerAEntryPoints + "/" + playerBEntryPoints + ")");
-        holder.entryPoints.setText(((int) Math.round(team.team.getEntryPoints())) + " pts");
+        if (displayGroupAndPoints) {
+            holder.playersPoints.setText("(" + playerAEntryPoints + "/" + playerBEntryPoints + ")");
+            holder.entryPoints.setText(((int) Math.round(team.team.getEntryPoints())) + " pts");
+        } else {
+            holder.playersPoints.setText("");
+            holder.entryPoints.setText("");
+        }
         return row;
     }
 
