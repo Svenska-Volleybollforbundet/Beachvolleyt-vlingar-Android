@@ -183,6 +183,10 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     private int getNumberOfGroupsForClazz(TournamentClazz clazz) {
+        if (name.startsWith("Senior-SM") ||
+                name.startsWith("Mixed SM")) {
+            return 16;
+        }
         int numberOfTeams = Math.min(getNumberOfCompleteTeamsForClazz(clazz), clazz.getMaxNumberOfTeams());
         if (numberOfTeams == 12) {
             return 4;
