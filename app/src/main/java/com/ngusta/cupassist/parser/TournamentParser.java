@@ -48,14 +48,14 @@ public class TournamentParser {
 
     private Team readTeamFromTableRow(Element tableRow,
             HashMultimap<String, Player> allPlayers, boolean isNewProfixio) {
-        String[] names = tableRow.child(isNewProfixio ? 1 : 0).text().split("[,/]");
+        String[] names = tableRow.child(0).text().split("[,/]");
 
         if (names.length < 2 || names.length > 4) {
             System.err.print("Skipping incomplete Team table row: " + tableRow.text());
             return null;
         }
 
-        String club = tableRow.child(isNewProfixio ? 0 : 1).text();
+        String club = tableRow.child(1).text();
         Clazz clazz = Clazz.parse(tableRow.child(2).text());
         int teamEntry;
         try {
