@@ -58,10 +58,7 @@ public class CompetitionPeriod implements Serializable {
             new CompetitionPeriod(13, "TP 13", "2018-08-13", "2018-08-19"),
             new CompetitionPeriod(14, "TP 14", "2018-08-20", "2018-09-02"),
             new CompetitionPeriod(15, "TP 15", "2018-09-03", "2018-10-14"),
-            new CompetitionPeriod(16, "TP 16", "2018-10-15", "2018-12-31")
-    };
-
-    public static final CompetitionPeriod[] COMPETITION_PERIODS = {
+            new CompetitionPeriod(16, "TP 16", "2018-10-15", "2018-12-31"),
             new CompetitionPeriod(1, "TP 01", "2019-01-01", "2019-03-31"),
             new CompetitionPeriod(2, "TP 02", "2019-04-01", "2019-05-18"),
             new CompetitionPeriod(3, "TP 03", "2019-05-19", "2019-06-02"),
@@ -80,9 +77,9 @@ public class CompetitionPeriod implements Serializable {
             new CompetitionPeriod(16, "TP 16", "2019-10-14", "2019-12-31")
     };
 
-    private static final CompetitionPeriod[] COMPETITION_PERIODS_NEXT_YEAR = {
+    public static final CompetitionPeriod[] COMPETITION_PERIODS = {
             new CompetitionPeriod(1, "TP 01", "2020-01-01", "2020-03-29"),
-            new CompetitionPeriod(2, "TP 02", "2020-03-29", "2020-05-17"),
+            new CompetitionPeriod(2, "TP 02", "2020-03-30", "2020-05-17"),
             new CompetitionPeriod(3, "TP 03", "2020-05-18", "2020-05-31"),
             new CompetitionPeriod(4, "TP 04", "2020-06-01", "2020-06-07"),
             new CompetitionPeriod(5, "TP 05", "2020-06-08", "2020-06-21"),
@@ -90,13 +87,15 @@ public class CompetitionPeriod implements Serializable {
             new CompetitionPeriod(7, "TP 07", "2020-06-29", "2020-07-05"),
             new CompetitionPeriod(8, "TP 08", "2020-07-06", "2020-07-12"),
             new CompetitionPeriod(9, "TP 09", "2020-07-13", "2020-07-19"),
-            new CompetitionPeriod(10, "TP 10", "2020-07-20", "2020-07-26"),
-            new CompetitionPeriod(11, "TP 11", "2020-07-27", "2020-08-02"),
-            new CompetitionPeriod(12, "TP 12", "2020-08-03", "2020-08-09"),
-            new CompetitionPeriod(13, "TP 13", "2020-08-10", "2020-08-16"),
-            new CompetitionPeriod(14, "TP 14", "2020-08-17", "2020-08-30"),
-            new CompetitionPeriod(15, "TP 15", "2020-08-31", "2020-10-11"),
-            new CompetitionPeriod(16, "TP 16", "2020-10-12", "2020-12-31")
+            new CompetitionPeriod(10, "TP 10", "2020-07-20", "2020-08-02"),
+            new CompetitionPeriod(11, "TP 11", "2020-08-03", "2020-08-09"),
+            new CompetitionPeriod(12, "TP 12", "2020-08-10", "2020-08-16"),
+            new CompetitionPeriod(13, "TP 13", "2020-08-17", "2020-08-30"),
+            new CompetitionPeriod(14, "TP 14", "2020-08-31", "2020-10-11"),
+            new CompetitionPeriod(15, "TP 15", "2020-10-12", "2020-12-31")
+    };
+
+    private static final CompetitionPeriod[] COMPETITION_PERIODS_NEXT_YEAR = {
     };
 
     private int periodNumber;
