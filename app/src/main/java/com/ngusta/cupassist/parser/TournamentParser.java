@@ -48,7 +48,7 @@ public class TournamentParser {
 
     private Team readTeamFromTableRow(Element tableRow,
             HashMultimap<String, Player> allPlayers, boolean isNewProfixio) {
-        String[] names = tableRow.child(0).text().split("[,/]");
+        String[] names = tableRow.child(0).text().replace("Waiting list", "").split("[,/]");
 
         if (names.length < 2 || names.length > 4) {
             System.err.print("Skipping incomplete Team table row: " + tableRow.text());
