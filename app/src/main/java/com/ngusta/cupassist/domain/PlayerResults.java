@@ -108,7 +108,7 @@ public class PlayerResults implements Serializable {
 
         @Override
         public String toString() {
-            return period.toString() + " " + period.getYear() + ": " + points + (partOfEntry ? "*" : "") + "\n";
+            return period.toString() + " " + (CompetitionPeriod.qualifiesForSm(period) ? "(SM) " : "") + period.getYear() + ": " + points + (partOfEntry ? "*" : "") + "\n";
         }
 
         void setPartOfEntry(boolean partOfEntry) {

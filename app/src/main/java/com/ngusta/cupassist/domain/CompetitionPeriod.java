@@ -10,7 +10,7 @@ import java.util.GregorianCalendar;
 public class CompetitionPeriod implements Serializable {
 
 
-    private static final CompetitionPeriod[] COMPETITION_PERIODS_LAST_YEAR = {
+    private static final CompetitionPeriod[] COMPETITION_PERIODS_PREVIOUS_YEARS = {
             new CompetitionPeriod(1, "TP 01", "2016-01-01", "2016-04-03"),
             new CompetitionPeriod(2, "TP 02", "2016-04-04", "2016-05-22"),
             new CompetitionPeriod(3, "TP 03", "2016-05-23", "2016-06-06"),
@@ -79,20 +79,17 @@ public class CompetitionPeriod implements Serializable {
 
     public static final CompetitionPeriod[] COMPETITION_PERIODS = {
             new CompetitionPeriod(1, "TP 01", "2020-01-01", "2020-03-29"),
-            new CompetitionPeriod(2, "TP 02", "2020-03-30", "2020-05-17"),
-            new CompetitionPeriod(3, "TP 03", "2020-05-18", "2020-05-31"),
-            new CompetitionPeriod(4, "TP 04", "2020-06-01", "2020-06-07"),
-            new CompetitionPeriod(5, "TP 05", "2020-06-08", "2020-06-21"),
-            new CompetitionPeriod(6, "TP 06", "2020-06-22", "2020-06-28"),
-            new CompetitionPeriod(7, "TP 07", "2020-06-29", "2020-07-05"),
-            new CompetitionPeriod(8, "TP 08", "2020-07-06", "2020-07-12"),
-            new CompetitionPeriod(9, "TP 09", "2020-07-13", "2020-07-19"),
-            new CompetitionPeriod(10, "TP 10", "2020-07-20", "2020-08-02"),
-            new CompetitionPeriod(11, "TP 11", "2020-08-03", "2020-08-09"),
-            new CompetitionPeriod(12, "TP 12", "2020-08-10", "2020-08-16"),
-            new CompetitionPeriod(13, "TP 13", "2020-08-17", "2020-08-30"),
-            new CompetitionPeriod(14, "TP 14", "2020-08-31", "2020-10-11"),
-            new CompetitionPeriod(15, "TP 15", "2020-10-12", "2020-12-31")
+            new CompetitionPeriod(2, "TP 02", "2020-03-30", "2020-06-21"),
+            new CompetitionPeriod(3, "TP 03", "2020-06-22", "2020-06-28"),
+            new CompetitionPeriod(4, "TP 04", "2020-06-29", "2020-07-05"),
+            new CompetitionPeriod(5, "TP 05", "2020-07-06", "2020-07-12"),
+            new CompetitionPeriod(6, "TP 06", "2020-07-13", "2020-07-19"),
+            new CompetitionPeriod(7, "TP 07", "2020-07-20", "2020-08-02"),
+            new CompetitionPeriod(8, "TP 08", "2020-08-03", "2020-08-09"),
+            new CompetitionPeriod(9, "TP 09", "2020-08-10", "2020-08-16"),
+            new CompetitionPeriod(10, "TP 10", "2020-08-17", "2020-08-30"),
+            new CompetitionPeriod(11, "TP 11", "2020-08-31", "2020-10-11"),
+            new CompetitionPeriod(12, "TP 12", "2020-10-12", "2020-12-31")
     };
 
     private static final CompetitionPeriod[] COMPETITION_PERIODS_NEXT_YEAR = {
@@ -136,7 +133,7 @@ public class CompetitionPeriod implements Serializable {
                 }
             }
         }
-        for (CompetitionPeriod cp : COMPETITION_PERIODS_LAST_YEAR) {
+        for (CompetitionPeriod cp : COMPETITION_PERIODS_PREVIOUS_YEARS) {
             if (cp.getName().equalsIgnoreCase(name) ||
                     cp.getName().replace(" 0", "").replace(" ", "").equalsIgnoreCase(name)) {
                 if (getYear(cp.getStartDate()) == year) {
@@ -181,7 +178,12 @@ public class CompetitionPeriod implements Serializable {
     }
 
     public static boolean qualifiesForSm(CompetitionPeriod period) {
-        return getYear(new Date()) == getYear(period.getStartDate()) && period.getPeriodNumber() >= 1 && period.getPeriodNumber() <= 10;
+        if (getYear(new Date()) == 2020) { //13-16 2019 & 1-6 2020
+            return getYear(period.getStartDate()) == 2019 && period.getPeriodNumber() >= 13 && period.getPeriodNumber() <= 16
+                    || getYear(period.getStartDate()) == 2020 && period.getPeriodNumber() >= 1 && period.getPeriodNumber() <= 6;
+        }
+        return getYear(new Date()) == getYear(period.getStartDate()) && period.getPeriodNumber() >= 1 && period.getPeriodNumber() <= 9 ||
+                (getYear(new Date())-1) == getYear(period.getStartDate()) && period.getPeriodNumber() == 16;
     }
 
     private static int getYear(Date date) {
@@ -263,27 +265,27 @@ public class CompetitionPeriod implements Serializable {
                 test.isValidAsEntryForPeriod(current) == false));
 
         current = COMPETITION_PERIODS[10];
-        test = COMPETITION_PERIODS_LAST_YEAR[offsetInPeriodsfromLastYear + 15];
+        test = COMPETITION_PERIODS_PREVIOUS_YEARS[offsetInPeriodsfromLastYear + 15];
         System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
                 test.isValidAsEntryForPeriod(current) == false));
 
         current = COMPETITION_PERIODS[9];
-        test = COMPETITION_PERIODS_LAST_YEAR[offsetInPeriodsfromLastYear + 15];
+        test = COMPETITION_PERIODS_PREVIOUS_YEARS[offsetInPeriodsfromLastYear + 15];
         System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
                 test.isValidAsEntryForPeriod(current) == true));
 
         current = COMPETITION_PERIODS[9];
-        test = COMPETITION_PERIODS_LAST_YEAR[offsetInPeriodsfromLastYear + 14];
+        test = COMPETITION_PERIODS_PREVIOUS_YEARS[offsetInPeriodsfromLastYear + 14];
         System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
                 test.isValidAsEntryForPeriod(current) == false));
 
         current = COMPETITION_PERIODS[6];
-        test = COMPETITION_PERIODS_LAST_YEAR[offsetInPeriodsfromLastYear + 12];
+        test = COMPETITION_PERIODS_PREVIOUS_YEARS[offsetInPeriodsfromLastYear + 12];
         System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
                 test.isValidAsEntryForPeriod(current) == true));
 
         current = COMPETITION_PERIODS[6];
-        test = COMPETITION_PERIODS_LAST_YEAR[offsetInPeriodsfromLastYear + 11];
+        test = COMPETITION_PERIODS_PREVIOUS_YEARS[offsetInPeriodsfromLastYear + 11];
         System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
                 test.isValidAsEntryForPeriod(current) == false));
 
@@ -297,13 +299,13 @@ public class CompetitionPeriod implements Serializable {
         System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
                 test.isValidAsEntryForPeriod(current) == false));
 
-        current = COMPETITION_PERIODS_LAST_YEAR[offsetInPeriodsfromLastYear + 15];
+        current = COMPETITION_PERIODS_PREVIOUS_YEARS[offsetInPeriodsfromLastYear + 15];
         test = COMPETITION_PERIODS[0];
         System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
                 test.isValidAsEntryForPeriod(current) == false));
 
         current = COMPETITION_PERIODS[0];
-        test = COMPETITION_PERIODS_LAST_YEAR[offsetInPeriodsfromLastYear + 15];
+        test = COMPETITION_PERIODS_PREVIOUS_YEARS[offsetInPeriodsfromLastYear + 15];
         System.out.println(current.getName() + " - " + test.getName() + ": " + test.isValidAsEntryForPeriod(current) + " : " + (
                 test.isValidAsEntryForPeriod(current) == true));
 
