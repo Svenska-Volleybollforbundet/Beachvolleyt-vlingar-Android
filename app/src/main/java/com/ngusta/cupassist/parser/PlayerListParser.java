@@ -54,7 +54,7 @@ public class PlayerListParser {
         String lastName = name[0].trim();
         String club = tableRow.child(2).text();
         int rankPoints = Integer.parseInt(tableRow.child(3).text());
-        int entryPoints = Integer.parseInt(tableRow.child(4).text());
+        int entryPoints = Integer.parseInt(tableRow.child(3).text());
         return new Player(rank, firstName, lastName, club, rankPoints, entryPoints, playerId);
     }
 

@@ -57,57 +57,68 @@ public enum Clazz {
             case "U23 H":
                 return H23;
             case "U19 F":
-            case "U19 F (01-)":
+            case "U19 F (03-)":
                 return F19;
             case "U19 P":
-            case "U19 P (01-)":
+            case "U19 P (03-)":
                 return P19;
             case "U18 F":
                 return F18;
             case "U18 P":
                 return P18;
             case "U18 M":
+            case "U18 M (04-)":
                 return M18;
             case "U17 F":
-            case "U17 F (03-)":
+            case "U17 F (05-)":
                 return F17;
             case "U17 P":
-            case "U17 P (03-)":
+            case "U17 P (05-)":
                 return P17;
             case "U17 M":
                 return M17;
             case "U16 F":
-            case "U16 F (04-)":
+            case "U16 F (06-)":
                 return F16;
             case "U16 P":
-            case "U16 P (04-)":
+            case "U16 P (06-)":
                 return P16;
             case "U16 M":
                 return M16;
             case "U15 F":
-            case "U15 F (05-)":
+            case "U15 F (07-)":
                 return F15;
             case "U15 Ö":
-            case "U15 Ö (05-)":
+            case "U15 Ö (07-)":
                 return O15;
             case "U15 M":
-            case "U15 M (05-)":
+            case "U15 M (07-)":
                 return M15;
             case "Mini Ö Level 5":
-            case "Mini Ö Level 5 (06-)":
+            case "Mini Ö Level 5 (08-)":
+            case "L5 Ö GB (08-)":
+            case "L5 Ö RS (08-)":
                 return MiniOLevel5;
             case "Mini Ö Level 4":
-            case "Mini Ö Level 4 (06-)":
+            case "Mini Ö Level 4 (08-)":
+            case "L4 Ö GB (08-)":
+            case "L4 Ö RS (08-)":
                 return MiniOLevel4;
             case "Mini F Level 5":
-            case "Mini F Level 5 (06-)":
+            case "Mini F Level 5 (08-)":
+            case "L5 F GB (08-)":
+            case "L5 F RS (08-)":
                 return MiniFLevel5;
             case "Mini F Level 4":
-            case "Mini F Level 4 (06-)":
+            case "Mini F Level 4 (08-)":
+            case "L4 F GB (08-)":
+            case "L4 F RS (08-)":
                 return MiniFLevel4;
             case "Junior D":
+            case "Junior D (02-)":
                 return JuniorD;
             case "Junior H":
+            case "Junior H (02-)":
                 return JuniorH;
             case "Junior M":
                 return JuniorM;
@@ -132,10 +143,10 @@ public enum Clazz {
             case "V55+ H":
                 return V55H;
             case "V60+ D":
-            case "V60+ D (-58)":
+            case "V60+ D (-60)":
                 return V60D;
             case "V60+ H":
-            case "V60+ H (-58)":
+            case "V60+ H (-60)":
                 return V60H;
         }
         return guessClazz(tournamentName);

@@ -74,10 +74,7 @@ public class CompetitionPeriod implements Serializable {
             new CompetitionPeriod(13, "TP 13", "2019-08-12", "2019-08-18"),
             new CompetitionPeriod(14, "TP 14", "2019-08-19", "2019-09-01"),
             new CompetitionPeriod(15, "TP 15", "2019-09-02", "2019-10-13"),
-            new CompetitionPeriod(16, "TP 16", "2019-10-14", "2019-12-31")
-    };
-
-    public static final CompetitionPeriod[] COMPETITION_PERIODS = {
+            new CompetitionPeriod(16, "TP 16", "2019-10-14", "2019-12-31"),
             new CompetitionPeriod(1, "TP 01", "2020-01-01", "2020-03-29"),
             new CompetitionPeriod(2, "TP 02", "2020-03-30", "2020-06-21"),
             new CompetitionPeriod(3, "TP 03", "2020-06-22", "2020-06-28"),
@@ -90,6 +87,10 @@ public class CompetitionPeriod implements Serializable {
             new CompetitionPeriod(10, "TP 10", "2020-08-17", "2020-08-30"),
             new CompetitionPeriod(11, "TP 11", "2020-08-31", "2020-10-11"),
             new CompetitionPeriod(12, "TP 12", "2020-10-12", "2020-12-31")
+    };
+
+    public static final CompetitionPeriod[] COMPETITION_PERIODS = {
+            new CompetitionPeriod(1, "TP 01", "2021-01-01", "2021-12-31")
     };
 
     private static final CompetitionPeriod[] COMPETITION_PERIODS_NEXT_YEAR = {
