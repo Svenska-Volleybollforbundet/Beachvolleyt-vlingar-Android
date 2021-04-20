@@ -117,7 +117,7 @@ public class PlayerActivity extends AppCompatActivity {
             int entryForPeriod = player.getResults().getEntryForPeriod(period);
             int mixedEntryForPeriod = player.getMixedResults() != null ? player.getMixedResults().getEntryForPeriod(period) : 0;
             text += period.getName() + ": " + entryForPeriod + " / " + mixedEntryForPeriod + "\n";
-            if (++futureCP == 17) {
+            if (++futureCP == (CompetitionPeriod.getNumberOfPeriodsThisYear() + 1)) {
                 futureCP = 1;
                 futureCPYear++;
             }
