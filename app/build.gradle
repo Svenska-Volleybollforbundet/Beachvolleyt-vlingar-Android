@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 30
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 59
-        versionName '2.16'
+        versionCode 60
+        versionName '2.17'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
