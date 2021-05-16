@@ -226,8 +226,8 @@ public class CompetitionPeriod implements Serializable {
     }
 
     boolean isValidAsEntryForPeriod(CompetitionPeriod period) {
-        int yearOfPeriod = getYear(period.getStartDate());
-        int yearDiff = yearOfPeriod - getYear(getStartDate());
+        int yearOfPeriod = getYear(getStartDate());
+        int yearDiff = getYear(period.getStartDate()) - yearOfPeriod;
         int diff = (yearDiff * getNumberOfPeriods(yearOfPeriod) + period.getPeriodNumber()) - getPeriodNumber();
         return diff > 0 && diff <= 10;
     }
