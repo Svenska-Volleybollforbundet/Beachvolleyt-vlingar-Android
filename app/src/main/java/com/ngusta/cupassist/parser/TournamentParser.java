@@ -30,15 +30,14 @@ public class TournamentParser {
     public List<Team> parseTeams(String source, HashMultimap<String, Player> allPlayers, boolean isNewProfixio) {
         ArrayList<Team> teams = new ArrayList<Team>();
         Document document = Jsoup.parse(source);
-        Elements tableRows = isNewProfixio ? document.select("table.lag-table tbody tr") : document.select("table:first-of-type tr:gt(0)");
-        ;
+        Elements tableRows = isNewProfixio ? document.select("main ul li") : document.select("table:first-of-type tr:gt(0)");
 
         if (tableRows.isEmpty()) {
             return teams;
         }
 
         for (Element tableRow : tableRows) {
-            Team team = readTeamFromTableRow(tableRow, allPlayers, isNewProfixio);
+            Team team = isNewProfixio ? newProfixioReadTeam(tableRow, allPlayers) : readTeamFromTableRow(tableRow, allPlayers, isNewProfixio);
             if (team != null) {
                 teams.add(team);
             }
@@ -85,6 +84,58 @@ public class TournamentParser {
         Player playerA = findPlayer(allPlayers, playerAFirstName, playerALastName, playerAClub, teamEntry);
 
         boolean paid = "OK".equalsIgnoreCase(tableRow.child(isNewProfixio ? 4 : 6).text());
+        if (names.length == 4) {
+            String playerBFirstName = names[3].trim();
+            playerBFirstName = excludeParenthesisFromName(playerBFirstName);
+            String playerBLastName = names[2].trim();
+            Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub, teamEntry);
+
+            return new Team(playerA, playerB, registrationDate, clazz, paid);
+        } else {
+            return new Team(playerA, registrationDate, clazz, paid);
+        }
+    }
+
+
+    private Team newProfixioReadTeam(Element listItem, HashMultimap<String, Player> allPlayers) {
+        Element teamData = listItem.select("a:not([class])").first();
+        String[] names = teamData.child(0).child(0).text().replace("Waiting list", "").split("[,/]");
+
+        if (names.length < 2 || names.length > 4) {
+            System.err.print("Skipping incomplete Team table row: " + listItem.text());
+            return null;
+        }
+
+        String club = teamData.child(1).child(0).child(0).text();
+        Clazz clazz = Clazz.parse(teamData.child(1).child(1).child(0).text());
+        int teamEntry;
+        try {
+            teamEntry = Integer.parseInt(teamData.child(1).child(0).child(1).child(0).text().replace(" points", ""));
+        } catch (NumberFormatException nfe) {
+            teamEntry = 0;
+        }
+
+        Date registrationDate = null;
+        try {
+            registrationDate = new SimpleDateFormat("MMMM dd, yyyy hh:mm a").parse(teamData.child(1).child(2).text());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String playerAClub = club;
+        String playerBClub = club;
+        if (club.contains("/")) {
+            String[] clubs = club.split("/");
+            playerAClub = clubs[0].trim();
+            playerBClub = clubs[1].trim();
+        }
+
+        String playerAFirstName = names[1].trim();
+        playerAFirstName = excludeParenthesisFromName(playerAFirstName);
+        String playerALastName = names[0].trim();
+        Player playerA = findPlayer(allPlayers, playerAFirstName, playerALastName, playerAClub, teamEntry);
+
+        boolean paid = !"NOT PAID".equalsIgnoreCase(teamData.child(1).child(0).child(1).child(1).text());
         if (names.length == 4) {
             String playerBFirstName = names[3].trim();
             playerBFirstName = excludeParenthesisFromName(playerBFirstName);

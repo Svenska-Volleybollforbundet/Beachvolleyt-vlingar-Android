@@ -42,9 +42,9 @@ public class TournamentListCache extends Cache<Tournament> {
 
     public static final String PROFIXIO_SIGN_UP_URL = "https://www.profixio.com/pamelding/index.php";
 
-    private static final String PROFIXIO_BASE_REGISTRATION_URL = "https://www.profixio.com/reg/";
+    private static final String PROFIXIO_BASE_REGISTRATION_URL = "https://www.profixio.com/app/matches/";
 
-    private static final String PROFIXIO_ENDING_REGISTRATION_URL = "/en/team/listAllTeams/sort/ep";
+    private static final String PROFIXIO_ENDING_REGISTRATION_URL = "/teams";
 
     public static final String COMPETITION_REGULATIONS_URL
             = "http://www.volleyboll.se/globalassets/svenska-volleybollforbundet-svensk-volleyboll/dokumentbank/beachvolley/tb-bv-2019/tavlingsbestammelser-beachvolley-2019.pdf";
@@ -127,7 +127,7 @@ public class TournamentListCache extends Cache<Tournament> {
     }
 
     private boolean isNewProfixio(String source) {
-        return source.contains("pamelding/velgTurnering");
+        return true; // TODO remove or fix : source.contains("pamelding/velgTurnering");
     }
 
     private boolean cookieHasExpired(String source) {
