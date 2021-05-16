@@ -56,7 +56,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         this.id = defaultId++;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.competitionPeriod = CompetitionPeriod.findByName(period);
+        this.competitionPeriod = CompetitionPeriod.findPeriodByDate(startDate);
         this.club = shortenClubName(club);
         this.name = name;
         this.url = url;
@@ -78,6 +78,9 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         if ("KFUM Gymnastik & IA Karskrona".equals(club)) {
             return "KFUM Karlskrona";
         }
+        if ("KFUM Kristianstad Volleybollklubb".equals(club)) {
+            return "KFUM Kristianstad";
+        }
         if ("Föreningen Beachvolley-Aid".equals(club)) {
             return "Beachvolley-Aid";
         }
@@ -91,20 +94,26 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         Level guessedLevel = Level.UNKNOWN;
         name = name.toLowerCase();
         if (name.contains("open") || name.contains("mix") || name.contains("svart") ||
-                name.contains("midnight") || name.contains("mästerskap")) {
+                name.contains("midnight") || name.contains("distriktsmästerskap") || name.contains("spelen")) {
             guessedLevel = Level.OPEN;
         }
         if (name.contains("grön")) {
             guessedLevel = Level.OPEN_GREEN;
         }
-        if (name.contains("chall")) {
+        if (name.contains("chall") || (name.contains(" ch") && !name.contains("kval ch"))) {
             guessedLevel = Level.CHALLENGER;
         }
-        if (name.contains("ungdom") || name.contains("junior")) {
+        if (name.contains("ungdom") || name.contains("junior") || name.contains("fu16") || name.contains("fu18") || name.contains("pu16") || name.contains("pu18") || name.contains("skrea beach cup")) {
             guessedLevel = Level.YOUTH;
         }
-        if (name.contains("mixed sm") || name.contains("senior-sm") || name.contains("swedish beach tour") || name.contains("sbt")) {
-            guessedLevel = Level.SWEDISH_BEACH_TOUR;
+        if (name.contains("mixed sm") || name.contains("senior-sm")) {
+            guessedLevel = Level.SM;
+        }
+        if (name.contains("master")) {
+            guessedLevel = Level.MASTER;
+        }
+        if (name.contains("sbt final")) {
+            guessedLevel = Level.TOUR_FINAL;
         }
         return guessedLevel;
     }
@@ -291,7 +300,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
     }
 
     public enum Level implements Serializable {
-        OPEN(2), OPEN_GREEN(1), CHALLENGER(3), SWEDISH_BEACH_TOUR(5), SWEDISH_BEACH_TOUR_FINAL(6), SM(7), YOUTH(1), VETERAN(1), UNKNOWN(0);
+        OPEN_GREEN(1), OPEN(2), CHALLENGER(3), MASTER(4), FIVE_STAR(5), TOUR_FINAL(6), SM(7), YOUTH(1), VETERAN(1), UNKNOWN(0);
 
         private int stars;
 
@@ -339,9 +348,11 @@ public class Tournament implements Serializable, Comparable<Tournament> {
                 return OPEN_GREEN;
             } else if (levelString.contains("Challenger")) {
                 return CHALLENGER;
-            } else if (levelString.contains("Swedish Beach Tour")) {
-                return SWEDISH_BEACH_TOUR;
-            } else if (levelString.contains("SM-slutspel") || levelString.contains("Mixed-SM")) {
+            } else if (levelString.contains("Master")) {
+                return MASTER;
+            } else if (levelString.contains("Final")) {
+                return TOUR_FINAL;
+            } else if (levelString.contains("SM") || levelString.contains("Mixed-SM")) {
                 return SM;
             } else if (levelString.contains("Veteran")) {
                 return VETERAN;

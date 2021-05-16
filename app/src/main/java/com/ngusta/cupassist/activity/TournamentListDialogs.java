@@ -163,8 +163,9 @@ public class TournamentListDialogs {
                 levelsToFilter.add(Tournament.Level.CHALLENGER);
                 break;
             case SBT_INDEX:
-                levelsToFilter.add(Tournament.Level.SWEDISH_BEACH_TOUR);
-                levelsToFilter.add(Tournament.Level.SWEDISH_BEACH_TOUR_FINAL);
+                levelsToFilter.add(Tournament.Level.MASTER);
+                levelsToFilter.add(Tournament.Level.FIVE_STAR);
+                levelsToFilter.add(Tournament.Level.TOUR_FINAL);
                 levelsToFilter.add(Tournament.Level.SM);
                 break;
             case YOUTH_LEVEL_INDEX:
@@ -187,7 +188,7 @@ public class TournamentListDialogs {
             defaultSelected[i] = true;
             selectedItemsIndexList.add(i);
         }
-        String[] levelNames = {"Open grön", "Open svart", "Challenger", "Swedish Beach Tour", "Ungdom", "Veteran"};
+        String[] levelNames = {"SBT Open grön", "SBT Open svart", "SBT Challenger", "SBT Elit", "Ungdom", "Veteran"};
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
         dialogBuilder.setTitle(R.string.show_levels)
                 .setMultiChoiceItems(levelNames, defaultSelected, new DialogInterface.OnMultiChoiceClickListener() {

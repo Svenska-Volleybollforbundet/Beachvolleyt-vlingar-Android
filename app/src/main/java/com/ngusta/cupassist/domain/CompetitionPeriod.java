@@ -90,20 +90,19 @@ public class CompetitionPeriod implements Serializable {
     };
 
     public static final CompetitionPeriod[] COMPETITION_PERIODS = {
-            new CompetitionPeriod(1, "TP 01", "2021-01-01", "2021-05-30"),
-            new CompetitionPeriod(2, "TP 02", "2021-05-31", "2021-06-06"),
-            new CompetitionPeriod(3, "TP 03", "2021-06-07", "2021-06-13"),
-            new CompetitionPeriod(4, "TP 04", "2021-06-14", "2021-06-27"),
-            new CompetitionPeriod(5, "TP 05", "2021-06-28", "2021-07-04"),
-            new CompetitionPeriod(6, "TP 06", "2021-07-05", "2021-07-11"),
-            new CompetitionPeriod(7, "TP 07", "2021-07-12", "2021-07-18"),
-            new CompetitionPeriod(8, "TP 08", "2021-07-19", "2021-07-25"),
-            new CompetitionPeriod(9, "TP 09", "2021-07-26", "2021-08-08"),
-            new CompetitionPeriod(10, "TP 10", "2021-08-09", "2021-08-15"),
-            new CompetitionPeriod(11, "TP 11", "2021-08-16", "2021-08-22"),
-            new CompetitionPeriod(12, "TP 12", "2021-08-23", "2021-09-05"),
-            new CompetitionPeriod(13, "TP 13", "2021-09-06", "2021-10-17"),
-            new CompetitionPeriod(14, "TP 14", "2021-10-18", "2021-12-31")
+            new CompetitionPeriod(1, "TP 01", "2021-01-01", "2021-06-06"),
+            new CompetitionPeriod(2, "TP 02", "2021-06-07", "2021-06-13"),
+            new CompetitionPeriod(3, "TP 03", "2021-06-14", "2021-06-27"),
+            new CompetitionPeriod(4, "TP 04", "2021-06-28", "2021-07-04"),
+            new CompetitionPeriod(5, "TP 05", "2021-07-05", "2021-07-11"),
+            new CompetitionPeriod(6, "TP 06", "2021-07-12", "2021-07-18"),
+            new CompetitionPeriod(7, "TP 07", "2021-07-19", "2021-07-25"),
+            new CompetitionPeriod(8, "TP 08", "2021-07-26", "2021-08-08"),
+            new CompetitionPeriod(9, "TP 09", "2021-08-09", "2021-08-15"),
+            new CompetitionPeriod(10, "TP 10", "2021-08-16", "2021-08-22"),
+            new CompetitionPeriod(11, "TP 11", "2021-08-23", "2021-09-05"),
+            new CompetitionPeriod(12, "TP 12", "2021-09-06", "2021-10-17"),
+            new CompetitionPeriod(13, "TP 13", "2021-10-18", "2021-12-31")
     };
 
     private static final CompetitionPeriod[] COMPETITION_PERIODS_NEXT_YEAR = {
