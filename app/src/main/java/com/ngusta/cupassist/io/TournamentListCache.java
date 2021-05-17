@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap;
 
 import com.ngusta.cupassist.activity.MyApplication;
 import com.ngusta.cupassist.domain.Player;
+import com.ngusta.cupassist.domain.Team;
 import com.ngusta.cupassist.domain.Tournament;
 import com.ngusta.cupassist.domain.TournamentList;
 import com.ngusta.cupassist.parser.TournamentListParser;
@@ -12,6 +13,7 @@ import com.ngusta.cupassist.parser.TournamentParser;
 import android.content.Context;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -114,15 +116,20 @@ public class TournamentListCache extends Cache<Tournament> {
         tournament.setMaxNumberOfTeams(tournamentParser.parseMaxNumberOfTeams(source));
 
         if (tournament.isRegistrationOpen()) {
-            sourceCodeRequester.getSourceCode(
-                    CUP_ASSIST_TOURNAMENT_URL + tournament.getUrlName());
-            source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL);
+            //sourceCodeRequester.getSourceCode(
+            //        CUP_ASSIST_TOURNAMENT_URL + tournament.getUrlName());
+            //source = sourceCodeRequester.getSourceCode(CUP_ASSIST_TOURNAMENT_PLAYERS_URL);
             boolean newProfixio = isNewProfixio(source);
             if (newProfixio) {
-                source = sourceCodeRequester
-                        .getSourceCode(PROFIXIO_BASE_REGISTRATION_URL + tournament.getUrlName() + PROFIXIO_ENDING_REGISTRATION_URL);
+                List<Team> allTeams = new ArrayList<>();
+                int page = 1;
+                while (allTeams.size() == 30 * (page - 1)) {
+                    source = sourceCodeRequester.getSourceCode(PROFIXIO_BASE_REGISTRATION_URL + tournament.getUrlName() + PROFIXIO_ENDING_REGISTRATION_URL + "?page=" + page);
+                    allTeams.addAll(tournamentParser.parseTeams(source, allPlayers, newProfixio));
+                    page++;
+                }
+                tournament.setTeams(allTeams);
             }
-            tournament.setTeams(tournamentParser.parseTeams(source, allPlayers, newProfixio));
         }
     }
 
