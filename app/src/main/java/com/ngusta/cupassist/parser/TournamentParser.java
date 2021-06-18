@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 
 public class TournamentParser {
 
-    private static final String REGEXP_PATTERN_FOR_REGISTRATION_URL = "pamelding/redirect.php\\?tknavn=(.*?)\", \"_blank\"";
+    private static final String REGEXP_PATTERN_FOR_REGISTRATION_URL = "/app/(.*?)\", \"_blank\"";
 
     public List<Team> parseTeams(String source, HashMultimap<String, Player> allPlayers, boolean isNewProfixio) {
         ArrayList<Team> teams = new ArrayList<Team>();
