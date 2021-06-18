@@ -49,7 +49,7 @@ public class TournamentListCache extends Cache<Tournament> {
     private static final String PROFIXIO_ENDING_REGISTRATION_URL = "/teams";
 
     public static final String COMPETITION_REGULATIONS_URL
-            = "http://www.volleyboll.se/globalassets/svenska-volleybollforbundet-svensk-volleyboll/dokumentbank/beachvolley/tb-bv-2019/tavlingsbestammelser-beachvolley-2019.pdf";
+            = "https://www.volleyboll.se/globalassets/svenska-volleybollforbundet-svensk-volleyboll/dokumentbank/beachvolley/tb-bv-2021/tavlingsbestammelser-beachvolley-2021_uppdaterat-20210328.pdf";
 
     public static final String RULES_URL
             = "http://www.fivb.org/EN/BeachVolleyball/Document_Refereeing/FIVB-BeachVolleyball_Rules_2017-2020-EN-v05.pdf";
