@@ -85,7 +85,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     private void initResultCard() {
         TextView playerResultsText = findViewById(R.id.player_results_text);
-        String introText = "* betyder att resultaten är en del av spelarens nuvarande entrypoäng.\n\n";
+        String introText = "* betyder att resultaten är en del av spelarens nuvarande poäng.\n\n";
         if (player.getResults() == null || player.getResults().getTournamentResults().isEmpty()) {
             playerResultsText.setText(R.string.no_results);
         } else {
@@ -94,7 +94,7 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void initMixedResultCard() {
-        String introText = "* betyder att resultaten är en del av spelarens nuvarande entrypoäng.\n\n";
+        String introText = "* betyder att resultaten är en del av spelarens nuvarande poäng.\n\n";
         TextView playerMixedResultsText = findViewById(R.id.player_results_mixed_text);
         if (player.getMixedResults() == null || player.getMixedResults().getTournamentResults().isEmpty()) {
             playerMixedResultsText.setText(R.string.no_mixed_results);
