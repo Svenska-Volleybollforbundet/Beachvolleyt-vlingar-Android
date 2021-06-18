@@ -23,7 +23,7 @@
     <string name="points">Poäng</string>
     <string name="player_results">Resultat</string>
     <string name="player_results_mixed">Mixedresultat</string>
-    <string formatted="false" name="player_info_general_part"><![CDATA[%1$s spelar för <b>%2$s</b> och har <b>%3$d</b> entrypoäng i %4$s (rankad <b>%5$d</b>).]]></string>
+    <string formatted="false" name="player_info_general_part"><![CDATA[%1$s spelar för <b>%2$s</b> och har <b>%3$d</b> poäng i %4$s (rankad <b>%5$d</b>).]]></string>
     <string formatted="true" name="player_info_mixed_part"><![CDATA[<br />I mixed har %1$s <b>%2$d</b> poäng från mixedtävlingar och <b>%3$d</b> poäng inklusive poängen från %4$s (rankad <b>%5$d</b>).]]></string>
     <string name="players">Spelare</string>
     <string name="no_mixed_results">Inga mixedresultat hittades.\n</string>
