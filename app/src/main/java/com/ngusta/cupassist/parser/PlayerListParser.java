@@ -15,7 +15,7 @@ public class PlayerListParser {
     public Set<Player> parsePlayerList(String source) {
         Set<Player> players = new HashSet<>();
         Document document = Jsoup.parse(source);
-        Elements tableRows = document.select("table:nth-of-type(2) tr:gt(0)");
+        Elements tableRows = document.select("table:nth-of-type(2) tbody tr");
 
         if (tableRows.isEmpty()) {
             return players;
