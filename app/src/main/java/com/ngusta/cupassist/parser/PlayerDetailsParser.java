@@ -28,7 +28,7 @@ public class PlayerDetailsParser {
             if (isIdFormat(idOrBirthdate)) {
                 age = calculateAge(ID_FORMAT.parse(idOrBirthdate.substring(1, 7)));
             } else {
-                age = calculateAge(BIRTH_DATE_FORMAT.parse(idOrBirthdate));
+                age = calculateAge(BIRTH_DATE_FORMAT.parse(idOrBirthdate.replace(".", "-")));
             }
         } catch (ParseException e) {
             System.err.println("Could not parse age: " + nameAgeClubString);
