@@ -350,6 +350,8 @@ public class Tournament implements Serializable, Comparable<Tournament> {
                 return CHALLENGER;
             } else if (levelString.contains("Master")) {
                 return MASTER;
+            } else if (levelString.contains("5-Star") || levelString.contains("5*")) {
+                return FIVE_STAR;
             } else if (levelString.contains("Final")) {
                 return TOUR_FINAL;
             } else if (levelString.contains("SM") || levelString.contains("Mixed-SM")) {
