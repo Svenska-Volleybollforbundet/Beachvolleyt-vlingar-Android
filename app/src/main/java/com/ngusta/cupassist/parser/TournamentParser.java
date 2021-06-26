@@ -108,11 +108,14 @@ public class TournamentParser {
 
         String club = teamData.child(1).child(0).child(0).text();
         Clazz clazz = Clazz.parse(teamData.child(1).child(1).child(0).text());
-        int teamEntry;
+        int teamEntry, playerAEntry, playerBEntry;
         try {
-            teamEntry = Integer.parseInt(teamData.child(1).child(0).child(1).child(0).child(0).text().replaceAll(" points.*", ""));
+            String entryText = teamData.child(1).child(0).child(1).child(0).child(0).text();
+            teamEntry = Integer.parseInt(entryText.replaceAll(" points.*", ""));
+            playerAEntry = Integer.parseInt(entryText.replaceAll(".* \\(", "").replaceAll("/.*", ""));
+            playerBEntry = Integer.parseInt(entryText.replaceAll(".*/", "").replaceAll("\\).*", ""));
         } catch (NumberFormatException nfe) {
-            teamEntry = 0;
+            teamEntry = playerAEntry = playerBEntry = 0;
         }
 
         Date registrationDate = null;
@@ -133,14 +136,14 @@ public class TournamentParser {
         String playerAFirstName = names[1].trim();
         playerAFirstName = excludeParenthesisFromName(playerAFirstName);
         String playerALastName = names[0].trim();
-        Player playerA = findPlayer(allPlayers, playerAFirstName, playerALastName, playerAClub, teamEntry);
+        Player playerA = findPlayer(allPlayers, playerAFirstName, playerALastName, playerAClub, playerAEntry);
 
         boolean paid = !"NOT PAID".equalsIgnoreCase(teamData.child(1).child(0).child(1).child(1).text());
         if (names.length == 4) {
             String playerBFirstName = names[3].trim();
             playerBFirstName = excludeParenthesisFromName(playerBFirstName);
             String playerBLastName = names[2].trim();
-            Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub, teamEntry);
+            Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub, playerBEntry);
 
             return new Team(playerA, playerB, registrationDate, clazz, paid);
         } else {
@@ -156,7 +159,7 @@ public class TournamentParser {
     }
 
     private Player findPlayer(HashMultimap<String, Player> allPlayers, String playerFirstName,
-            String playerLastName, String playerClub, int teamEntry) {
+            String playerLastName, String playerClub, int playerEntry) {
         Player newPlayer = new Player(playerFirstName, playerLastName, playerClub);
         if (allPlayers.containsKey(newPlayer.getNameAndClub())) {
             Set<Player> players = allPlayers.get(newPlayer.getNameAndClub());
@@ -166,7 +169,7 @@ public class TournamentParser {
             int smallestDiff = Integer.MAX_VALUE;
             Player mostLikelyPlayer = null;
             for (Player p : players) {
-                int newDiff = Math.abs((teamEntry/2) - p.getEntryPoints());
+                int newDiff = Math.abs(playerEntry - p.getEntryPoints());
                 if (newDiff < smallestDiff) {
                     smallestDiff = newDiff;
                     mostLikelyPlayer = p;
