@@ -90,6 +90,9 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         if ("Slow Down Beachvolleyklubb".equals(club) || "Slow Down Beachvolleyklubb - Åhus".equals(club)) {
             return "Slow Down";
         }
+        if ("Team Gotland Volleybollklubb".equals(club)) {
+            return "Team Gotland";
+        }
         return club;
     }
 
