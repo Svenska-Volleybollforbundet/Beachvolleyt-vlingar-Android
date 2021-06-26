@@ -110,7 +110,7 @@ public class TournamentParser {
         Clazz clazz = Clazz.parse(teamData.child(1).child(1).child(0).text());
         int teamEntry;
         try {
-            teamEntry = Integer.parseInt(teamData.child(1).child(0).child(1).child(0).text().replace(" points", ""));
+            teamEntry = Integer.parseInt(teamData.child(1).child(0).child(1).child(0).child(0).text().replaceAll(" points.*", ""));
         } catch (NumberFormatException nfe) {
             teamEntry = 0;
         }
@@ -166,7 +166,7 @@ public class TournamentParser {
             int smallestDiff = Integer.MAX_VALUE;
             Player mostLikelyPlayer = null;
             for (Player p : players) {
-                int newDiff = Math.abs(teamEntry - p.getEntryPoints());
+                int newDiff = Math.abs((teamEntry/2) - p.getEntryPoints());
                 if (newDiff < smallestDiff) {
                     smallestDiff = newDiff;
                     mostLikelyPlayer = p;
