@@ -29,7 +29,7 @@ public class TournamentListCache extends Cache<Tournament> {
     public static final String CUP_ASSIST_BASE_URL = "https://www.profixio.com/";
 
     public static final String CUP_ASSIST_TOURNAMENT_URL
-            = "https://profixio.com/pamelding/redirect.php?tknavn=";
+            = "https://www.profixio.com/app/matches/";
 
     private static final String CUP_ASSIST_TOURNAMENT_PLAYERS_URL
             = "https://www.profixio.com/pamelding/vis_paamelding.php?order=ep";
@@ -38,7 +38,7 @@ public class TournamentListCache extends Cache<Tournament> {
 
     private static final String STRING_ONLY_IN_REAL_TOURNAMENT_PAGE = "evenemang";
 
-    public static final String PROFIXIO_BASE_RESULT_REPORTING_URL = "https://www.profixio.com/res/";
+    public static final String PROFIXIO_BASE_RESULT_REPORTING_URL = "https://www.profixio.com/app/matches/summer_slam_2021_ch_03/results-login";
 
     public static final String PROFIXIO_BASE_RESULT_URL = "https://www.profixio.com/matches/";
 
@@ -147,5 +147,9 @@ public class TournamentListCache extends Cache<Tournament> {
         String source = sourceCodeRequester.getSourceCode(PROFIXIO_BASE_RESULT_URL + tournament.getUrlName() + "/d/dag/" +
                 calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
         return tournamentParser.parseMatches(source);
+    }
+
+    public static String getReportingUrl(String tournamentUrlName) {
+        return CUP_ASSIST_TOURNAMENT_URL + tournamentUrlName + "/results-login";
     }
 }
