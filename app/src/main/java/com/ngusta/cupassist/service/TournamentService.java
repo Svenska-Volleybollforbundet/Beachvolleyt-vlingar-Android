@@ -1,5 +1,6 @@
 package com.ngusta.cupassist.service;
 
+import com.ngusta.cupassist.domain.Match;
 import com.ngusta.cupassist.domain.Tournament;
 import com.ngusta.cupassist.io.TournamentListCache;
 
@@ -40,7 +41,7 @@ public class TournamentService {
         tournamentListCache.getTournamentDetails(tournament, playerService.getPlayers());
     }
 
-    public List<String> getResult(Tournament tournament) throws IOException {
+    public List<Match> getResult(Tournament tournament) throws IOException {
         return tournamentListCache.getTournamentResult(tournament);
     }
 }

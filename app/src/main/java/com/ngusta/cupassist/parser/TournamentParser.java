@@ -3,6 +3,7 @@ package com.ngusta.cupassist.parser;
 import com.google.common.collect.HashMultimap;
 
 import com.ngusta.cupassist.domain.Clazz;
+import com.ngusta.cupassist.domain.Match;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Team;
 
@@ -217,23 +218,26 @@ public class TournamentParser {
         return maxNumberOfTeamsMap;
     }
 
-    public List<String> parseMatches(String source) {
+    public List<Match> parseMatches(String source) {
         Document document = Jsoup.parse(source);
-        Elements elements = document.select("div.g-kamper table tr:gt(0)");
+        Elements elements = document.select("div[x-show=display_matches_as_cards] ul li");
 
-        List<String> matches = new ArrayList<>();
+        List<Match> matches = new ArrayList<>();
 
         for (Element match : elements) {
-            Element matchNumber = match.child(0);
-            //Element time = match.child(1);
-            //Element clazz = match.child(2);
-            Element teamA = match.child(3);
-            Element teamB = match.child(5);
-            Element result = match.child(6);
-            //Element court = match.child(7);
-            //Element referee = match.child(8);
-
-            matches.add(teamA.text() + " - " + teamB.text() + " " + result.text());
+            if (match.child(0).text().equalsIgnoreCase("No matches available")) {
+                break;
+            }
+            String matchNumber = match.child(0).child(0).child(0).child(0).child(0).text();
+            String matchType = match.child(0).child(0).child(0).child(0).child(1).text();
+            if (matchType.isEmpty()) {
+                matchType = match.child(0).child(0).child(1).child(0).child(0).child(1).text();
+            }
+            String clazz = match.child(0).child(0).child(1).child(0).child(0).child(0).text();
+            String teamA = match.child(0).child(0).child(3).child(0).child(0).text();
+            String teamB = match.child(0).child(0).child(3).child(1).child(0).text();
+            String result = match.child(0).child(0).child(4).text();
+            matches.add(new Match(matchNumber, matchType, clazz, teamA, teamB, result));
         }
         return matches;
     }

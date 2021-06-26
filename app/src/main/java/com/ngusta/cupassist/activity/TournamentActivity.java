@@ -1,13 +1,5 @@
 package com.ngusta.cupassist.activity;
 
-import com.ngusta.cupassist.R;
-import com.ngusta.cupassist.adapters.TeamAdapter;
-import com.ngusta.cupassist.adapters.TournamentListAdapter;
-import com.ngusta.cupassist.domain.Player;
-import com.ngusta.cupassist.domain.Team;
-import com.ngusta.cupassist.domain.Tournament;
-import com.ngusta.cupassist.io.TournamentListCache;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,8 +22,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ngusta.cupassist.R;
+import com.ngusta.cupassist.adapters.TeamAdapter;
+import com.ngusta.cupassist.adapters.TournamentListAdapter;
+import com.ngusta.cupassist.domain.Match;
+import com.ngusta.cupassist.domain.Player;
+import com.ngusta.cupassist.domain.Team;
+import com.ngusta.cupassist.domain.Tournament;
+import com.ngusta.cupassist.io.TournamentListCache;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.List;
 
 public class TournamentActivity extends AppCompatActivity {
@@ -170,6 +172,7 @@ public class TournamentActivity extends AppCompatActivity {
         menu.findItem(R.id.menu_item_see_result_icon).setEnabled(true).getIcon().setAlpha(255);
         menu.findItem(R.id.menu_item_info).setEnabled(true);
         menu.findItem(R.id.menu_item_see_result).setEnabled(true);
+        menu.findItem(R.id.menu_item_see_result_in_app).setEnabled(true);
     }
 
     private void initClazzSpinner() {
@@ -234,9 +237,9 @@ public class TournamentActivity extends AppCompatActivity {
         menuItem = menu.add(Menu.NONE, R.id.menu_item_ranking_points, Menu.NONE, R.string.see_ranking_points);
         menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
-        //TODO enable
-        //menuItem = menu.add(Menu.NONE, R.id.menu_item_see_result_in_app, Menu.NONE, R.string.see_result_in_app);
-        //menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        menuItem = menu.add(Menu.NONE, R.id.menu_item_see_result_in_app, Menu.NONE, R.string.see_result_in_app)
+                .setEnabled(false);
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         this.menu = menu;
         return true;
     }
@@ -279,14 +282,27 @@ public class TournamentActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_item_see_result_in_app:
                 try {
-                    List<String> matches = ((MyApplication) getApplication()).getTournamentService().getResult(tournament);
+                    List<Match> matches = ((MyApplication) getApplication()).getTournamentService().getResult(tournament);
+                    Collections.sort(matches);
                     String tot = "";
-                    for (String res : matches) {
-                        tot += res + "\n";
+                    for (Match match : matches) {
+                        tot += match.toString() + "\n";
                     }
-                    new AlertDialog.Builder(this)
+                    if (matches.size() == 0) {
+                        tot = "Inga resultat rapporterade.";
+                    }
+                    AlertDialog resultDialog = new AlertDialog.Builder(this)
                             .setMessage(tot)
-                            .show();
+                            .setTitle(R.string.see_result_in_app)
+                            .setNeutralButton(R.string.ok,
+                                    (dialog, which) -> dialog.dismiss())
+                            .create();
+                    resultDialog.setOnShowListener(dialog -> {
+                        TextView message = resultDialog.findViewById(android.R.id.message);
+                        if (message != null) {
+                            message.setTextSize(11);
+                        }});
+                    resultDialog.show();
                     return true;
                 } catch (IOException e) {
                     new AlertDialog.Builder(this)

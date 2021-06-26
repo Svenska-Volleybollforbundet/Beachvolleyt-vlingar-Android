@@ -3,6 +3,7 @@ package com.ngusta.cupassist.io;
 import com.google.common.collect.HashMultimap;
 
 import com.ngusta.cupassist.activity.MyApplication;
+import com.ngusta.cupassist.domain.Match;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Team;
 import com.ngusta.cupassist.domain.Tournament;
@@ -40,7 +41,7 @@ public class TournamentListCache extends Cache<Tournament> {
 
     public static final String PROFIXIO_BASE_RESULT_REPORTING_URL = "https://www.profixio.com/app/matches/summer_slam_2021_ch_03/results-login";
 
-    public static final String PROFIXIO_BASE_RESULT_URL = "https://www.profixio.com/matches/";
+    public static final String PROFIXIO_BASE_RESULT_URL = "https://www.profixio.com/app/matches/";
 
     public static final String PROFIXIO_SIGN_UP_URL = "https://www.profixio.com/pamelding/index.php";
 
@@ -141,15 +142,23 @@ public class TournamentListCache extends Cache<Tournament> {
         return !source.contains(STRING_ONLY_IN_REAL_TOURNAMENT_PAGE);
     }
 
-    public List<String> getTournamentResult(Tournament tournament) throws IOException {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(tournament.getStartDate());
-        String source = sourceCodeRequester.getSourceCode(PROFIXIO_BASE_RESULT_URL + tournament.getUrlName() + "/d/dag/" +
-                calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
-        return tournamentParser.parseMatches(source);
+    public List<Match> getTournamentResult(Tournament tournament) throws IOException {
+        List<Match> allMatches = new ArrayList<>();
+        List<Match> matches;
+        int page = 1;
+        do {
+            String source = sourceCodeRequester.getSourceCode(getResultsUrl(tournament.getUrlName(), page++));
+            matches = tournamentParser.parseMatches(source);
+            allMatches.addAll(matches);
+        } while (matches.size() > 0);
+        return allMatches;
     }
 
     public static String getReportingUrl(String tournamentUrlName) {
         return CUP_ASSIST_TOURNAMENT_URL + tournamentUrlName + "/results-login";
+    }
+
+    public static String getResultsUrl(String tournamentUrlName, int page) {
+        return PROFIXIO_BASE_RESULT_URL + tournamentUrlName + "/latest?page=" + page;
     }
 }
