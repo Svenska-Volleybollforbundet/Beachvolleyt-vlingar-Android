@@ -106,6 +106,22 @@ public class CompetitionPeriod implements Serializable {
     };
 
     private static final CompetitionPeriod[] COMPETITION_PERIODS_NEXT_YEAR = {
+            new CompetitionPeriod(1, "TP 01", "2022-01-01", "2022-03-27"),
+            new CompetitionPeriod(2, "TP 02", "2022-03-28", "2022-05-15"),
+            new CompetitionPeriod(3, "TP 03", "2022-05-16", "2022-05-29"),
+            new CompetitionPeriod(4, "TP 04", "2022-05-30", "2022-06-05"),
+            new CompetitionPeriod(5, "TP 05", "2022-06-06", "2022-06-12"),
+            new CompetitionPeriod(6, "TP 06", "2022-06-13", "2022-06-26"),
+            new CompetitionPeriod(7, "TP 07", "2022-06-27", "2022-07-03"),
+            new CompetitionPeriod(8, "TP 08", "2022-07-04", "2022-07-10"),
+            new CompetitionPeriod(9, "TP 09", "2022-07-11", "2022-07-17"),
+            new CompetitionPeriod(10, "TP 10", "2022-07-18", "2022-07-24"),
+            new CompetitionPeriod(11, "TP 11", "2022-07-25", "2022-08-07"),
+            new CompetitionPeriod(12, "TP 12", "2022-08-08", "2022-08-14"),
+            new CompetitionPeriod(13, "TP 13", "2022-08-15", "2022-08-21"),
+            new CompetitionPeriod(14, "TP 14", "2022-08-22", "2022-09-04"),
+            new CompetitionPeriod(15, "TP 15", "2022-09-05", "2022-10-16"),
+            new CompetitionPeriod(16, "TP 16", "2022-10-17", "2022-12-31"),
     };
 
     private int periodNumber;
