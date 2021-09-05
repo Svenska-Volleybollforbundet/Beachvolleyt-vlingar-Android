@@ -103,7 +103,7 @@ public class PlayerResults implements Serializable {
         TournamentResult(String period, String year, String name, String points) {
             this.period = CompetitionPeriod.findByName(period, Integer.parseInt(year));
             this.name = name;
-            this.points = Integer.parseInt(points.replace(".00", ""));
+            this.points = Integer.parseInt(points.replaceFirst("\\..*", ""));
         }
 
         @Override

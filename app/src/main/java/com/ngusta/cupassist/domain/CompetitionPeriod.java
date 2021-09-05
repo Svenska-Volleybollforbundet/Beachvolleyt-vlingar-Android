@@ -9,7 +9,6 @@ import java.util.GregorianCalendar;
 
 public class CompetitionPeriod implements Serializable {
 
-
     private static final CompetitionPeriod[] COMPETITION_PERIODS_PREVIOUS_YEARS = {
             new CompetitionPeriod(1, "TP 01", "2016-01-01", "2016-04-03"),
             new CompetitionPeriod(2, "TP 02", "2016-04-04", "2016-05-22"),
