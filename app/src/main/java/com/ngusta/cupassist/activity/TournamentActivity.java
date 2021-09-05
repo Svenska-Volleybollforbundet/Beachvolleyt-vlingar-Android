@@ -26,6 +26,7 @@ import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.adapters.TeamAdapter;
 import com.ngusta.cupassist.adapters.TournamentListAdapter;
 import com.ngusta.cupassist.domain.Match;
+import com.ngusta.cupassist.domain.MatchType;
 import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.Team;
 import com.ngusta.cupassist.domain.Tournament;
@@ -33,7 +34,10 @@ import com.ngusta.cupassist.io.TournamentListCache;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class TournamentActivity extends AppCompatActivity {
@@ -284,9 +288,23 @@ public class TournamentActivity extends AppCompatActivity {
                 try {
                     List<Match> matches = ((MyApplication) getApplication()).getTournamentService().getResult(tournament);
                     Collections.sort(matches);
-                    String tot = "";
+                    HashMap<MatchType, ArrayList<Match>> matchesByType = new HashMap<>();
+                    HashSet<MatchType> matchTypes = new HashSet<>();
                     for (Match match : matches) {
-                        tot += match.toString() + "\n";
+                        if (matchesByType.get(match.getType()) == null) {
+                            matchesByType.put(match.getType(), new ArrayList<>());
+                            matchTypes.add(match.getType());
+                        }
+                        matchesByType.get(match.getType()).add(match);
+                    }
+                    ArrayList<MatchType> uniqueMatchTypes = new ArrayList<>(matchTypes);
+                    Collections.sort(uniqueMatchTypes);
+                    String tot = "";
+                    for (MatchType matchType : uniqueMatchTypes) {
+                        tot += "\n" + matchType + "\n";
+                        for (Match match : matchesByType.get(matchType)) {
+                            tot += match.toString() + "\n";
+                        }
                     }
                     if (matches.size() == 0) {
                         tot = "Inga resultat rapporterade.";

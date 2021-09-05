@@ -234,11 +234,28 @@ public class TournamentParser {
                 matchType = match.child(0).child(0).child(1).child(0).child(0).child(1).text();
             }
             String clazz = match.child(0).child(0).child(1).child(0).child(0).child(0).text();
-            String teamA = match.child(0).child(0).child(3).child(0).child(0).text();
-            String teamB = match.child(0).child(0).child(3).child(1).child(0).text();
-            String result = match.child(0).child(0).child(4).text();
-            matches.add(new Match(matchNumber, matchType, clazz, teamA, teamB, result));
+            String teamA = getTeamA(match);
+            String teamB = getTeamB(match);
+            String setResult = match.child(0).child(0).child(2).child(1).child(1).text();
+            String pointResult = match.child(0).child(0).child(4).text();
+            matches.add(new Match(matchNumber, matchType, clazz, teamA, teamB, setResult, pointResult));
         }
         return matches;
+    }
+
+    private String getTeamA(Element match) {
+        Element e = match.child(0).child(0).child(3).child(0);
+        if (e.children().size() > 0) {
+            return e.child(0).text();
+        }
+        return e.text();
+    }
+
+    private String getTeamB(Element match) {
+        Element e = match.child(0).child(0).child(3).child(1);
+        if (e.children().size() > 0) {
+            return e.child(0).text();
+        }
+        return e.text();
     }
 }
