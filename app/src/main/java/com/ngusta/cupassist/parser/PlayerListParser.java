@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class PlayerListParser {
 
-    public Set<Player> parsePlayerList(String source) {
+    public Set<Player> parsePlayerList(String source, boolean mixed) {
         Set<Player> players = new HashSet<>();
         Document document = Jsoup.parse(source);
         Elements tableRows = document.select("table:nth-of-type(2) tbody tr");
@@ -22,7 +22,7 @@ public class PlayerListParser {
         }
 
         for (Element tableRow : tableRows) {
-            Player player = createPlayer(tableRow);
+            Player player = createPlayer(tableRow, mixed);
             if (player != null) {
                 players.add(player);
             }
@@ -31,7 +31,7 @@ public class PlayerListParser {
         return players;
     }
 
-    private Player createPlayer(Element tableRow) {
+    private Player createPlayer(Element tableRow, boolean mixed) {
         if (isHeaderForPlayersWithoutLicense(tableRow)) {
             return null;
         }
@@ -53,9 +53,8 @@ public class PlayerListParser {
         }
         String lastName = name[0].trim();
         String club = tableRow.child(2).text();
-        int rankPoints = Integer.parseInt(tableRow.child(3).text());
-        int entryPoints = Integer.parseInt(tableRow.child(3).text());
-        return new Player(rank, firstName, lastName, club, rankPoints, entryPoints, playerId);
+        int points = mixed ? Integer.parseInt(tableRow.child(4).text().replaceFirst("\\(", "").replaceFirst(" .*", "")) : Integer.parseInt(tableRow.child(3).text());
+        return new Player(rank, firstName, lastName, club, points, points, playerId);
     }
 
     private boolean isHeaderForPlayersWithoutLicense(Element tableRow) {
