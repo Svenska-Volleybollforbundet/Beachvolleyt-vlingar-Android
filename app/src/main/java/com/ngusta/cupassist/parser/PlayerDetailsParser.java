@@ -15,6 +15,11 @@ import java.util.Locale;
 
 public class PlayerDetailsParser {
 
+    public enum ParseMode {
+        ALL_RESULTS,
+        ONLY_MIXED
+    }
+
     private static final SimpleDateFormat BIRTH_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     private static final SimpleDateFormat ID_FORMAT = new SimpleDateFormat("ddMMyy", Locale.getDefault());
@@ -64,13 +69,16 @@ public class PlayerDetailsParser {
         return String.valueOf(age);
     }
 
-    public PlayerResults parseResults(String source) {
+    public PlayerResults parseResults(String source, ParseMode parseMode) {
         PlayerResults playerResults = new PlayerResults();
         Document document = Jsoup.parse(source);
         Element table = document.child(0).getElementsByTag("body").get(0).getElementsByTag("table").get(0);
         if (!table.children().isEmpty()) {
             Elements resultRows = table.child(0).children();
             for (Element resultRow : resultRows) {
+                if (ignoreNonMixedResults(resultRow, parseMode)) {
+                    continue;
+                }
                 String tp = resultRow.child(0).text();
                 String year = resultRow.child(1).text();
                 String tournamentName = resultRow.child(2).text();
@@ -79,5 +87,9 @@ public class PlayerDetailsParser {
             }
         }
         return playerResults;
+    }
+
+    private boolean ignoreNonMixedResults(Element resultRow, ParseMode parseMode) {
+        return parseMode == ParseMode.ONLY_MIXED && !resultRow.child(4).text().startsWith("(M");
     }
 }

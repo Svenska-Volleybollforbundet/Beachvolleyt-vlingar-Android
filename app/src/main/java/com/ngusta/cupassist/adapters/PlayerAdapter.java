@@ -112,42 +112,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerHold
                 Player player = players.get(position);
                 playerService.updatePlayerWithDetailsAndResults(player);
                 PlayerActivity.startActivity(context, player);
-                //showPlayerInfoDialog(player);
             }
-        }
-
-        private void showPlayerInfoDialog(Player player) {
-            AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-            if (player.getAge() != null) {
-                alertDialog.setTitle(player.getName() + " (" + player.getAge() + " år, " + player.getClub() + ")");
-            } else {
-                alertDialog.setTitle(player.getName() + " (" + player.getClub() + ")");
-            }
-            int calculatedEntryForCurrentPeriod = player.getResults().getEntryForPeriod(CompetitionPeriod.findPeriodByDate(new Date()));
-            alertDialog.setMessage(
-                    "Entry: " + player.getEntryPoints() +
-                            (player.getEntryPoints() != calculatedEntryForCurrentPeriod ? " (" + calculatedEntryForCurrentPeriod + " calculated)\n"
-                                    : "\n") +
-                            "SM-entry: " + player.getResults().getEntryForPeriod(CompetitionPeriod.COMPETITION_PERIODS[10]) + "\n\n" +
-                            "Resultat:\n" +
-                            PlayerResults.print(player.getResults().getTournamentResults()) + "\n\n" +
-                            "Mixedresultat:\n" +
-                            PlayerResults.print(player.getMixedResults().getTournamentResults()));
-            /*"Klubb: " + player.getClub() +
-                            "\nEntryranking: " + player.getEntryRank() +
-                            "\nEntrypoäng: " + player.getEntryPoints(player.getClazz()) +
-                            "\nRankingpoäng: " + player.getRankingPoints(player.getClazz()) +
-                            "\nMixedentryranking: " + player.getMixedEntryRank() +
-                            "\nMixedentrypoäng: " + player.getEntryPoints(Clazz.MIXED) +
-                            "\nMixedrankingpoäng: " + player.getRankingPoints(Clazz.MIXED));
-                            */
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alertDialog.show();
         }
     }
 }

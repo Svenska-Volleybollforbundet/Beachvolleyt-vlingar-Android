@@ -8,6 +8,7 @@ import com.ngusta.cupassist.domain.Player;
 import com.ngusta.cupassist.domain.PlayerList;
 import com.ngusta.cupassist.domain.PlayerResults;
 import com.ngusta.cupassist.parser.PlayerDetailsParser;
+import com.ngusta.cupassist.parser.PlayerDetailsParser.ParseMode;
 import com.ngusta.cupassist.parser.PlayerListParser;
 
 import android.content.Context;
@@ -156,13 +157,13 @@ public class PlayerListDownloader {
             if (!player.isOnlyMixedPlayer()) {
                 String source = sourceCodeRequester.getSourceCodePost(CUP_ASSIST_PLAYER_DETAILS_URL, data);
                 player.setAge(playerDetailsParser.parseAge(source));
-                playerResults = playerDetailsParser.parseResults(source);
+                playerResults = playerDetailsParser.parseResults(source, ParseMode.ALL_RESULTS);
             }
             player.setResults(playerResults);
 
             data.put("klasse", "M");
             String source = sourceCodeRequester.getSourceCodePost(CUP_ASSIST_PLAYER_DETAILS_URL, data);
-            player.setMixedResults(playerDetailsParser.parseResults(source));
+            player.setMixedResults(playerDetailsParser.parseResults(source, ParseMode.ONLY_MIXED));
             return true;
         } catch (IOException e) {
             e.printStackTrace();
