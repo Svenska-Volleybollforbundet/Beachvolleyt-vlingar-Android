@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -223,36 +224,38 @@ public class TournamentParser {
         Elements elements = document.select("div[x-show=display_matches_as_cards] ul li");
 
         List<Match> matches = new ArrayList<>();
-
-        for (Element match : elements) {
-            if (match.child(0).text().equalsIgnoreCase("No matches available")) {
-                break;
+        try {
+            for (Element match : elements) {
+                if (match.child(0).text().equalsIgnoreCase("No matches available")) {
+                    break;
+                }
+                Element allContent = match.child(0).child(0);
+                String[] matchNumberAndType = allContent.child(0).child(0).child(0).text().trim().split(" ");
+                String matchNumber = matchNumberAndType[0];
+                String matchType = matchNumberAndType.length >= 2 ? matchNumberAndType[1] : allContent.child(0).child(0).child(1).child(1).text();
+                String clazz = allContent.child(0).child(0).child(1).child(0).text().trim();
+                String teamA = getTeamA(allContent);
+                String teamB = getTeamB(allContent);
+                String setResult = allContent.child(1).child(1).child(1).text();
+                String pointResult = allContent.child(3).text();
+                matches.add(new Match(matchNumber, matchType, clazz, teamA, teamB, setResult, pointResult));
             }
-            String matchNumber = match.child(0).child(0).child(0).child(0).child(0).text();
-            String matchType = match.child(0).child(0).child(0).child(0).child(1).text();
-            if (matchType.isEmpty()) {
-                matchType = match.child(0).child(0).child(1).child(0).child(0).child(1).text();
-            }
-            String clazz = match.child(0).child(0).child(1).child(0).child(0).child(0).text();
-            String teamA = getTeamA(match);
-            String teamB = getTeamB(match);
-            String setResult = match.child(0).child(0).child(2).child(1).child(1).text();
-            String pointResult = match.child(0).child(0).child(4).text();
-            matches.add(new Match(matchNumber, matchType, clazz, teamA, teamB, setResult, pointResult));
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("Result parsing broken");
         }
         return matches;
     }
 
-    private String getTeamA(Element match) {
-        Element e = match.child(0).child(0).child(3).child(0);
+    private String getTeamA(Element allContent) {
+        Element e = allContent.child(2).child(0);
         if (e.children().size() > 0) {
             return e.child(0).text();
         }
         return e.text();
     }
 
-    private String getTeamB(Element match) {
-        Element e = match.child(0).child(0).child(3).child(1);
+    private String getTeamB(Element allContent) {
+        Element e = allContent.child(2).child(1);
         if (e.children().size() > 0) {
             return e.child(0).text();
         }

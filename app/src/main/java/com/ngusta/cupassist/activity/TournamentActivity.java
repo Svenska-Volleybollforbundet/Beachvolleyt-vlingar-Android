@@ -307,7 +307,7 @@ public class TournamentActivity extends AppCompatActivity {
                         }
                     }
                     if (matches.size() == 0) {
-                        tot = "Inga resultat rapporterade.";
+                        tot = "Inga resultat rapporterade (eller så har profixio gjort om hur de visar matchresultat igen...)";
                     }
                     AlertDialog resultDialog = new AlertDialog.Builder(this)
                             .setMessage(tot)
