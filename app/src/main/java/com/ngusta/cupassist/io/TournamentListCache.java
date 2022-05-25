@@ -22,10 +22,10 @@ import java.util.List;
 public class TournamentListCache extends Cache<Tournament> {
 
     private static final String CUP_ASSIST_TOURNAMENT_LIST_URL
-            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=64&vis_gamle_arr=true";
+            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=69&vis_gamle_arr=true";
 
     public static final String CUP_ASSIST_TOURNAMENT_LIST_URL_WITHOUT_OLD_TOURNAMENTS
-            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=64&vis_gamle_arr=false";
+            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=69&vis_gamle_arr=false";
 
     public static final String CUP_ASSIST_BASE_URL = "https://www.profixio.com/";
 

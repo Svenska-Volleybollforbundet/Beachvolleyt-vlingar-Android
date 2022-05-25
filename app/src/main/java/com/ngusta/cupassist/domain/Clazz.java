@@ -6,7 +6,7 @@ import java.util.List;
 public enum Clazz {
     MEN("Herr"), WOMEN("Dam"), MIXED("Mixed"),
     D23("U23 D"), H23("H23 H"),
-    F19("U19 F"), P19("U19 P"),
+    F19("U19 F"), P19("U19 P"), M19("U19 M"),
     F18("U18 F"), P18("U18 P"), M18("U18 M"),
     F17("U17 F"), P17("U17 P"), M17("U17 M"),
     F16("U16 F"), P16("U16 P"), M16("U16 M"),
@@ -60,6 +60,8 @@ public enum Clazz {
                 return F19;
             case "U19 P":
                 return P19;
+            case "U19 M":
+                return M19;
             case "U18 F":
                 return F18;
             case "U18 P":
