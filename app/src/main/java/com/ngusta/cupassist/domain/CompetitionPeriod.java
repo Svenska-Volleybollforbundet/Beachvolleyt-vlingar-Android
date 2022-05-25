@@ -234,7 +234,7 @@ public class CompetitionPeriod implements Serializable {
             case 2020: //Covid year
                 return 12;
             case 2021:
-                throw new UnsupportedOperationException("Need to add number of competition periods for 2021");
+                return 13;
             default:
                 return 16; //Normal year
         }

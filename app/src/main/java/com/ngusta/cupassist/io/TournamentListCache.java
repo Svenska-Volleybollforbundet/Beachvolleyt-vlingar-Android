@@ -41,11 +41,11 @@ public class TournamentListCache extends Cache<Tournament> {
 
     public static final String PROFIXIO_BASE_RESULT_REPORTING_URL = "https://www.profixio.com/app/matches/summer_slam_2021_ch_03/results-login";
 
-    public static final String PROFIXIO_BASE_RESULT_URL = "https://www.profixio.com/app/matches/";
+    public static final String PROFIXIO_BASE_RESULT_URL = "https://www.profixio.com/app/";
 
     public static final String PROFIXIO_SIGN_UP_URL = "https://www.profixio.com/pamelding/index.php";
 
-    private static final String PROFIXIO_BASE_REGISTRATION_URL = "https://www.profixio.com/app/matches/";
+    private static final String PROFIXIO_BASE_REGISTRATION_URL = "https://www.profixio.com/app/";
 
     private static final String PROFIXIO_ENDING_REGISTRATION_URL = "/teams";
 

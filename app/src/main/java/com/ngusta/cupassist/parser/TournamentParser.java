@@ -100,7 +100,7 @@ public class TournamentParser {
 
 
     private Team newProfixioReadTeam(Element listItem, HashMultimap<String, Player> allPlayers) {
-        Element teamData = listItem.select("a:not([class])").first();
+        Element teamData = listItem.select("div:not([class])").get(1);
         String[] names = teamData.child(0).child(0).text().replace("Waiting list", "").split("[,/]");
 
         if (names.length < 2 || names.length > 4) {
@@ -112,8 +112,8 @@ public class TournamentParser {
         Clazz clazz = Clazz.parse(teamData.child(1).child(1).child(0).text());
         int teamEntry, playerAEntry, playerBEntry;
         try {
-            String entryText = teamData.child(1).child(0).child(1).child(0).child(0).text();
-            teamEntry = Integer.parseInt(entryText.replaceAll(" points.*", ""));
+            String entryText = teamData.child(1).child(1).child(1).child(0).child(1).text();
+            teamEntry = Integer.parseInt(entryText.replaceAll(" \\(.*", ""));
             playerAEntry = Integer.parseInt(entryText.replaceAll(".* \\(", "").replaceAll("/.*", ""));
             playerBEntry = Integer.parseInt(entryText.replaceAll(".*/", "").replaceAll("\\).*", ""));
         } catch (NumberFormatException nfe) {
@@ -140,7 +140,7 @@ public class TournamentParser {
         String playerALastName = names[0].trim();
         Player playerA = findPlayer(allPlayers, playerAFirstName, playerALastName, playerAClub, playerAEntry);
 
-        boolean paid = !"NOT PAID".equalsIgnoreCase(teamData.child(1).child(0).child(1).child(1).text());
+        boolean paid = "PAID".equalsIgnoreCase(teamData.child(1).child(0).child(1).text());
         if (names.length == 4) {
             String playerBFirstName = names[3].trim();
             playerBFirstName = excludeParenthesisFromName(playerBFirstName);
@@ -249,7 +249,8 @@ public class TournamentParser {
     private String getTeamA(Element allContent) {
         Element e = allContent.child(2).child(0);
         if (e.children().size() > 0) {
-            return e.child(0).text();
+            int secondPersonIndex = e.child(0).children().size() == 3 ? 1 : 2;
+            return e.child(0).child(0).text() + "/" + e.child(0).child(secondPersonIndex).text();
         }
         return e.text();
     }
@@ -257,7 +258,8 @@ public class TournamentParser {
     private String getTeamB(Element allContent) {
         Element e = allContent.child(2).child(1);
         if (e.children().size() > 0) {
-            return e.child(0).text();
+            int secondPersonIndex = e.child(0).children().size() == 3 ? 1 : 2;
+            return e.child(0).child(0).text() + "/" + e.child(0).child(secondPersonIndex).text();
         }
         return e.text();
     }
