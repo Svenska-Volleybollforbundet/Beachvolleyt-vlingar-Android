@@ -35,14 +35,16 @@ public class Player implements Serializable {
         this.club = playerClub;
     }
 
-    public Player(Integer rank, String firstName, String lastName, String club, int rankingPoints, int entryPoints, String playerId) {
+    public Player(Integer rank, String firstName, String lastName, String club, int rankingPoints, int entryPoints, String playerId, String clazz) {
         this.rank = rank;
+        this.entryRank = rank;
         this.firstName = firstName;
         this.lastName = lastName;
         this.club = club;
         this.rankingPoints = rankingPoints;
         this.entryPoints = entryPoints;
         this.playerId = playerId;
+        this.clazz = Clazz.parse(clazz);
     }
 
     public String getName() {

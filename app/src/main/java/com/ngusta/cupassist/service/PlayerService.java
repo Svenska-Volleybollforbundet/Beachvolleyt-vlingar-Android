@@ -24,7 +24,7 @@ public class PlayerService {
     }
 
     public void clearPlayers() {
-        playerListDownloader.clearPayers();
+        playerListDownloader.clearPlayers();
     }
 
     public boolean updatePlayerWithDetailsAndResults(Player player) {
