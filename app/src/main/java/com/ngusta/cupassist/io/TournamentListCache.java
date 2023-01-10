@@ -35,25 +35,19 @@ public class TournamentListCache extends Cache<Tournament> {
     private static final String CUP_ASSIST_TOURNAMENT_PLAYERS_URL
             = "https://www.profixio.com/pamelding/vis_paamelding.php?order=ep";
 
-    private static final String CUP_ASSIST_TOURNAMENT_INFO_URL = "https://www.profixio.com/fx/vis_innbydelse.php?ib_id=";
-
     private static final String STRING_ONLY_IN_REAL_TOURNAMENT_PAGE = "evenemang";
 
-    public static final String PROFIXIO_BASE_RESULT_REPORTING_URL = "https://www.profixio.com/app/matches/summer_slam_2021_ch_03/results-login";
-
     public static final String PROFIXIO_BASE_RESULT_URL = "https://www.profixio.com/app/";
-
-    public static final String PROFIXIO_SIGN_UP_URL = "https://www.profixio.com/pamelding/index.php";
 
     private static final String PROFIXIO_BASE_REGISTRATION_URL = "https://www.profixio.com/app/";
 
     private static final String PROFIXIO_ENDING_REGISTRATION_URL = "/teams";
 
     public static final String COMPETITION_REGULATIONS_URL
-            = "https://www.volleyboll.se/globalassets/svenska-volleybollforbundet-svensk-volleyboll/dokumentbank/beachvolley/tb-bv-2021/tavlingsbestammelser-beachvolley-2021_uppdaterat-20210328.pdf";
+            = "https://www.volleyboll.se/download/18.dab8d611848dea8e05663e0/1669043875556/tavlingsbestammelser-beachvolley-2023.pdf";
 
     public static final String RULES_URL
-            = "http://www.fivb.org/EN/BeachVolleyball/Document_Refereeing/FIVB-BeachVolleyball_Rules_2017-2020-EN-v05.pdf";
+            = "https://www.fivb.com/-/media/2022/coorporate/volleyball/rules%202021-2024/fivb-beachvolleyball_rules2021_2024-en-v01d.pdf?la=en&hash=22B1948796DE4F9D5E0927DFF1E2E72B";
 
     private TournamentList tournamentList;
 
@@ -61,11 +55,11 @@ public class TournamentListCache extends Cache<Tournament> {
 
     private Context context;
 
-    private TournamentListParser tournamentListParser;
+    private final TournamentListParser tournamentListParser;
 
-    private TournamentParser tournamentParser;
+    private final TournamentParser tournamentParser;
 
-    private SourceCodeRequester sourceCodeRequester;
+    private final SourceCodeRequester sourceCodeRequester;
 
     public TournamentListCache(Context context) {
         this();
