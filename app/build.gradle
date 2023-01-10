@@ -9,8 +9,8 @@ android {
         versionName '2.9'
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     buildTypes {
         release {
@@ -28,8 +28,8 @@ android {
 
 dependencies {
     implementation 'org.jsoup:jsoup:1.13.1'
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
