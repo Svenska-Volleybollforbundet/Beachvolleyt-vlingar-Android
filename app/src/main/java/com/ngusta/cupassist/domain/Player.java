@@ -93,14 +93,14 @@ public class Player implements Serializable {
 
     public int getEntryPoints(Clazz clazz) {
         if (clazz == Clazz.MIXED) {
-            return (int) Math.round(entryPoints * 0.1) + mixedEntryPoints;
+            return mixedEntryPoints;
         }
         return entryPoints;
     }
 
     public int getRankingPoints(Clazz clazz) {
         if (clazz == Clazz.MIXED) {
-            return (int) Math.round(rankingPoints * 0.1) + mixRankingPoints;
+            return mixRankingPoints;
         }
         return rankingPoints;
     }

@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -84,6 +85,7 @@ public class PlayerListDownloader {
                 if (foundPlayer != null) {
                     foundPlayer.setMixedEntryPoints(mixPlayer.getEntryPoints());
                     foundPlayer.setMixRankingPoints(mixPlayer.getRankingPoints());
+                    foundPlayer.setMixedEntryRank(mixPlayer.getEntryRank());
                 } else {
                     mixPlayer.setMixedEntryPoints(mixPlayer.getEntryPoints());
                     mixPlayer.setMixRankingPoints(mixPlayer.getRankingPoints());
