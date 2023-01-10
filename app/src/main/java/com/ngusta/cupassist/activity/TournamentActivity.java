@@ -7,9 +7,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,7 +75,6 @@ public class TournamentActivity extends AppCompatActivity {
         mTeamList = findViewById(R.id.teamList);
         setListShown(false, false);
         initInfo();
-        makeActionOverflowMenuShown();
         new RequestTournamentDetailsTask().execute();
     }
 
@@ -129,18 +128,6 @@ public class TournamentActivity extends AppCompatActivity {
                 TournamentListAdapter.getLevelIndicatorResource(tournament))));
         ((TextView) findViewById(R.id.club)).setText(tournament.getClub());
         ((TextView) findViewById(R.id.start_date)).setText(tournament.getFormattedStartDate());
-    }
-
-    private void makeActionOverflowMenuShown() {
-        try {
-            ViewConfiguration config = ViewConfiguration.get(this);
-            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-            if (menuKeyField != null) {
-                menuKeyField.setAccessible(true);
-                menuKeyField.setBoolean(config, false);
-            }
-        } catch (Exception e) {
-        }
     }
 
     private class RequestTournamentDetailsTask extends AsyncTask<Void, String, Exception> {

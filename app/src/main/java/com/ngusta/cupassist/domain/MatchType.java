@@ -1,6 +1,7 @@
 package com.ngusta.cupassist.domain;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import static java.lang.Integer.compare;
 
@@ -44,6 +45,7 @@ public class MatchType implements Comparable<MatchType> {
         return -1;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return clazz + "-" + type;

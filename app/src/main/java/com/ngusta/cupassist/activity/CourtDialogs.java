@@ -11,7 +11,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.InputType;
 import android.util.TypedValue;
 import android.view.View;
@@ -38,13 +38,10 @@ public class CourtDialogs {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.edit_help_title)
                 .setMessage(R.string.edit_help)
-                .setNeutralButton(R.string.do_not_show_again, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putBoolean(PREFERENCES_SEEN_EDIT_INFO_MESSAGE, true);
-                        editor.apply();
-                    }
+                .setNeutralButton(R.string.do_not_show_again, (dialog, which) -> {
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean(PREFERENCES_SEEN_EDIT_INFO_MESSAGE, true);
+                    editor.apply();
                 })
                 .setPositiveButton(R.string.ok, null)
                 .create()
@@ -56,20 +53,12 @@ public class CourtDialogs {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.confirm_move_title)
                 .setMessage(R.string.confirm_move_message)
-                .setPositiveButton(R.string.move, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        tag.court.setLat(marker.getPosition().latitude);
-                        tag.court.setLng(marker.getPosition().longitude);
-                        courtService.updateCourt(tag.key, tag.court);
-                    }
+                .setPositiveButton(R.string.move, (dialog, which) -> {
+                    tag.court.setLat(marker.getPosition().latitude);
+                    tag.court.setLng(marker.getPosition().longitude);
+                    courtService.updateCourt(tag.key, tag.court);
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        marker.setPosition(new LatLng(tag.court.getLat(), tag.court.getLng()));
-                    }
-                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> marker.setPosition(new LatLng(tag.court.getLat(), tag.court.getLng())))
                 .create()
                 .show();
     }
@@ -87,48 +76,36 @@ public class CourtDialogs {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.edit_marker_info_title)
-                .setMultiChoiceItems(booleanProperties, valuesOfBooleanProperties, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        valuesOfBooleanProperties[which] = isChecked;
-                    }
-                })
+                .setMultiChoiceItems(booleanProperties, valuesOfBooleanProperties,
+                        (dialog, which, isChecked) -> valuesOfBooleanProperties[which] = isChecked)
                 .setView(createEditBoxesLayout(context, tag, titleBox, numberOfCourtsBox, descriptionBox, linkBox))
                 .setPositiveButton(R.string.save, null)
                 .setNegativeButton(R.string.cancel, null)
-                .setNeutralButton(R.string.delete_court, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        createConfirmDeleteMarkerDialog(context, courtService, tag.key);
-                    }
-                });
+                .setNeutralButton(R.string.delete_court, (dialog, which) -> createConfirmDeleteMarkerDialog(context, courtService, tag.key));
 
         final AlertDialog dialog = builder.create();
         dialog.show();
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String linkText = linkBox.getText().toString().toLowerCase();
-                String numCourts = numberOfCourtsBox.getText().toString();
-                if (!linkText.isEmpty() && !(linkText.startsWith("http://") || linkText.startsWith("https://"))) {
-                    Toast.makeText(context, R.string.link_validation_message, Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (!numCourts.isEmpty() && !numCourts.matches("[0-9]|[1-9][0-9]")) {
-                    Toast.makeText(context, R.string.num_courts_validation_message, Toast.LENGTH_LONG).show();
-                    return;
-                }
-                tag.court.setHasNet(valuesOfBooleanProperties[0]);
-                tag.court.setHasLines(valuesOfBooleanProperties[1]);
-                tag.court.setHasAntennas(valuesOfBooleanProperties[2]);
-                tag.court.setTitle(titleBox.getText().toString());
-                tag.court.setNumCourts(numCourts.isEmpty() ? 0 : Integer.parseInt(numCourts));
-                tag.court.setDescription(descriptionBox.getText().toString());
-                tag.court.setLink(linkText.isEmpty() ? null : linkText);
-                courtService.updateCourt(tag.key, tag.court);
-                marker.showInfoWindow();
-                dialog.dismiss();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String linkText = linkBox.getText().toString().toLowerCase();
+            String numCourts = numberOfCourtsBox.getText().toString();
+            if (!linkText.isEmpty() && !(linkText.startsWith("http://") || linkText.startsWith("https://"))) {
+                Toast.makeText(context, R.string.link_validation_message, Toast.LENGTH_LONG).show();
+                return;
             }
+            if (!numCourts.isEmpty() && !numCourts.matches("[0-9]|[1-9][0-9]")) {
+                Toast.makeText(context, R.string.num_courts_validation_message, Toast.LENGTH_LONG).show();
+                return;
+            }
+            tag.court.setHasNet(valuesOfBooleanProperties[0]);
+            tag.court.setHasLines(valuesOfBooleanProperties[1]);
+            tag.court.setHasAntennas(valuesOfBooleanProperties[2]);
+            tag.court.setTitle(titleBox.getText().toString());
+            tag.court.setNumCourts(numCourts.isEmpty() ? 0 : Integer.parseInt(numCourts));
+            tag.court.setDescription(descriptionBox.getText().toString());
+            tag.court.setLink(linkText.isEmpty() ? null : linkText);
+            courtService.updateCourt(tag.key, tag.court);
+            marker.showInfoWindow();
+            dialog.dismiss();
         });
     }
 
@@ -175,12 +152,7 @@ public class CourtDialogs {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.confirm_delete_title)
                 .setMessage(R.string.confirm_delete_message)
-                .setPositiveButton(R.string.delete_court, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        courtService.removeCourt(key);
-                    }
-                })
+                .setPositiveButton(R.string.delete_court, (dialog, which) -> courtService.removeCourt(key))
                 .setNegativeButton(R.string.cancel, null)
                 .create()
                 .show();
@@ -191,12 +163,7 @@ public class CourtDialogs {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.confirm_create_court_title)
                 .setMessage(R.string.confirm_create_message)
-                .setPositiveButton(R.string.create_court, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        courtService.addCourt(latitude, longitude);
-                    }
-                })
+                .setPositiveButton(R.string.create_court, (dialog, which) -> courtService.addCourt(latitude, longitude))
                 .setNegativeButton(R.string.cancel, null)
                 .create()
                 .show();
@@ -210,13 +177,10 @@ public class CourtDialogs {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.courts_feature_title)
                 .setMessage(R.string.courts_feature_description)
-                .setNeutralButton(R.string.do_not_show_again, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putBoolean(PREFERENCES_SEEN_WELCOME_MESSAGE, true);
-                        editor.apply();
-                    }
+                .setNeutralButton(R.string.do_not_show_again, (dialog, which) -> {
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean(PREFERENCES_SEEN_WELCOME_MESSAGE, true);
+                    editor.apply();
                 })
                 .setPositiveButton(R.string.ok, null)
                 .create()

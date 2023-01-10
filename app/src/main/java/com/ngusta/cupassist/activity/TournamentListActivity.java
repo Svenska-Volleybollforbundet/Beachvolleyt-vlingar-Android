@@ -14,8 +14,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -90,8 +90,6 @@ public class TournamentListActivity extends AppCompatActivity implements Adapter
         mRegionsToFilter = TournamentListDialogs.getDefaultRegions(preferences);
         mRegionDialog = TournamentListDialogs.createRegionFilterDialog(this, preferences);
         mShowOldTournaments = true; //Should be false when Feedback fran Samuel: Mojlighet att dolja passerade tavlingar is done
-
-        makeActionOverflowMenuShown();
     }
 
     @Override
@@ -99,19 +97,6 @@ public class TournamentListActivity extends AppCompatActivity implements Adapter
         super.onPostCreate(savedInstanceState);
         commonActivityHelper.syncDrawerToggleState();
     }
-
-    private void makeActionOverflowMenuShown() {
-        try {
-            ViewConfiguration config = ViewConfiguration.get(this);
-            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-            if (menuKeyField != null) {
-                menuKeyField.setAccessible(true);
-                menuKeyField.setBoolean(config, false);
-            }
-        } catch (Exception e) {
-        }
-    }
-
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

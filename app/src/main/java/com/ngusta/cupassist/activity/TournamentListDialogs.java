@@ -103,31 +103,25 @@ public class TournamentListDialogs {
         String[] clazzNames = {"Herr", "Dam", "Mixed", "Ungdom", "Veteran"};
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
         dialogBuilder.setTitle(R.string.show_clazzes)
-                .setMultiChoiceItems(clazzNames, defaultSelected, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (isChecked) {
-                            selectedItemsIndexList.add(which);
-                        } else if (selectedItemsIndexList.contains(which)) {
-                            selectedItemsIndexList.remove(Integer.valueOf(which));
-                        }
+                .setMultiChoiceItems(clazzNames, defaultSelected, (dialog, which, isChecked) -> {
+                    if (isChecked) {
+                        selectedItemsIndexList.add(which);
+                    } else if (selectedItemsIndexList.contains(which)) {
+                        selectedItemsIndexList.remove(Integer.valueOf(which));
                     }
                 })
-                .setPositiveButton(R.string.show, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        ArrayList<Clazz> clazzesToFilter = new ArrayList<>();
-                        HashSet<String> clazzIndexesToSave = new HashSet<>();
-                        for (Integer selectedClazzIndex : selectedItemsIndexList) {
-                            clazzIndexesToSave.add(selectedClazzIndex.toString());
-                            addClazzesFromIndex(clazzesToFilter, selectedClazzIndex);
-                        }
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putStringSet(CLAZZ_PREFERENCES_KEY, clazzIndexesToSave);
-                        editor.apply();
-                        activity.setClazzesToFilter(clazzesToFilter);
-                        activity.updateList();
+                .setPositiveButton(R.string.show, (dialog, id) -> {
+                    ArrayList<Clazz> clazzesToFilter = new ArrayList<>();
+                    HashSet<String> clazzIndexesToSave = new HashSet<>();
+                    for (Integer selectedClazzIndex : selectedItemsIndexList) {
+                        clazzIndexesToSave.add(selectedClazzIndex.toString());
+                        addClazzesFromIndex(clazzesToFilter, selectedClazzIndex);
                     }
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putStringSet(CLAZZ_PREFERENCES_KEY, clazzIndexesToSave);
+                    editor.apply();
+                    activity.setClazzesToFilter(clazzesToFilter);
+                    activity.updateList();
                 });
         return dialogBuilder;
     }
@@ -188,34 +182,28 @@ public class TournamentListDialogs {
             defaultSelected[i] = true;
             selectedItemsIndexList.add(i);
         }
-        String[] levelNames = {"SBT Open grön", "SBT Open svart", "SBT Challenger", "SBT Elit", "Ungdom", "Veteran"};
+        String[] levelNames = {"SBT 1*", "SBT 2*", "SBT 3*", "SBT 4-7*", "Ungdom", "Veteran"};
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
         dialogBuilder.setTitle(R.string.show_levels)
-                .setMultiChoiceItems(levelNames, defaultSelected, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (isChecked) {
-                            selectedItemsIndexList.add(which);
-                        } else if (selectedItemsIndexList.contains(which)) {
-                            selectedItemsIndexList.remove(Integer.valueOf(which));
-                        }
+                .setMultiChoiceItems(levelNames, defaultSelected, (dialog, which, isChecked) -> {
+                    if (isChecked) {
+                        selectedItemsIndexList.add(which);
+                    } else if (selectedItemsIndexList.contains(which)) {
+                        selectedItemsIndexList.remove(Integer.valueOf(which));
                     }
                 })
-                .setPositiveButton(R.string.show, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        ArrayList<Tournament.Level> levelsToFilter = new ArrayList<>();
-                        HashSet<String> levelIndexesToSave = new HashSet<>();
-                        for (Integer selectedLevelIndex : selectedItemsIndexList) {
-                            levelIndexesToSave.add(selectedLevelIndex.toString());
-                            addLevelsFromIndex(levelsToFilter, selectedLevelIndex);
-                        }
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putStringSet(LEVEL_PREFERENCES_KEY, levelIndexesToSave);
-                        editor.apply();
-                        activity.setLevelsToFilter(levelsToFilter);
-                        activity.updateList();
+                .setPositiveButton(R.string.show, (dialog, id) -> {
+                    ArrayList<Tournament.Level> levelsToFilter = new ArrayList<>();
+                    HashSet<String> levelIndexesToSave = new HashSet<>();
+                    for (Integer selectedLevelIndex : selectedItemsIndexList) {
+                        levelIndexesToSave.add(selectedLevelIndex.toString());
+                        addLevelsFromIndex(levelsToFilter, selectedLevelIndex);
                     }
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putStringSet(LEVEL_PREFERENCES_KEY, levelIndexesToSave);
+                    editor.apply();
+                    activity.setLevelsToFilter(levelsToFilter);
+                    activity.updateList();
                 });
         return dialogBuilder;
     }
@@ -268,31 +256,25 @@ public class TournamentListDialogs {
         String[] clazzNames = {"Norr", "\u00D6st", "V\u00E4st", "S\u00F6der"};
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
         dialogBuilder.setTitle(R.string.show_regions)
-                .setMultiChoiceItems(clazzNames, defaultSelected, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (isChecked) {
-                            selectedItemsIndexList.add(which);
-                        } else if (selectedItemsIndexList.contains(which)) {
-                            selectedItemsIndexList.remove(Integer.valueOf(which));
-                        }
+                .setMultiChoiceItems(clazzNames, defaultSelected, (dialog, which, isChecked) -> {
+                    if (isChecked) {
+                        selectedItemsIndexList.add(which);
+                    } else if (selectedItemsIndexList.contains(which)) {
+                        selectedItemsIndexList.remove(Integer.valueOf(which));
                     }
                 })
-                .setPositiveButton(R.string.show, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        ArrayList<Region> regionsToFilter = new ArrayList<>();
-                        HashSet<String> regionIndexesToSave = new HashSet<>();
-                        for (Integer selectedRegionIndex : selectedItemsIndexList) {
-                            regionIndexesToSave.add(selectedRegionIndex.toString());
-                            addRegionsFromIndex(regionsToFilter, selectedRegionIndex);
-                        }
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putStringSet(REGION_PREFERENCES_KEY, regionIndexesToSave);
-                        editor.apply();
-                        activity.setRegionsToFilter(regionsToFilter);
-                        activity.updateList();
+                .setPositiveButton(R.string.show, (dialog, id) -> {
+                    ArrayList<Region> regionsToFilter = new ArrayList<>();
+                    HashSet<String> regionIndexesToSave = new HashSet<>();
+                    for (Integer selectedRegionIndex : selectedItemsIndexList) {
+                        regionIndexesToSave.add(selectedRegionIndex.toString());
+                        addRegionsFromIndex(regionsToFilter, selectedRegionIndex);
                     }
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putStringSet(REGION_PREFERENCES_KEY, regionIndexesToSave);
+                    editor.apply();
+                    activity.setRegionsToFilter(regionsToFilter);
+                    activity.updateList();
                 });
         return dialogBuilder;
     }

@@ -3,15 +3,14 @@ package com.ngusta.cupassist.adapters;
 import com.ngusta.cupassist.R;
 import com.ngusta.cupassist.activity.PlayerActivity;
 import com.ngusta.cupassist.domain.Clazz;
-import com.ngusta.cupassist.domain.CompetitionPeriod;
 import com.ngusta.cupassist.domain.Player;
-import com.ngusta.cupassist.domain.PlayerResults;
 import com.ngusta.cupassist.service.PlayerService;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerHolder> implements Filterable {
@@ -42,6 +40,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerHold
         this.playerService = playerService;
     }
 
+    @NonNull
     @Override
     public PlayerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())

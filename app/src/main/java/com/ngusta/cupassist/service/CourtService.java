@@ -10,8 +10,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.ngusta.cupassist.domain.Court;
 import com.ngusta.cupassist.domain.OnMarkerChangeListener;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -78,16 +78,10 @@ public class CourtService {
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (!courtsInitiated) {
-                    return;
-                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                if (!courtsInitiated) {
-                    return;
-                }
             }
         });
     }
