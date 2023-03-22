@@ -25,10 +25,19 @@ public class Player implements Serializable {
     private PlayerResults mixedResults;
     private Clazz clazz;
 
-    public Player(String firstName, String lastName, String playerClub) {
+    public Player(String firstName) {
+        this.firstName = firstName;
+        this.lastName = "";
+        this.club = "";
+    }
+
+    public Player(String firstName, String lastName, String playerClub, int points, Clazz clazz) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.club = playerClub;
+        this.entryPoints = points;
+        this.rankingPoints = points;
+        this.clazz = clazz;
     }
 
     public Player(Integer rank, String firstName, String lastName, String club, int rankingPoints, int entryPoints, String playerId, String clazz) {

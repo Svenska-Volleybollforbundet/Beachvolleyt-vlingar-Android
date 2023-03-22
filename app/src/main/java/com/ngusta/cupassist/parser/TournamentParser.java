@@ -19,9 +19,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,14 +83,14 @@ public class TournamentParser {
         String playerAFirstName = names[1].trim();
         playerAFirstName = excludeParenthesisFromName(playerAFirstName);
         String playerALastName = names[0].trim();
-        Player playerA = findPlayer(allPlayers, playerAFirstName, playerALastName, playerAClub, teamEntry);
+        Player playerA = findPlayer(allPlayers, playerAFirstName, playerALastName, playerAClub, teamEntry, clazz);
 
         boolean paid = "OK".equalsIgnoreCase(tableRow.child(isNewProfixio ? 4 : 6).text());
         if (names.length == 4) {
             String playerBFirstName = names[3].trim();
             playerBFirstName = excludeParenthesisFromName(playerBFirstName);
             String playerBLastName = names[2].trim();
-            Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub, teamEntry);
+            Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub, teamEntry, clazz);
 
             return new Team(playerA, playerB, registrationDate, clazz, paid);
         } else {
@@ -110,19 +110,18 @@ public class TournamentParser {
 
         String club = teamData.child(1).child(0).child(0).text();
         Clazz clazz = Clazz.parse(teamData.child(1).child(1).child(0).text());
-        int teamEntry, playerAEntry, playerBEntry;
+        int playerAPoints, playerBPoints;
         try {
-            String entryText = teamData.child(1).child(1).child(1).child(0).child(1).text();
-            teamEntry = Integer.parseInt(entryText.replaceAll(" \\(.*", ""));
-            playerAEntry = Integer.parseInt(entryText.replaceAll(".* \\(", "").replaceAll("/.*", ""));
-            playerBEntry = Integer.parseInt(entryText.replaceAll(".*/", "").replaceAll("\\).*", ""));
-        } catch (NumberFormatException nfe) {
-            teamEntry = playerAEntry = playerBEntry = 0;
+            String[] points = teamData.child(1).child(1).child(1).child(0).child(1).text().split("\\/|\\ ");
+            playerAPoints = Integer.parseInt(points[1]);
+            playerBPoints = Integer.parseInt(points[2]);
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            playerAPoints = playerBPoints = 0;
         }
 
         Date registrationDate = null;
         try {
-            registrationDate = new SimpleDateFormat("MMMM dd, yyyy hh:mm a").parse(teamData.child(1).child(2).text());
+            registrationDate = new SimpleDateFormat("MMMM dd, yyyy hh:mm a", Locale.getDefault()).parse(teamData.child(1).child(2).text());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -138,14 +137,14 @@ public class TournamentParser {
         String playerAFirstName = names[1].trim();
         playerAFirstName = excludeParenthesisFromName(playerAFirstName);
         String playerALastName = names[0].trim();
-        Player playerA = findPlayer(allPlayers, playerAFirstName, playerALastName, playerAClub, playerAEntry);
+        Player playerA = findPlayer(allPlayers, playerAFirstName, playerALastName, playerAClub, playerAPoints, clazz);
 
         boolean paid = "PAID".equalsIgnoreCase(teamData.child(1).child(0).child(1).text());
         if (names.length == 4) {
             String playerBFirstName = names[3].trim();
             playerBFirstName = excludeParenthesisFromName(playerBFirstName);
             String playerBLastName = names[2].trim();
-            Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub, playerBEntry);
+            Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub, playerBPoints, clazz);
 
             return new Team(playerA, playerB, registrationDate, clazz, paid);
         } else {
@@ -161,8 +160,8 @@ public class TournamentParser {
     }
 
     private Player findPlayer(HashMultimap<String, Player> allPlayers, String playerFirstName,
-            String playerLastName, String playerClub, int playerEntry) {
-        Player newPlayer = new Player(playerFirstName, playerLastName, playerClub);
+            String playerLastName, String playerClub, int playerEntry, Clazz clazz) {
+        Player newPlayer = new Player(playerFirstName, playerLastName, playerClub, playerEntry, clazz);
         if (allPlayers.containsKey(newPlayer.getNameAndClub())) {
             Set<Player> players = allPlayers.get(newPlayer.getNameAndClub());
             if (players.size() == 1) {

@@ -30,7 +30,7 @@ public class Team implements Serializable, Comparable<Team> {
 
     public Team(Player playerA, Date registrationDate, Clazz clazz, boolean paid) {
         this.playerA = playerA;
-        this.playerB = new Player("Partner sökes", "", "");
+        this.playerB = new Player("Partner sökes");
         this.registrationTime = registrationDate;
         this.clazz = clazz;
         this.completeTeam = false;
