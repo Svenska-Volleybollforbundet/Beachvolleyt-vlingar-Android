@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     defaultConfig {
         minSdkVersion 24
-        targetSdkVersion 32
-        versionCode 76
-        versionName '2.11'
+        targetSdkVersion 33
+        versionCode 77
+        versionName '2.12'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
