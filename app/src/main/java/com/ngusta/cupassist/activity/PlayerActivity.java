@@ -76,7 +76,7 @@ public class PlayerActivity extends AppCompatActivity {
         String playerInfoText = getString(R.string.player_info_general_part, player.getFirstName(),
                 player.getClub(), player.getEntryPoints(), clazzString, player.getEntryRank());
         if (player.getMixedEntryRank() > 0) {
-            playerInfoText += " " + getString(R.string.player_info_mixed_part, player.getFirstName(), player.getMixedEntryPoints(),
+            playerInfoText += " " + getString(R.string.player_info_mixed_part, player.getFirstName(), player.getMixedOnlyEntryPoints(),
                     player.getEntryPoints(Clazz.MIXED), clazzString, player.getMixedEntryRank());
         }
         playerInfoText += "\n";
@@ -110,7 +110,7 @@ public class PlayerActivity extends AppCompatActivity {
         int futureCP = currentCP.getPeriodNumber();
 
         String clazzString = player.getClazz() == Clazz.MEN ? "Herrentry" : "Damentry";
-        String text = "Spelarens entrypoäng i kommande tävlingsperioder med nuvarande resultat.\n\n     " + clazzString + " / Mixedentry\n";
+        String text = "Spelarens poäng i kommande tävlingsperioder med nuvarande resultat.\n\n     " + clazzString + " / Mixedentry\n";
 
         for (int i = 0; i < 10; i++) {
             CompetitionPeriod period = CompetitionPeriod.findPeriodByNumber(futureCP, futureCPYear);

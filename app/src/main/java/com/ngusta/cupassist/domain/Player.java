@@ -5,28 +5,24 @@ import com.google.common.base.Objects;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import androidx.annotation.NonNull;
+
 public class Player implements Serializable {
 
     private Integer rank;
     private int entryRank;
     private int mixedEntryRank;
-    private String firstName;
-    private String lastName;
-    private String club;
+    private final String firstName;
+    private final String lastName;
+    private final String club;
     private int rankingPoints;
     private int entryPoints;
     private int mixRankingPoints;
-
     private int mixedEntryPoints;
-
     private String playerId;
-
     private String age;
-
     private PlayerResults results;
-
     private PlayerResults mixedResults;
-
     private Clazz clazz;
 
     public Player(String firstName, String lastName, String playerClub) {
@@ -59,16 +55,16 @@ public class Player implements Serializable {
         return lastName;
     }
 
-    public int getMixRankingPoints() {
-        return mixRankingPoints;
+    public int getMixedOnlyRankingPoints() {
+        return mixRankingPoints - (int) Math.round(rankingPoints * 0.1);
     }
 
     public void setMixRankingPoints(int mixRankingPoints) {
         this.mixRankingPoints = mixRankingPoints;
     }
 
-    public int getMixedEntryPoints() {
-        return mixedEntryPoints;
+    public int getMixedOnlyEntryPoints() {
+        return mixedEntryPoints - (int) Math.round(entryPoints * 0.1);
     }
 
     public void setMixedEntryPoints(int mixedEntryPoints) {
@@ -201,6 +197,7 @@ public class Player implements Serializable {
         return Objects.hashCode(rankingPoints, entryPoints, mixedEntryPoints, mixRankingPoints, firstName, lastName, club);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return rank + " " +

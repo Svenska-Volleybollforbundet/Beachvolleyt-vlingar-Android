@@ -12,7 +12,6 @@ import com.ngusta.cupassist.service.PlayerService;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import com.google.android.material.tabs.TabLayout;
@@ -138,7 +137,7 @@ public class PlayerListActivity extends AppCompatActivity {
             if (player.getClazz() == Clazz.WOMEN) {
                 women.add(player);
             }
-            if (player.getMixRankingPoints() != 0) {
+            if (player.getMixedOnlyRankingPoints() != 0) {
                 mixed.add(player);
             }
         }
