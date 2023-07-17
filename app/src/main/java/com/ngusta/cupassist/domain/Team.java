@@ -55,16 +55,9 @@ public class Team implements Serializable, Comparable<Team> {
 
     public double getEntryPoints() {
         if (clazz == Clazz.MIXED) {
-            return playerA.getMixedOnlyEntryPoints() + playerB.getMixedOnlyEntryPoints();
+            return playerA.getMixedPoints() + playerB.getMixedPoints();
         }
         return playerA.getEntryPoints() + playerB.getEntryPoints();
-    }
-
-    public double getRankingPoints() {
-        if (clazz == Clazz.MIXED) {
-            return playerA.getMixedOnlyRankingPoints() - playerB.getMixedOnlyRankingPoints();
-        }
-        return playerA.getRankingPoints() + playerB.getRankingPoints();
     }
 
     @Override
@@ -79,30 +72,15 @@ public class Team implements Serializable, Comparable<Team> {
         if (cmp != 0) {
             return cmp;
         }
-        cmp = compare(another.getRankingPoints(), this.getRankingPoints());
-        if (cmp != 0) {
-            return cmp;
-        }
         cmp = compare(another.getHighestEntryPoints(), this.getHighestEntryPoints());
-        if (cmp != 0) {
-            return cmp;
-        }
-        cmp = compare(another.getHighestRankingPoints(), this.getHighestRankingPoints());
         return cmp;
     }
 
     private int getHighestEntryPoints() {
         if (clazz == Clazz.MIXED) {
-            return Math.max(playerA.getMixedOnlyEntryPoints(), playerB.getMixedOnlyEntryPoints());
+            return Math.max(playerA.getMixedPoints(), playerB.getMixedPoints());
         }
         return Math.max(playerA.getEntryPoints(), playerB.getEntryPoints());
-    }
-
-    private int getHighestRankingPoints() {
-        if (clazz == Clazz.MIXED) {
-            return Math.max(playerA.getMixedOnlyRankingPoints(), playerB.getMixedOnlyRankingPoints());
-        }
-        return Math.max(playerA.getRankingPoints(), playerB.getRankingPoints());
     }
 
     public Date getRegistrationTime() {

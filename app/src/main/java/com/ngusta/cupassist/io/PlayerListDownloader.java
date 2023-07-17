@@ -84,14 +84,11 @@ public class PlayerListDownloader {
                 }
                 if (foundPlayer != null) {
                     foundPlayer.setMixedEntryPoints(mixPlayer.getEntryPoints());
-                    foundPlayer.setMixRankingPoints(mixPlayer.getRankingPoints());
                     foundPlayer.setMixedEntryRank(mixPlayer.getEntryRank());
                 } else {
                     mixPlayer.setMixedEntryPoints(mixPlayer.getEntryPoints());
-                    mixPlayer.setMixRankingPoints(mixPlayer.getRankingPoints());
                     mixPlayer.setMixedEntryRank(mixPlayer.getEntryRank());
                     mixPlayer.setEntryPoints(0);
-                    mixPlayer.setRankingPoints(0);
                     mixPlayer.setEntryRank(0);
                     players.put(mixPlayer.getNameAndClub(), mixPlayer);
                 }

@@ -138,6 +138,9 @@ public class TournamentParser {
         playerAFirstName = excludeParenthesisFromName(playerAFirstName);
         String playerALastName = names[0].trim();
         Player playerA = findPlayer(allPlayers, playerAFirstName, playerALastName, playerAClub, playerAPoints, clazz);
+        if (clazz == Clazz.MIXED && playerA.getMixedPoints() == 0) {
+            playerA.setMixedEntryPoints(playerAPoints);
+        }
 
         boolean paid = "PAID".equalsIgnoreCase(teamData.child(1).child(0).child(1).text());
         if (names.length == 4) {
@@ -145,6 +148,10 @@ public class TournamentParser {
             playerBFirstName = excludeParenthesisFromName(playerBFirstName);
             String playerBLastName = names[2].trim();
             Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub, playerBPoints, clazz);
+
+            if (clazz == Clazz.MIXED && playerB.getMixedPoints() == 0) {
+                playerB.setMixedEntryPoints(playerBPoints);
+            }
 
             return new Team(playerA, playerB, registrationDate, clazz, paid);
         } else {
@@ -160,8 +167,8 @@ public class TournamentParser {
     }
 
     private Player findPlayer(HashMultimap<String, Player> allPlayers, String playerFirstName,
-            String playerLastName, String playerClub, int playerEntry, Clazz clazz) {
-        Player newPlayer = new Player(playerFirstName, playerLastName, playerClub, playerEntry, clazz);
+            String playerLastName, String playerClub, int playerPoints, Clazz clazz) {
+        Player newPlayer = new Player(playerFirstName, playerLastName, playerClub, playerPoints, clazz);
         if (allPlayers.containsKey(newPlayer.getNameAndClub())) {
             Set<Player> players = allPlayers.get(newPlayer.getNameAndClub());
             if (players.size() == 1) {
@@ -170,7 +177,7 @@ public class TournamentParser {
             int smallestDiff = Integer.MAX_VALUE;
             Player mostLikelyPlayer = null;
             for (Player p : players) {
-                int newDiff = Math.abs(playerEntry - p.getEntryPoints());
+                int newDiff = Math.abs(playerPoints - p.getEntryPoints());
                 if (newDiff < smallestDiff) {
                     smallestDiff = newDiff;
                     mostLikelyPlayer = p;

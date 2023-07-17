@@ -137,7 +137,7 @@ public class PlayerListActivity extends AppCompatActivity {
             if (player.getClazz() == Clazz.WOMEN) {
                 women.add(player);
             }
-            if (player.getMixedOnlyRankingPoints() != 0) {
+            if (player.getMixedPoints() != 0) {
                 mixed.add(player);
             }
         }

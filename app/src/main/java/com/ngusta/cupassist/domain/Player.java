@@ -15,9 +15,7 @@ public class Player implements Serializable {
     private final String firstName;
     private final String lastName;
     private final String club;
-    private int rankingPoints;
     private int entryPoints;
-    private int mixRankingPoints;
     private int mixedEntryPoints;
     private String playerId;
     private String age;
@@ -36,7 +34,6 @@ public class Player implements Serializable {
         this.lastName = lastName;
         this.club = playerClub;
         this.entryPoints = points;
-        this.rankingPoints = points;
         this.clazz = clazz;
     }
 
@@ -46,7 +43,6 @@ public class Player implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.club = club;
-        this.rankingPoints = rankingPoints;
         this.entryPoints = entryPoints;
         this.playerId = playerId;
         this.clazz = Clazz.parse(clazz);
@@ -64,16 +60,12 @@ public class Player implements Serializable {
         return lastName;
     }
 
-    public int getMixedOnlyRankingPoints() {
-        return mixRankingPoints - (int) Math.round(rankingPoints * 0.1);
-    }
-
-    public void setMixRankingPoints(int mixRankingPoints) {
-        this.mixRankingPoints = mixRankingPoints;
-    }
-
     public int getMixedOnlyEntryPoints() {
         return mixedEntryPoints - (int) Math.round(entryPoints * 0.1);
+    }
+
+    public int getMixedPoints() {
+        return mixedEntryPoints;
     }
 
     public void setMixedEntryPoints(int mixedEntryPoints) {
@@ -88,26 +80,11 @@ public class Player implements Serializable {
         this.entryPoints = entryPoints;
     }
 
-    public int getRankingPoints() {
-        return rankingPoints;
-    }
-
-    public void setRankingPoints(int rankingPoints) {
-        this.rankingPoints = rankingPoints;
-    }
-
     public int getEntryPoints(Clazz clazz) {
         if (clazz == Clazz.MIXED) {
             return mixedEntryPoints;
         }
         return entryPoints;
-    }
-
-    public int getRankingPoints(Clazz clazz) {
-        if (clazz == Clazz.MIXED) {
-            return mixRankingPoints;
-        }
-        return rankingPoints;
     }
 
     public String getClub() {
@@ -193,9 +170,7 @@ public class Player implements Serializable {
         }
         Player player = (Player) o;
         return entryPoints == player.entryPoints &&
-                Objects.equal(rankingPoints, player.rankingPoints) &&
                 mixedEntryPoints == player.mixedEntryPoints &&
-                Objects.equal(mixRankingPoints, player.mixRankingPoints) &&
                 Objects.equal(firstName, player.firstName) &&
                 Objects.equal(lastName, player.lastName) &&
                 Objects.equal(club, player.club);
@@ -203,7 +178,7 @@ public class Player implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(rankingPoints, entryPoints, mixedEntryPoints, mixRankingPoints, firstName, lastName, club);
+        return Objects.hashCode(entryPoints, mixedEntryPoints, firstName, lastName, club);
     }
 
     @NonNull
@@ -213,7 +188,6 @@ public class Player implements Serializable {
                 firstName + " " +
                 lastName + " " +
                 club + " " +
-                rankingPoints + " " +
                 entryPoints;
     }
 
@@ -228,10 +202,6 @@ public class Player implements Serializable {
         @Override
         public int compare(Player p1, Player p2) {
             int cmp = Double.compare(p2.getEntryPoints(clazz), p1.getEntryPoints(clazz));
-            if (cmp != 0) {
-                return cmp;
-            }
-            cmp = Double.compare(p2.getRankingPoints(clazz), p1.getRankingPoints(clazz));
             return cmp != 0 ? cmp : p1.getName().compareTo(p2.getName());
         }
     }
