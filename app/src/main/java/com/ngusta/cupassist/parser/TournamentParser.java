@@ -227,7 +227,7 @@ public class TournamentParser {
 
     public List<Match> parseMatches(String source) {
         Document document = Jsoup.parse(source);
-        Elements elements = document.select("div[x-show=display_matches_as_cards] ul li");
+        Elements elements = document.select("div[x-data~=display_matches_as_cards] ul li");
 
         List<Match> matches = new ArrayList<>();
         try {
@@ -235,15 +235,17 @@ public class TournamentParser {
                 if (match.child(0).text().equalsIgnoreCase("No matches available")) {
                     break;
                 }
-                Element allContent = match.child(0).child(0);
-                String[] matchNumberAndType = allContent.child(0).child(0).child(0).text().trim().split(" ");
-                String matchNumber = matchNumberAndType[0];
-                String matchType = matchNumberAndType.length >= 2 ? matchNumberAndType[1] : allContent.child(0).child(0).child(1).child(1).text();
-                String clazz = allContent.child(0).child(0).child(1).child(0).text().trim();
+                Element allContent = match.child(0).child(0).child(0);
+                //String[] matchNumberAndType = allContent.child(0).child(0).child(0).text().trim().split(" ");
+                String matchNumber = "0";//matchNumberAndType[0];
+                String matchType = allContent.child(1).child(0).child(1).text();
+                matchType = matchType.isEmpty() ? "Grupp" : matchType;
+                String clazz = allContent.child(1).child(0).child(0).text().trim();
                 String teamA = getTeamA(allContent);
                 String teamB = getTeamB(allContent);
-                String setResult = allContent.child(1).child(1).child(1).text();
-                String pointResult = allContent.child(3).text();
+                boolean hasThirdSet = allContent.child(1).child(1).children().size() == 5;
+                String setResult = hasThirdSet ? allContent.child(1).child(1).child(4).child(0).text().trim() : allContent.child(1).child(1).child(3).child(0).text().trim();
+                String pointResult = allContent.child(1).child(1).child(1).text() + "/" + allContent.child(1).child(1).child(2).text() + (hasThirdSet ? "/" + allContent.child(1).child(1).child(3).text() : "");
                 matches.add(new Match(matchNumber, matchType, clazz, teamA, teamB, setResult, pointResult));
             }
         } catch (IndexOutOfBoundsException e) {
@@ -253,20 +255,12 @@ public class TournamentParser {
     }
 
     private String getTeamA(Element allContent) {
-        Element e = allContent.child(2).child(0);
-        if (e.children().size() > 0) {
-            int secondPersonIndex = e.child(0).children().size() == 3 ? 1 : 2;
-            return e.child(0).child(0).text() + "/" + e.child(0).child(secondPersonIndex).text();
-        }
-        return e.text();
+        Element e = allContent.child(1).child(1).child(0).child(0);
+        return e.text().trim();
     }
 
     private String getTeamB(Element allContent) {
-        Element e = allContent.child(2).child(1);
-        if (e.children().size() > 0) {
-            int secondPersonIndex = e.child(0).children().size() == 3 ? 1 : 2;
-            return e.child(0).child(0).text() + "/" + e.child(0).child(secondPersonIndex).text();
-        }
-        return e.text();
+        Element e = allContent.child(1).child(1).child(0).child(1);
+        return e.text().trim();
     }
 }

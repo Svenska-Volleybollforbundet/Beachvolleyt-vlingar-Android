@@ -25,20 +25,30 @@ public class Match implements Comparable<Match> {
 
     @Override
     public String toString() {
-        return getDisplayNames(teamA) + " - " + getDisplayNames(teamB) + "\n" + setResult + " (" + pointResult + ")";
+        return getDisplayNames(teamA) + " - " + getDisplayNames(teamB) + "\n" + getDisplaySetResult(setResult) + " (" + getDisplayPointResult(pointResult) + ")";
     }
 
     private String getDisplayNames(String team) {
         team = team.replaceAll("#[0-9]+ ", "").trim();
         String[] players = team.split("/");
         if (players.length == 2) {
-            String p1Last = players[0].replaceFirst(",.*", "").trim();
-            String p1First = players[0].replaceAll(".*,", "").trim();
-            String p2Last = players[1].replaceFirst(",.*", "").trim();
-            String p2First = players[1].replaceAll(".*,", "").trim();
-            return p1First + " " + p1Last.substring(0, 3) + "/" + p2First + " " + p2Last.substring(0, 3);
+            String[] p1 = players[0].trim().split(" ");
+            String p1First = p1[0].trim();
+            String p1Last = p1[1].trim();
+            String[] p2 = players[1].trim().split(" ");
+            String p2First= p2[0].trim();
+            String p2Last = p2[1].trim();
+            return p1First + " " + (p1Last.length() > 3 ? p1Last.substring(0, 3) : p1Last) + "/" + p2First + " " + (p2Last.length() > 3 ? p2Last.substring(0, 3) : p2Last);
         }
         return team;
+    }
+
+    private String getDisplaySetResult(String result) {
+        return result.replaceFirst(" ", "-");
+    }
+
+    private String getDisplayPointResult(String result) {
+        return result.replaceAll(" ", "-").replaceAll("/", " ");
     }
 
     public MatchType getType() {

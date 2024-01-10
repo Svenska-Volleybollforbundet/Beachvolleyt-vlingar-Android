@@ -114,10 +114,7 @@ public class CompetitionPeriod implements Serializable {
             new CompetitionPeriod(13, "TP 13", "2022-08-15", "2022-08-21"),
             new CompetitionPeriod(14, "TP 14", "2022-08-22", "2022-09-04"),
             new CompetitionPeriod(15, "TP 15", "2022-09-05", "2022-10-16"),
-            new CompetitionPeriod(16, "TP 16", "2022-10-17", "2022-12-31")
-    };
-
-    public static final CompetitionPeriod[] COMPETITION_PERIODS = {
+            new CompetitionPeriod(16, "TP 16", "2022-10-17", "2022-12-31"),
             new CompetitionPeriod(1, "TP 01", "2023-01-01", "2023-04-02"),
             new CompetitionPeriod(2, "TP 02", "2023-04-03", "2023-05-21"),
             new CompetitionPeriod(3, "TP 03", "2023-05-22", "2023-05-28"),
@@ -133,13 +130,13 @@ public class CompetitionPeriod implements Serializable {
             new CompetitionPeriod(13, "TP 13", "2023-08-14", "2023-08-20"),
             new CompetitionPeriod(14, "TP 14", "2023-08-21", "2023-09-03"),
             new CompetitionPeriod(15, "TP 15", "2023-09-04", "2023-10-15"),
-            new CompetitionPeriod(16, "TP 16", "2023-10-16", "2023-12-31"),
+            new CompetitionPeriod(16, "TP 16", "2023-10-16", "2023-12-31")
     };
 
-    private static final CompetitionPeriod[] COMPETITION_PERIODS_NEXT_YEAR = {
+    public static final CompetitionPeriod[] COMPETITION_PERIODS = {
             new CompetitionPeriod(1, "TP 01", "2024-01-01", "2024-03-24"),
-            new CompetitionPeriod(2, "TP 02", "2024-03-25", "2024-05-12"),
-            new CompetitionPeriod(3, "TP 03", "2024-05-13", "2024-05-26"),
+            new CompetitionPeriod(2, "TP 02", "2024-04-02", "2024-05-19"),
+            new CompetitionPeriod(3, "TP 03", "2024-05-20", "2024-05-26"),
             new CompetitionPeriod(4, "TP 04", "2024-05-27", "2024-06-02"),
             new CompetitionPeriod(5, "TP 05", "2024-06-03", "2024-06-09"),
             new CompetitionPeriod(6, "TP 06", "2024-06-10", "2024-06-23"),
@@ -152,7 +149,26 @@ public class CompetitionPeriod implements Serializable {
             new CompetitionPeriod(13, "TP 13", "2024-08-12", "2024-08-18"),
             new CompetitionPeriod(14, "TP 14", "2024-08-19", "2024-09-01"),
             new CompetitionPeriod(15, "TP 15", "2024-09-02", "2024-10-13"),
-            new CompetitionPeriod(16, "TP 16", "2024-10-14", "2024-12-31"),
+            new CompetitionPeriod(16, "TP 16", "2024-10-14", "2024-12-31")
+    };
+
+    private static final CompetitionPeriod[] COMPETITION_PERIODS_NEXT_YEAR = {
+            new CompetitionPeriod(1, "TP 01", "2025-01-01", "2025-03-30"),
+            new CompetitionPeriod(2, "TP 02", "2025-03-31", "2025-05-18"),
+            new CompetitionPeriod(3, "TP 03", "2025-05-19", "2025-05-25"),
+            new CompetitionPeriod(4, "TP 04", "2025-05-26", "2025-06-01"),
+            new CompetitionPeriod(5, "TP 05", "2025-06-02", "2025-06-08"),
+            new CompetitionPeriod(6, "TP 06", "2025-06-09", "2025-06-22"),
+            new CompetitionPeriod(7, "TP 07", "2025-06-23", "2025-06-29"),
+            new CompetitionPeriod(8, "TP 08", "2025-06-30", "2025-07-06"),
+            new CompetitionPeriod(9, "TP 09", "2025-07-07", "2025-07-13"),
+            new CompetitionPeriod(10, "TP 10", "2025-07-14", "2025-07-20"),
+            new CompetitionPeriod(11, "TP 11", "2025-07-21", "2025-08-03"),
+            new CompetitionPeriod(12, "TP 12", "2025-08-04", "2025-08-10"),
+            new CompetitionPeriod(13, "TP 13", "2025-08-11", "2025-08-17"),
+            new CompetitionPeriod(14, "TP 14", "2025-08-18", "2025-08-31"),
+            new CompetitionPeriod(15, "TP 15", "2025-09-01", "2025-10-12"),
+            new CompetitionPeriod(16, "TP 16", "2025-10-14", "2025-12-31"),
     };
 
     private int periodNumber;

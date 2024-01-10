@@ -22,10 +22,10 @@ import java.util.List;
 public class TournamentListCache extends Cache<Tournament> {
 
     private static final String CUP_ASSIST_TOURNAMENT_LIST_URL
-            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=73&vis_gamle_arr=true";
+            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=77&vis_gamle_arr=true";
 
     public static final String CUP_ASSIST_TOURNAMENT_LIST_URL_WITHOUT_OLD_TOURNAMENTS
-            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=73&vis_gamle_arr=false";
+            = "https://profixio.com/fx/terminliste.php?org=SVBF.SE.SVB&p=77&vis_gamle_arr=false";
 
     public static final String CUP_ASSIST_BASE_URL = "https://www.profixio.com/";
 
@@ -44,10 +44,10 @@ public class TournamentListCache extends Cache<Tournament> {
     private static final String PROFIXIO_ENDING_REGISTRATION_URL = "/teams";
 
     public static final String COMPETITION_REGULATIONS_URL
-            = "https://www.volleyboll.se/download/18.dab8d611848dea8e05663e0/1669043875556/tavlingsbestammelser-beachvolley-2023.pdf";
+            = "https://volleyboll.se/download/18.434aa2e018bfae675d8d4487/1701334726151/T%C3%A4vlingsbest%C3%A4mmelser%20Beachvolley%202024_.pdf";
 
     public static final String RULES_URL
-            = "https://www.fivb.com/-/media/2022/coorporate/volleyball/rules%202021-2024/fivb-beachvolleyball_rules2021_2024-en-v01d.pdf?la=en&hash=22B1948796DE4F9D5E0927DFF1E2E72B";
+            = "https://www.cev.eu/media/zwfhs5ex/fivb-beach_volleyball_rules_2021_2024-en.pdf";
 
     private TournamentList tournamentList;
 

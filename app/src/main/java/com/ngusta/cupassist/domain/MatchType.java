@@ -11,7 +11,7 @@ public class MatchType implements Comparable<MatchType> {
 
     public MatchType(String type, String clazz) {
         this.type = type.replaceFirst("-[0-9]", "");
-        this.clazz = clazz;
+        this.clazz = clazz.replaceFirst(" -.*", "");
     }
 
     @Override
