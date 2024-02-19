@@ -134,7 +134,7 @@ public class CompetitionPeriod implements Serializable {
     };
 
     public static final CompetitionPeriod[] COMPETITION_PERIODS = {
-            new CompetitionPeriod(1, "TP 01", "2024-01-01", "2024-03-24"),
+            new CompetitionPeriod(1, "TP 01", "2024-01-01", "2024-04-01"),
             new CompetitionPeriod(2, "TP 02", "2024-04-02", "2024-05-19"),
             new CompetitionPeriod(3, "TP 03", "2024-05-20", "2024-05-26"),
             new CompetitionPeriod(4, "TP 04", "2024-05-27", "2024-06-02"),
