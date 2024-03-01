@@ -203,8 +203,10 @@ public class Tournament implements Serializable, Comparable<Tournament> {
             return 16;
         }
         int numberOfTeams = Math.min(getNumberOfCompleteTeamsForClazz(clazz), clazz.getMaxNumberOfTeams());
-        if (numberOfTeams == 12) {
-            return 4;
+        if (numberOfTeams == 5) {
+            return 1;
+        } else  if (numberOfTeams == 12 || numberOfTeams == 24) {
+            return (int) Math.round((numberOfTeams + 1.0) / 3);
         } else {
             return (int) Math.round((numberOfTeams + 1.0) / 4);
         }
