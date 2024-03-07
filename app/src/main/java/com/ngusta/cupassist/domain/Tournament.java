@@ -100,22 +100,29 @@ public class Tournament implements Serializable, Comparable<Tournament> {
         Level guessedLevel = Level.UNKNOWN;
         name = name.toLowerCase();
         if (name.contains("open") || name.contains("mix") || name.contains("svart") ||
-                name.contains("midnight") || name.contains("distriktsmästerskap") || name.contains("spelen")) {
+                name.contains("midnight") || name.contains("distriktsmästerskap") || name.contains("spelen") ||
+                name.contains("sbt2") || name.contains("sbt 2") ) {
             guessedLevel = Level.OPEN;
         }
-        if (name.contains("grön")) {
+        if (name.contains("grön") || name.contains("sbt1") || name.contains("sbt 1") || name.contains("rookie")) {
             guessedLevel = Level.OPEN_GREEN;
         }
-        if (name.contains("chall") || (name.contains(" ch") && !name.contains("kval ch"))) {
+        if (name.contains("chall") || (name.contains(" ch") && !name.contains("kval ch")) ||
+                ((name.contains("sbt3") || name.contains("sbt 3")) && !name.contains("kval sbt"))
+        ) {
             guessedLevel = Level.CHALLENGER;
         }
-        if (name.contains("ungdom") || name.contains("junior") || name.contains("fu16") || name.contains("fu18") || name.contains("pu16") || name.contains("pu18") || name.contains("skrea beach cup")) {
+        if (name.contains("ungdom") || name.contains("junior") || name.contains("minior") ||
+                name.contains("fu16") || name.contains("fu18") ||
+                name.contains("u19") || name.contains("u17") || name.contains("u20") ||
+                name.contains("pu16") || name.contains("pu18") || name.contains("skrea beach cup")) {
             guessedLevel = Level.YOUTH;
         }
         if (name.contains("mixed sm") || name.contains("senior-sm")) {
             guessedLevel = Level.SM;
         }
-        if (name.contains("master")) {
+        if ((name.contains("master") && !name.contains("junior")) || name.contains("sbt 4") || name.contains("sbt4") ||
+                name.contains("sbt 5") || name.contains("sbt5") ) {
             guessedLevel = Level.MASTER;
         }
         if (name.contains("sbt final")) {
@@ -368,7 +375,8 @@ public class Tournament implements Serializable, Comparable<Tournament> {
                 return VETERAN;
             } else if (levelString.contains("Ungdom") || levelString.contains("3-beach")
                     || levelString.contains("Kidsvolley") || levelString.contains("Mini")
-                    || levelString.contains("U23") || levelString.contains("Öppen")) {
+                    || levelString.contains("U23") || levelString.contains("Öppen")
+                    || levelString.contains("Junior")) {
                 return YOUTH;
             }
             return UNKNOWN;
