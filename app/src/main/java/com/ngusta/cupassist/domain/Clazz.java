@@ -10,7 +10,7 @@ public enum Clazz {
     F18("U18 F"), P18("U18 P"), M18("U18 M"),
     F17("U17 F"), P17("U17 P"), M17("U17 M"),
     F16("U16 F"), P16("U16 P"), M16("U16 M"),
-    F15("U15 F"), O15("U15 Ö"), M15("U15 M"),
+    F15("U15 F"), P15("U15 P"), O15("U15 Ö"), M15("U15 M"),
     MiniFLevel5("Mini F Level 5"), MiniFLevel4("Mini F Level 4"),
     MiniOLevel5("Mini Ö Level 5"), MiniOLevel4("Mini Ö Level 4"),
     JuniorD("Junior D"), JuniorH("Junior H"), JuniorM("Junior M"),
@@ -82,6 +82,8 @@ public enum Clazz {
                 return M16;
             case "U15 F":
                 return F15;
+            case "U15 P":
+                return P15;
             case "U15 Ö":
                 return O15;
             case "U15 M":
@@ -147,7 +149,7 @@ public enum Clazz {
     }
 
     public static List<Clazz> getYouthClazzes() {
-        Clazz[] youthClazzes = {D23, H23, F19, P19, F18, P18, M18, F17, P17, M17, F16, P16, M16, F15, O15, M15, MiniOLevel5, MiniOLevel4, MiniFLevel5,
+        Clazz[] youthClazzes = {D23, H23, F19, P19, F18, P18, M18, F17, P17, M17, F16, P16, M16, F15, P15, O15, M15, MiniOLevel5, MiniOLevel4, MiniFLevel5,
                 MiniFLevel4,
                 JuniorD, JuniorH, JuniorM, UNKNOWN};
         return Arrays.asList(youthClazzes);
