@@ -277,8 +277,7 @@ public class CompetitionPeriod implements Serializable {
             return getYear(period.getStartDate()) == 2019 && period.getPeriodNumber() >= 13 && period.getPeriodNumber() <= 16
                     || getYear(period.getStartDate()) == 2020 && period.getPeriodNumber() >= 1 && period.getPeriodNumber() <= 6;
         }
-        return getYear(new Date()) == getYear(period.getStartDate()) && period.getPeriodNumber() >= 1 && period.getPeriodNumber() <= 9 ||
-                (getYear(new Date())-1) == getYear(period.getStartDate()) && period.getPeriodNumber() == 16;
+        return getYear(new Date()) == getYear(period.getStartDate()) && period.getPeriodNumber() >= 1 && period.getPeriodNumber() <= 10;
     }
 
     private static int getYear(Date date) {
