@@ -108,7 +108,7 @@ public class Tournament implements Serializable, Comparable<Tournament> {
             guessedLevel = Level.OPEN_GREEN;
         }
         if (name.contains("chall") || (name.contains(" ch") && !name.contains("kval ch")) ||
-                ((name.contains("sbt3") || name.contains("sbt 3")) && !name.contains("kval sbt"))
+                ((name.contains("sbt3") || name.contains("sbt 3")) && !name.contains("2*"))
         ) {
             guessedLevel = Level.CHALLENGER;
         }
