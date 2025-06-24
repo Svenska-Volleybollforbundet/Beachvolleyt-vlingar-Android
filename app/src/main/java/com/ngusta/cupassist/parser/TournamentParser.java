@@ -30,7 +30,7 @@ public class TournamentParser {
     private static final String REGEXP_PATTERN_FOR_REGISTRATION_URL = "/app/(.*?)\", \"_blank\"";
 
     public List<Team> parseTeams(String source, HashMultimap<String, Player> allPlayers, boolean isNewProfixio) {
-        ArrayList<Team> teams = new ArrayList<Team>();
+        ArrayList<Team> teams = new ArrayList<>();
         Document document = Jsoup.parse(source);
         Elements tableRows = isNewProfixio ? document.select("main ul li") : document.select("table:first-of-type tr:gt(0)");
 
@@ -142,7 +142,7 @@ public class TournamentParser {
             playerA.setMixedEntryPoints(playerAPoints);
         }
 
-        boolean paid = "PAID".equalsIgnoreCase(teamData.child(1).child(0).child(1).text());
+        boolean paid = "BETALD".equalsIgnoreCase(teamData.child(1).child(0).child(1).text());
         if (names.length == 4) {
             String playerBFirstName = names[3].trim();
             playerBFirstName = excludeParenthesisFromName(playerBFirstName);
