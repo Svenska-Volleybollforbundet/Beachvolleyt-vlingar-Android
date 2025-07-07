@@ -92,7 +92,7 @@ public class TournamentParser {
             String playerBLastName = names[2].trim();
             Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub, teamEntry, clazz);
 
-            return new Team(playerA, playerB, registrationDate, clazz, paid);
+            return new Team(playerA, playerB, registrationDate, clazz, paid, false);
         } else {
             return new Team(playerA, registrationDate, clazz, paid);
         }
@@ -101,8 +101,10 @@ public class TournamentParser {
 
     private Team newProfixioReadTeam(Element listItem, HashMultimap<String, Player> allPlayers) {
         Element teamData = listItem.select("div:not([class])").get(1);
+        Elements svg = listItem.select("svg.text-yellow-500");
         String[] names = teamData.child(0).child(0).text().replace("Waiting list", "").split("[,/]");
 
+        boolean isReserve = !svg.isEmpty();
         if (names.length < 2 || names.length > 4) {
             System.err.print("Skipping incomplete Team table row: " + listItem.text());
             return null;
@@ -153,7 +155,7 @@ public class TournamentParser {
                 playerB.setMixedEntryPoints(playerBPoints);
             }
 
-            return new Team(playerA, playerB, registrationDate, clazz, paid);
+            return new Team(playerA, playerB, registrationDate, clazz, paid, isReserve);
         } else {
             return new Team(playerA, registrationDate, clazz, paid);
         }

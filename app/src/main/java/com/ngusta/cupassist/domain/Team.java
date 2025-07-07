@@ -17,15 +17,18 @@ public class Team implements Serializable, Comparable<Team> {
 
     private boolean paid;
 
+    private boolean isReserve;
+
     private boolean completeTeam;
 
-    public Team(Player playerA, Player playerB, Date registrationTime, Clazz clazz, boolean paid) {
+    public Team(Player playerA, Player playerB, Date registrationTime, Clazz clazz, boolean paid, boolean isReserve) {
         this.playerA = playerA;
         this.playerB = playerB;
         this.registrationTime = registrationTime;
         this.clazz = clazz;
         this.completeTeam = true;
         this.paid = paid;
+        this.isReserve = isReserve;
     }
 
     public Team(Player playerA, Date registrationDate, Clazz clazz, boolean paid) {
@@ -66,6 +69,12 @@ public class Team implements Serializable, Comparable<Team> {
             return -1;
         } else if (!completeTeam && another.completeTeam) {
             return 1;
+        }
+
+        if (isReserve && !another.isReserve) {
+            return 1;
+        } else if (!isReserve && another.isReserve) {
+            return -1;
         }
 
         int cmp = compare(another.getEntryPoints(), this.getEntryPoints());
