@@ -5,19 +5,28 @@ android {
     compileSdk 34
     defaultConfig {
         minSdkVersion 24
-        targetSdk 34
-        versionCode 82
-        versionName '2.17'
+        targetSdk 35
+        versionCode 84
+        versionName '2.19'
         applicationId 'com.ngusta.cupassist'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+    signingConfigs {
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
         }
     }
     productFlavors {
