@@ -30,7 +30,7 @@ public class TournamentParser {
     private static final String REGEXP_PATTERN_FOR_REGISTRATION_URL = "/app/(.*?)\", \"_blank\"";
 
     public List<Team> parseTeams(String source, HashMultimap<String, Player> allPlayers, boolean isNewProfixio) {
-        ArrayList<Team> teams = new ArrayList<Team>();
+        ArrayList<Team> teams = new ArrayList<>();
         Document document = Jsoup.parse(source);
         Elements tableRows = isNewProfixio ? document.select("main ul li") : document.select("table:first-of-type tr:gt(0)");
 
@@ -92,7 +92,7 @@ public class TournamentParser {
             String playerBLastName = names[2].trim();
             Player playerB = findPlayer(allPlayers, playerBFirstName, playerBLastName, playerBClub, teamEntry, clazz);
 
-            return new Team(playerA, playerB, registrationDate, clazz, paid);
+            return new Team(playerA, playerB, registrationDate, clazz, paid, false);
         } else {
             return new Team(playerA, registrationDate, clazz, paid);
         }
@@ -101,8 +101,10 @@ public class TournamentParser {
 
     private Team newProfixioReadTeam(Element listItem, HashMultimap<String, Player> allPlayers) {
         Element teamData = listItem.select("div:not([class])").get(1);
+        Elements svg = listItem.select("svg.text-yellow-500");
         String[] names = teamData.child(0).child(0).text().replace("Waiting list", "").split("[,/]");
 
+        boolean isReserve = !svg.isEmpty();
         if (names.length < 2 || names.length > 4) {
             System.err.print("Skipping incomplete Team table row: " + listItem.text());
             return null;
@@ -142,7 +144,7 @@ public class TournamentParser {
             playerA.setMixedEntryPoints(playerAPoints);
         }
 
-        boolean paid = "PAID".equalsIgnoreCase(teamData.child(1).child(0).child(1).text());
+        boolean paid = "BETALD".equalsIgnoreCase(teamData.child(1).child(0).child(1).text());
         if (names.length == 4) {
             String playerBFirstName = names[3].trim();
             playerBFirstName = excludeParenthesisFromName(playerBFirstName);
@@ -153,7 +155,7 @@ public class TournamentParser {
                 playerB.setMixedEntryPoints(playerBPoints);
             }
 
-            return new Team(playerA, playerB, registrationDate, clazz, paid);
+            return new Team(playerA, playerB, registrationDate, clazz, paid, isReserve);
         } else {
             return new Team(playerA, registrationDate, clazz, paid);
         }
@@ -232,20 +234,27 @@ public class TournamentParser {
         List<Match> matches = new ArrayList<>();
         try {
             for (Element match : elements) {
-                if (match.child(0).text().equalsIgnoreCase("No matches available")) {
+                if (match.selectFirst("div[role=alert]") != null) {
                     break;
                 }
-                Element allContent = match.child(0).child(0).child(0);
-                //String[] matchNumberAndType = allContent.child(0).child(0).child(0).text().trim().split(" ");
-                String matchNumber = "0";//matchNumberAndType[0];
-                String matchType = allContent.child(1).child(0).child(1).text();
-                matchType = matchType.isEmpty() ? "Grupp" : matchType;
-                String clazz = allContent.child(1).child(0).child(0).text().trim();
-                String teamA = getTeamA(allContent);
-                String teamB = getTeamB(allContent);
-                boolean hasThirdSet = allContent.child(1).child(1).children().size() == 5;
-                String setResult = hasThirdSet ? allContent.child(1).child(1).child(4).child(0).text().trim() : allContent.child(1).child(1).child(3).child(0).text().trim();
-                String pointResult = allContent.child(1).child(1).child(1).text() + "/" + allContent.child(1).child(1).child(2).text() + (hasThirdSet ? "/" + allContent.child(1).child(1).child(3).text() : "");
+                Element allContent = match.selectFirst("div.group > div");
+                String matchNumber = getMatchNumber(match);
+                String matchType = allContent.selectFirst("div.text-gray-600 div.text-xs.font-bold") != null
+                        ? allContent.selectFirst("div.text-gray-600 div.text-xs.font-bold").text().trim()
+                        : "Grupp";
+                String clazz =  allContent.selectFirst("div.text-xs.font-bold.text-gray-600") != null
+                        ? allContent.selectFirst("div.text-xs.font-bold.text-gray-600").text().trim()
+                        : "";
+                String teamA = getTeam(allContent,0);
+                String teamB = getTeam(allContent,1);
+                Elements scoreColumns = allContent.select("div.flex.flex-col.text-center.text-xs.leading-5");
+                boolean hasThirdSet = scoreColumns.size() == 3;
+                String pointResult = scoreColumns.get(0).text().replace("\n", ":") + "/" +
+                        scoreColumns.get(1).text().replace("\n", ":") +
+                        (hasThirdSet ? "/" + scoreColumns.get(2).text().replace("\n", ":") : "");
+
+                Elements setResults = allContent.select("div.font-bold.text-right");
+                String setResult = setResults.get(0).text().trim() + ":" + setResults.get(1).text().trim();
                 matches.add(new Match(matchNumber, matchType, clazz, teamA, teamB, setResult, pointResult));
             }
         } catch (IndexOutOfBoundsException e) {
@@ -254,13 +263,24 @@ public class TournamentParser {
         return matches;
     }
 
-    private String getTeamA(Element allContent) {
-        Element e = allContent.child(1).child(1).child(0).child(0);
-        return e.text().trim();
+    private String getTeam(Element allContent, int index) {
+        Elements teams = allContent.select("div.space-y-2.flex-1.text-ellipsis.whitespace-nowrap > div.flex.space-x-2");
+        if (teams.size() > index) {
+            Element team = teams.get(index).selectFirst("div:nth-child(2)");
+            return team != null ? team.text().trim() : "";
+        }
+        return "";
     }
 
-    private String getTeamB(Element allContent) {
-        Element e = allContent.child(1).child(1).child(0).child(1);
-        return e.text().trim();
+    private String getMatchNumber(Element match) {
+        Element headerRow = match.selectFirst("div.flex");
+        if (headerRow != null) {
+            Elements textXsDivs = headerRow.select("div.text-xs");
+            if (!textXsDivs.isEmpty()) {
+                return textXsDivs.last().text().trim();
+            }
+        }
+        return "0";
     }
+
 }
